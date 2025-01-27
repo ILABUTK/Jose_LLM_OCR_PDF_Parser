@@ -1,5 +1,9 @@
 old/
 old/*
+mineru/
+mineru/*
+mineru_xl/
+mineru_xl/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
