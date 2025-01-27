@@ -87,6 +87,17 @@ kill -9 <llama process pid>
 
 pip install pillow install ollama langchain  chromadb gradio -q
 
+pip install langchain-ollama
+
+
+tmux attach
+
+
+
+```
+
+Inside of tmux please run
+```
 python3 file.py
 
 ```
