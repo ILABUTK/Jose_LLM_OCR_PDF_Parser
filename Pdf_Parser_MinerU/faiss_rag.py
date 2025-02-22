@@ -20,14 +20,20 @@ import faiss
 import numpy as np
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+from collections import defaultdict
 
 # Load the JSON file
 with open('/Users/xli/Documents/GitHub/Jose_LLM_OCR_PDF_Parser/Pdf_Parser_MinerU/use_cases/my_pubs/results/CAIE_Drones_2023/auto/CAIE_Drones_2023_content_list.json', 'r') as f:
     data = json.load(f)
 
 # Extract text and page_idx
-texts = [item['text'] for item in data if 'text' in item]
-page_idxs = [item['page_idx'] for item in data if 'text' in item]
+page_texts = defaultdict(str)
+for item in data:
+    if 'text' in item and 'page_idx' in item:
+        page_texts[item['page_idx']] += item['text'] + " "
+
+texts = list(page_texts.values())
+page_idxs = list(page_texts.keys())
 
 # Tokenize the texts
 tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large")
