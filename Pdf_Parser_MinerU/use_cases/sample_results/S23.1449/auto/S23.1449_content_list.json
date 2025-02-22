@@ -1,0 +1,186 @@
+[
+    {
+        "type": "text",
+        "text": "Phone: (865) 305-9080   \nFax:(865)305-6866 ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Surgical Pathology Report ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Patient: HILL, LESLIE A Med.Rec.#: 2141502 DOB/Gender. 11/26/1971 (Age: 51) F Soc. Sec. #: XXX-XX-0692 Location: Day Surgery hysician(s): Matthew L. Mancini, M.D. ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Specimen(s) Received ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "A:Sentinel lymph node #1 B:Possible sentinel lymph node #2 C:Nonsentinel lymph node D:Left hookwire partial mastectomy E:Deep margin ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Clinical History and Diaqnosis ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Breast cancer ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Final Pathologic Diagnosis ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "A) LYMPH NODE,SENTINEL #1, LEFT AXILLA,EXCISION: NEGATIVEFOR MALIGNANCY AND ISOLATEDTUMOR CELLS IN ONE LYMPHNODE ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "B)\"LYMPH NODE, POSSIBLE SENTINEL #2\",LEFT AXILLA, EXCISION: 1) BENIGN FIBROADIPOSE TISSUE 2)LYMPHOIDTISSUEISNOTPRESENT ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "C)\"LYMPH NODE, NON-SENTINEL\", EXCISION: 1)BENIGNFIBROADIPOSETISSUE 2) LYMPHOIDTISSUEISNOTPRESENT ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "D)BREAST,LEFT,HOOKWIREPARTIAL MASTECTOMY: 1)INVASIVEMAMMARYCARCINOMACOMPATIBLEWITHMUCINOUSTYPE HISTOLOGICGRADE:GRADE3,POORLYDIFFERENTIATED NOTTINGHAM SCORE: 8 OF 9 (TUBULES - 3, NUCLEI - 3, MITOSIS - 2) SIZE:16.0MM ANGIOLYMPHATIC INVASION: NOT IDENTIFIED PERINEURAL INVASION: NOTIDENTIFIED MARGINS:FREEOFINVASIVE TUMOR,CLOSEST MARGINISPOSTERIORAT2.0 MM ANCILLARY STUDIES: PERFORMED BY OUTSIDEINSTITUTION, SEE SYNOPTIC SUMMARY 2) DUCTAL CARCINOMA IN SITU (DCIS) ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "PATTERN(S): SOLID,COMEDO SIZE:SPANSAPPROXIMATELY40.0MM NUCLEARGRADE:3 MARGIN: NARROWLY FREE OF DCIS (DCIS IS LESS THAN 1.0 MM FROM POSTERIOR, SUPERIOR AND INFERIOR MARGINS; DCIS IS 1.0 MM FROM THE ANTERIOR MARGIN; MEDIAL AND LATERAL MARGINS AREWIDELY FREE OF DCIS; POSTERIORMARGINRE-EXCISEDASSPECIMENE 3)ADDITIONALFINDINGS: LOBULARCARCINOMAINSITU FIBROCYSTIC CHANGE USUAL DUCAL HYPERPLASIA (UDH) INTRADUCTAL PAPILLOMA BIOPSYSITEANDCLIPIDENTIFIED ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": ")BREAST,DEEP MARGIN,EXCISION: 1) LOBULAR CARCINOMA IN SITU 2) ADDITIONAL FINDINGS: FIBROCYSTIC CHANGE WITH APOCRINE METAPLASIA USUAL DUCAL HYPERPLASIA (UDH) ADENOSIS 3) NEGATIVE FOR DUCTALCARCINOMAIN SITUAND INVASIVE CARCINOMA ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "SYNOPTICSUMMARY ",
+        "text_level": 1,
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "'ATHOLOGICSTAGING PRIMARYTUMOR:pT1c REGIONAL LYMPH NODES: pNO (sn) Total number of lymph nodes examined:1 Number of lymph nodes involved:0 Number of sentinel nodes examined:1 Number of sentinel nodes involved:0 Number of lymph nodeswith macrometastases:0 Number of lymph nodeswithmicrometastases:0 Number of lymph nodes with isolated tumor cells:0 DISTANTMETASTASIS:Unknown ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "BREASTPATHOLOGICPROGNOSTICGROUPMARKERS OVERALL HISTOLOGIC GRADE (Nottingham histologic grade): Grade 3 ANCILLARY STUDIES: (Previously performed by outside institution) HER 2/neu (FISH):Negative HER2 neu/D17Z1 ratio: 1.1 HER2 copy numbers per nucleus: 3.5 ESTROGEN RECEPTOR: Positive, $>\\!95\\%$ (strong intensity) PROGESTERONERECEPTOR:Negative, $0\\%$ MIB-1 (Ki-67): Not performed ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "MICROSCOPIC: TUMORSIZE: $16.0\\;\\mathsf{m m}$ HISTOLOGIC TYPE:Invasive carcinoma compatible with mucinous type ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "HISTOLOGIC GRADE: Glandular(Acinar)/Tubular differentiation:Score 3 Nuclear pleomorphism: Score 3 Mitotic rate:Score 2 Nottingham histologic score: 8 of 9 Overall Grade:Grade 3   \nTUMOR FOCALITY:Single focus of invasive carcinoma   \nDUCTAL CARCINOMA IN-SITU (DCIS): Present Size (extent) of DCIS: Spans 40.0 mm Architectural Pattern(s): solid, comedo Nuclear grade:3 Necrosis: present   \nLOBULAR CARCINOMA IN SITU (LCIS): Present   \nTUMOR EXTENT: Skin invasion: Not applicable Skin satellite foci: Not applicable Nipple:Not applicable Skeletal muscle:Not identified   \nMARGINS: Invasive carcinomamargins:All margins negative for invasive carcinoma Distance from closest margin: $2.0\\;\\mathsf{m m}$ Specify margin: Posterior Anterior margin: Greater than $5.0\\;\\mathsf{m m}$ Posterior margin: $2.0\\;\\mathsf{m m}$ Superior margin:Greater than $5.0\\;\\mathrm{mm}$ Inferior margin: Greater than 5.0 mm Medial margin: Greater than 5.0 mm Lateral margin: Greater than $5.0\\;\\mathsf{m m}$ DCIS margins: Anterior margin: $1.0\\:\\mathsf{m m}$ Posterior margin: Greater than $10.0\\,\\mathsf{m m}$ (including specimen E) Superior margin: Less than $1.0\\;\\mathsf{m m}$ Inferior margin: Less than $1.0\\:\\mathsf{m m}$ Medial margin: Greater than $10.0\\;\\mathsf{m m}$ Lateral margin: Greater than $10.0\\;\\mathsf{m m}$   \nTREATMENT EFFECT:No known presurgical therapy   \nLYMPHOVASCULAR INVASION: Not identified ",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "MACROSCOPIC PROCEDURE:Hookwire partial mastectomy SPECIMENLATERALITY:Left ",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "B) Received in formalin labeled with the patient's name, Hill, Leslie, with date of birth, and “possible sentinel lymph node #1\"are two lymph node candidates, 0.8 cm and $1.3\\,\\mathsf{c m}$ ,which aresubmitted according toSentinel LymphNode Protocolasfollows: ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "SLIDE KEY: B1) Smaller lymph node B2) Larger lymph node (cassettes verified) ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "C) Received in formalin labeled with the patient's name, Hill, Leslie, with date of birth, and “nonsentinel lymph node” are two portions of focally cauterized yellow-tan tissue, 0.5 cm and 1 cm, which are submitted whole in C1. (cassette Verified) ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "D)Received fresh, compressed in a Dubin device labeled with the patient's name,Hill,Leslie,with date of birth, and \"left hookwire partial mastectomy, wire anterior, short stitch superior 12 o'clock, long stitch lateral at 3 o'clock\" is a 71-gram portion of fibrofatty breast tissue with orienting sutures and a hookwire as stated above. Using the hookwire and suture orientation, the specimen has irregular dimensions of 10 cm medial to lateral $\\times\\,6.2$ cm superior to inferior x 4.1 cm anterior to posterior. Anterior is inked orange, posterior is inked black, superior is inked blue, inferior is inked green, and medial and lateral are denoted by the junction of blue and green inks. The specimen is serially sectioned from medial to lateral into 18 slices. Located in slices 8-10 is a fairly well-delineated, solid, tan-pink tumor (1.5 cm medial to lateral $\\times\\,1.4$ cm superior to inferior $\\times\\,1.2$ cm anterior to posterior) which is located 3.5 cm from the medial margin, 5 cm from the lateral margin, 1.4 cm from the superior margin, 2.5 cm from the inferior margin, 1.5 cm from the anterior margin, and $<\\!0.1$ cm from the posterior margin. The hookwire corresponds to the tumor and a biopsy marking clip is also present, identified within the tumor. There is a small amount of nearby hemorrhage and fat necrosis. Otherwise, the tumor is surrounded by glistening, lobulated, yellow adipose tissue. No other gross lesions are identified.Representative sections including the entire tumor are submitted in cassettes as follows: ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "SLIDE KEY:   \nD1) Medial margin, slice 1   \nD2) Superior half of slice 7, area before tumor   \nD3) Superior portion of slice 8   \nD4-D5) Bisected central portion of slice 8 with tumor, submitted anterior to posterior (tumor in D5)   \nD6) Inferior portion of slice 8   \nD7) Superior portion of slice 9   \nD8-D9) Bisected central portion of slice 9 with tumor, submitted anterior to posterior (tumor in D9)   \nD10) Section thinned from D9 (remainder of tumor in slice 9 with respect to posterior margin)   \nD11) Inferior portion of slice 9   \nD12-D13) Bisected central portion of slice 10 with tumor, submitted anterior to posterior (tumor in D13)   \nD14) Section thinned from D13 (remainder of tumor in slice 10 with respect to posterior margin   \nD15-D16) Bisected central portion of slice 11, area after tumor, submitted anterior to posterior   \nD17) Lateral margin, slice 18 ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "E) Received in formalin labeled with the patient's name, Hill, Leslie, with date of birth, and “deep margin, stitch marks newdeepmargin\" isa10-gram, $4.1\\times3.2$ cCm $\\times\\,2.3$ cm in thicknessportion of fibrofatty breast tissuewith a suture on one side marking this as the new margin. The new margin surface is convex and smoothly lobulated. The new margin is inked blue. The opposite non-margin aspect, which is inked black, is concave and tan-pink and slightly granular. The specimen is serially sectioned perpendicular to the long axis into 13 slices. No gross lesions are identified. The entire specimen is submitted in cassettes as follows: ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "SLIDE KEY:   \nE1) Slices 1 and 2   \nE2) Slice 3   \nE3) Slice 4   \nE4) Slice5   \nE5) Slice 6   \nE6) Slice 7   \nE7) Slice 8   \nE8) Slice 9   \nE9) Slice 10   \nE10) Slice 11   \nE11) Slices 12 and 13   \n(cassettes verified) ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "ELH/rjc/1/18/2023 ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Microscopic Description ",
+        "text_level": 1,
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "To subclassify the lesion,breast cocktail, CK5/6 and E-cadherin were performed. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Immunostain for pancytokeratin were reviewed on the sentinel lymph nodes as per protocol. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The pancytokeratin stains show no evidence of carcinoma cells in the lymph nodes. The breast cocktail stain demonstrates intact myoepithelial cells in areas of in situ carcinoma. E-cadherin is negative in LCIS. CK5/6 is positive inusualductalhyperplasia. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The results support the diagnosis above. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Immunostain Summary:   \nPancytokeratin: A1-A4, B1-B2   \nBreastcocktail:D17   \nE-cadherin: E6-7   \nCK5/6: E2 ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "In some tests, analyte specific reagents (ASRs) are used. In the case of an ASR, this test was developed and its performance characteristics determined by this laboratory. It has not been cleared or approved by the US Food and Drug Administration. The FDA has determined that such clearance or approval is not necessary.This test is used for clinical purposes. It should not be regarded asinvestigational orforresearch.Thislaboratory is certified under theClinical LaboratoryImprovementAmendments of 1988 (CLIA 88) as qualified to perform high complexity clinical laboratory testing. ",
+        "page_idx": 4
+    }
+]

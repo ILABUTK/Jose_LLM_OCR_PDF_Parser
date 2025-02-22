@@ -125,3 +125,6 @@ python3 file.py
      > magic-pdf -p /workspace/input_images/2024_Zhang_SparrowSearchAlgorithmMMT.pdf -o /workspace/output_images/ -m auto
      > :tada:
      >
+
+## Pdf_Parse_MinerU
+    - allow batch process a folder

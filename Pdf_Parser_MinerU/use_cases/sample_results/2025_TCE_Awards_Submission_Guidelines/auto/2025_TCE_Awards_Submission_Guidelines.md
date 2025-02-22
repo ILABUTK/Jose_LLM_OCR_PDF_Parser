@@ -1,0 +1,451 @@
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+All staf, faculty, and student award nominations are due by 5 p.m. on Friday, February 14. Winners will be publicly announced at the annual TCE Awards Dinner, as well as receive a notification with their invitation for the TCE Awards Dinner on Thursday, May 1, 2025.  
+
+Staf and faculty winners will each receive a cash award (split between group award recipients), a letter of congratulations from the dean with copies sent to the Ofice of Human Resources Management and the applicable department/unit head, and an award to be presented at the annual dinner.  
+
+winners will receive a scholarship or cash award (dependent o  
+
+# Important Submission Information: Staf Awards  
+
+Nominations for staf awards must be submitted electronically via tiny.utk.edu/NominateTCEStaf. Anyone in any department/unit may nominate any eligible staf member for an award. View details of each staf award below or at tiny.utk.edu/TCEStafAwards.  Nomination submissions will be kept confidential.  
+
+Eligibility (all staf awards):  
+
+Regular employees holding a position in a TCE department or unit with at least one year of continuous service within the college (hired no later than January 1, 2024). One exception is the group award, for which there is no minimum required length of employment. Must be a full-time, part-time, exempt, or non-exempt staf employee.   
+Instructors, student workers, term employees, and winners of individual staf awards from the previous three years are ineligible. However, winners of the group award are still eligible. Any person in a position of influence over the awards process eliminates said person from eligibility to receive an award. This includes, but is not limited to, current awards committee members. The 2024-2025 Staf Awards & Recognition Committee includes Jonathan Turnmire, Carmen Ghossein, Yvette Gooden, Ali Martin, Amanda Middleton, Carrie Zitzman, and Jennifer Wynn. These staf members are not eligible to receive an award this year.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+Nomination/Evaluation Criteria (all staf awards):  
+
+Nominations for each award should include specific examples detailing how the nominee(s) meet the criteria and qualifications. Decisions are based on the written information provided. The Staf Awards and Recognition Committee is appointed by the Staf Advisory Council and will make final determinations. One non-voting administrator (associate dean, assistant dean, director, HR manager, etc.) may be called upon to make final decisions. Those members on the committee are ineligible to receive a staf award while serving.  
+
+# Individual Staf Awards  
+
+The Volunteer Spirit Award recognizes the outstanding all-around achievement of one staf member. The award is intended to recognize a staf member who demonstrates exceptional service to the college and/or community at large (e.g. voluntary participation in community groups, boards, or charitable organizations). This individual goes above and beyond in their work to help others and does so with a high degree of excellence, professionalism, and integrity; thus, contributing significantly to improving the overall environment and experience of the college.  
+
+The Supervisor of the Year Award recognizes a staf member who excels at supervising their staf, department, and/or center. This person should motivate and/or encourage their staf to grow personally and/or professionally. Individuals nominated for this award must currently supervise staf, which may include undergraduate students, graduate students, part-time employees, and/or full-time employees.  
+
+The Sidekick Salute Award recognizes an outstanding co-worker. Recognition from peers is highly valued. This award acknowledges a co-worker or teammate who has gone the extra mile in helping the team on a project, is always looking to make sure the team has everything they need or has performed a special act of kindness or service that has had a positive impact on the team/department.  
+
+The Inspirational Leadership Award recognizes an individual who inspires others. They influence without authority, often putting the interests of others ahead of their own and serve as “a champion for staf.” Criteria includes an individual who leads changes or improvements for the benefit of their peers, inspires and motivates others to take advantage of opportunities that enhance their professional or personal lives, and empowers others to achieve results in support of goals and fosters an atmosphere of collaboration and creativity, which contributes to the eficiency and efectiveness of productivity.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+The Commitment to Excellence Award recognizes a staf member who has contributed at least 10 years of service to the college. This staf member, regardless of position or title, has demonstrated exceptional leadership and exemplary service to engineering students, staf, and/or the community.  
+
+The Commitment to Access and Engagement Award recognizes an individual within the college who has demonstrated a commitment to access and engagement in consideration of afordability, ability, and identity. The Commitment to Access and Engagement Award recipient demonstrates an exceptional understanding of inclusiveness beyond the call of duty. An exemplary candidate may possess the following qualities:  
+
+Enhances inclusion through positive communication between persons of diferent backgrounds,   
+• Develops innovative methods for increasing and valuing diversity among stakeholders, Demonstrates outstanding eforts to maintain an environment that promotes ideals consistent with the Volunteer Creed, and/or Organizes and/or facilitates opportunities for success among colleagues in the college an across the university.  
+
+The Rising Star Award recognizes a staf member who, regardless of position or title, exceeds the responsibilities of their position in a manner that demonstrates a commitment to departmental success and ambition to progress in their current role. The person is required to have served in their current role for a minimum of 1 year and a maximum of 5 years. For the purposes of this award, role is determined by the PDQ on file with HR. This person would possess or have the demonstrated potential to possess the following characteristics:  
+
+Understanding of how to motivate oneself and inspire others, Ability to influence and persuade people at all levels,   
+• Ability to drive sustainable change,   
+• Ability to coach and provide feedback to others in a strategic and productive manner, and   
+• Possess an understanding of how to leverage relationships and use networks to achieve results.  
+
+This award comes with an option to attend a UT Employee & Organizational Development (EOD) conference fully funded by the STAR Fund during the next fiscal year.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Group Staf Award  
+
+The Champions for Collaboration Award recognizes a group of staf within an ofice, crossfunctional group of staf, or committee of staf members who have worked together in an exceptional manner to perform an assigned task. There is no minimum required length of employment for the group members. As a result of working as a team, the department, ofice, workunit, college, or university should have benefited in one or more of the following ways:  
+
+• Specific, identifiable improved eficiencies,   
+· Cost savings,   
+Cross-training resulting in expanding job responsibilities and improving service, · Innovative ideas or suggestions to improve methods,   
+· Completion of special projects,   
+• Functioning in unique (sometimes adverse) circumstances, and/or   
+Improved coordination and cooperation within the department.  
+
+NOTE: Faculty are ineligible for this award and will disqualify a nomination if included.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Important Submission Information: Faculty Awards  
+
+Award nominations for the Moses E. and Mayme Brooks Distinguished Professor Award, Charles E. Ferris Faculty Award, TCE Teaching Fellow Awards, TCE Outstanding Contribution to Diversity, Equity, and Inclusion Award, and the Outstanding Faculty Service Awards must be submitted electronically to Morgan Boyd (jboyd57@utk.edu).  
+
+A nomination package for a single nominee for a particular award should be a single PDF file containing all of the required components, AND ONLY THOSE COMPONENTS. Files should be saved electronically and converted to a PDF file, NOT SCANNED.  
+
+Each award category has a specific set of criteria with a list of the components required to create a complete nomination. Please thoroughly review your nomination package for the following items before submitting:  
+
+• Annotated checklist for the particular award to show that you are submitting a nomination with the correct information For all awards, CVs and other informational items are for the past five calendar years only (i.e., the 5 calendar years preceding the award nomination due date), containing the specific information requested for that particular award category – in the order requested (note that this order varies based on category). TN Voice (where required) over multiple years are in tabular form and should include the results for the 8 questions individually and not averaged.  (Do not submit individual score sheets. Please report mean values for all survey responses for each class.)   
+• A nomination package is a single PDF file.  
+
+Faculty nominations that do not adhere to these guidelines will be returned.  
+
+View details of each faculty award below or at tiny.utk.edu/TCEFacultyandResearchAwards.   
+Nomination submissions will be kept confidential.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+Individual Faculty Awards  
+
+# Moses E. and Mayme Brooks Distinguished Professor Award  
+
+This award recognizes and rewards outstanding engineering faculty who have achieved distinction in engineering practice, along with efective teaching.  
+
+Submit nominations to Morgan Boyd (jboyd57@utk.edu).  
+
+Eligibility:  
+
+Full-time UT faculty member with a professional rank (i.e., not an instructor, lecturer, Distinguished Scientist, Governors Chair, etc.), who has not received the award in the last five years.  
+
+Evaluation criteria:  
+
+• Efectiveness in teaching based on student, peer, and administrative evaluation. Distinction in an area of engineering practice as demonstrated by the application of the engineering expertise of the nominee to community and/or societal problems and issues, patents, designs, regional or national professional service, and professional outreach activities.  
+
+The nomination package should include:  
+
+1. A departmental nomination letter (maximum of two pages) that explicitly addresses both teaching efectiveness and the nominee’s distinctive work with respect to engineering practice;   
+2. Nominee’s resume for the past five years only and organized to emphasize information for the two award criteria; and   
+3. Evidence of teaching quality and quantity, including a summary of student teaching evaluations for the last five years (course numbers, ratings, and class sizes) only, peer review reports, and teaching awards.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Charles E. Ferris Faculty Award  
+
+This award recognizes and rewards faculty with a distinguished record of research and teaching as well as a record of contributions to the advancement of technology in the local community through local public engagement in the professional discipline.  
+
+Submit nominations to Morgan Boyd (jboyd57@utk.edu).  
+
+Eligibility:  
+
+Full- or part-time UT faculty member in the college who has not received the award in the last five years.  
+
+Evaluation criteria:  
+
+• Distinguished record of research and teaching as related to the advancement of technology.   
+• A solid record of participation in the afairs of the greater Knoxville and Oak Ridge communities with respect to bringing together the technical talent of the community and the public for solving civic problems, as this goal is a founding Objective of the Knoxville Technical Society. Note: this award is primarily a local public engagement and/or outreach award; funded research collaborations with regional institutions and/or industry are outside the scope of this award.  
+
+Nomination package should include:  
+
+1. A departmental nomination letter (maximum of two pages) that explicitly addresses the public engagement and/or outreach criteria, as well as the nominee’s record of research and teaching as related to the advancement of technology, and   
+2. Nominee’s resume for only the last five years organized to emphasize information with respect to the two key criteria.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# TCE Teaching Fellow Awards:  
+
+nd Nancy Cole Teaching Fellow Award and Teaching Fellow  
+
+These awards recognize and reward superior teaching in the college. All of these awards will be judged based on the same criteria, with one nominee selected to receive the Cole Award.  
+
+Submit nominations to Morgan Boyd (jboyd57@utk.edu).  
+
+Eligibility:  
+
+• Full-time UTK faculty member(s) teaching in the college, including tenure-line faculty members, Governor’s Chairs, Distinguished Scientists, full-time lecturers, and professors of practice who have not received the award in the last five years, who have at least four years of teaching experience in the college, and who are currently active with teaching responsibilities. TCE Teaching Fellow Awards may be awarded to teaching teams. If awarded to a team, each team member will bear the title of TCE Teaching Fellow, and the award amount will be equally divided among the team members.  
+
+Evaluation criteria:  
+
+Exceptional record of undergraduate and/or graduate teaching, as appropriate, Outstanding teaching skills, including clear communication with students, subject knowledge, a sincere concern for students and the learning process, and an ability to positively motivate students, Strong performance in teaching-related service activities, and Eforts that clearly contribute to the overall teaching mission of the college.  
+
+Nomination package should include (for the last five years only):  
+
+1. A departmental nomination letter (maximum of two pages) addressing teaching accomplishments for the award,   
+2. Summary of courses taught, including class name and number, class size, and student endof-course evaluation scores,   
+3. Summary of teaching-related service activities, publications that focus on teaching/education educational teaming eforts, and/or other teaching-relevant information (such as evidence of positive impact of teaching),   
+4. All peer teaching reviews,   
+5. Department head narratives from the annual reviews for the overall teaching evaluation, and   
+6. Nominee’s resume, beginning with teaching-related activities, and covering the scope of all of the nominee’s job responsibilities.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+Up to six awards will be made annually (Cole and up to five additional TCE Teaching Fellows). Because of the difering numbers of faculty members across the departments, the maximum number of nominations from each department is:  
+
+Chemical and Biomolecular Engineering: 1   
+• Civil and Environmental Engineering: 2 Electrical Engineering and Computer Science: 2   
+• Industrial and Systems Engineering: 1 Materials Science and Engineering: 2   
+? Mechanical, Aerospace, and Biomedical Engineering: 2 Nuclear Engineering: 1 Freshman programs: 1  
+
+# Outstanding Contribution to Diversity, Equity, and Inclusion Award  
+
+While it is the work of the entire college to promote diversity and equity and sustain an inclusive climate in the college, the TCE Outstanding Contribution to DEI Award recognizes and rewards the truly exceptional commitments of faculty members to further the DEI goals of the college.  
+
+Submit nominations to Morgan Boyd (jboyd57@utk.edu).  
+
+Eligibility:  
+
+• All full-time non-administrative UTK faculty members in TCE (tenure line, research, and instructional faculty, including Governor’s Chairs and Distinguished Scientists) who have not received the Outstanding Contribution to DEI award in the last five years.  
+
+Evaluation criterion:  
+
+Demonstrated excellence in promoting diversity and equality and creating and sustaining an inclusive climate in TCE. The nomination should clearly identify the exceptional nature of the contribution. While contributions to the greater campus community are further evidence of excellence, the focus of the award is on excellence in promoting DEI in the college.  
+
+Nomination package should include:  
+
+1. A departmental nomination letter (maximum of two pages) emphasizing the nominee’s exceptional contribution to DEI in the college over the last five years 2. the nominee’s CV covering the past 5 years, highlighting contributions to DEI in TCE.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Outstanding Faculty Service Awards  
+
+These awards recognize and reward superior service to, and engagement with, important constituents. There are three distinct faculty service award categories:  
+
+1) Outstanding Service in Outreach and Engagement, and   
+2) Outstanding Service to the College,  
+
+Submit nominations to Morgan Boyd (jboyd57@utk.edu).  
+
+Eligibility:  
+
+All full-time, non-administrative UT faculty members in the college (tenure line, research, and instructional faculty, including Governor’s Chairs and Distinguished Scientists) who have not received the service award in the same category in the last five years, and who have a solid record in all other elements of their appointment (research and/or teaching).  
+
+Evaluation criteria:  
+
+• Exceptional record of service to the appropriate constituent.   
+• The nomination should clearly identify one category only for which the nominee is to be considered. If the nominee’s appointment requires service as part of the expected job responsibility, the nomination should state how the service is above that expected. The two categories are: o Outstanding Service in Outreach and Engagement (this award is distinct from the Ferris award in that service outside of Knoxville and the Oakridge community is considered and that excellence in teaching and research are not criteria), and o Outstanding Service to the College (college-level service and leadership in TCE)  
+
+Nomination package should include:  
+
+1. A departmental nomination letter (maximum of two pages) emphasizing the nominee’s exceptional record of service to the identified constituent over the last five years, and   
+2. The nominee’s resume for only the last five years to provide evidence of exceptional service as well as evidence of solid performance in research and teaching.  
+
+Each department may nominate a maximum of one faculty member per service award category.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Important Submission Information: Research Awards  
+
+Award nominations for the TCE Professional Promise in Research Awards, the TCE Research Achievement Awards, the TCE Award for Translational Research, the TCE Research Award for Postdoctoral Associates, and the TCE Research Award for Research Faculty must be submitted electronically to Morgan Kramer (mkramer9@utk.edu) by Friday, February 14 at 5 p.m.  
+
+View details of each faculty research award below or at https://liveutk.sharepoint.com/sites/tceintranet/SitePages/Faculty-Awards.aspx.  Nomination submissions will be kept confidential.  
+
+# Individual/Group Research Awards  
+
+# Translational Research Award  
+
+This award recognizes a faculty member or group of individuals whose research has achieved societal benefit through the development of intellectual property via licensing agreements, patents, and/or business startups.  
+
+Submit nominations to Morgan Kramer (mkramer9@utk.edu).  
+
+Eligibility:  
+
+Nominee(s) may be either a single faculty member or a group of persons involving one or more faculty members plus postdocs, staf and/or students.   
+Tenured, tenure-track, and research faculty members in TCE (UT and UTSI) who have not received the award in the last five years.  
+
+Nomination package should include:  
+
+1. A departmental nomination letter that explicitly addresses the contribution of the individual or group to developing the intellectual property of their research through licensing agreements, patents, and/or business startups, and   
+2. Nominee’s resume for only the last five years.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Professional Promise in Research Award  
+
+These awards recognize tenured or tenure-track faculty members at the assistant or associate professor rank who have received national and/or international recognition in their fields and show professional promise in their research. These awards are to encourage excellence in research and creative achievement, to emphasize the critical role of research in the professional development of our faculty, and to reinforce that faculty research is integral to the mission of the college.  
+
+Submit nominations to Morgan Kramer (mkramer9@utk.edu)  
+
+Eligibility:  
+
+Limited to tenured or tenure-track faculty members at the assistant or associate professor rank who, by the end of 2022-2023, have ten or less years as a tenure-line faculty member.   
+Nominees must have a minimum of three years of service as a UT/UTSI tenure-line faculty member.   
+Nominees may not have received this award in the last five years.  
+
+The nomination package should include:  
+
+• A narrative summary of accomplishments (maximum of two pages). This summary is provided by the department and describes the nominee’s accomplishments focusing on the last five years (or less in the case of some nominations for Professional Promise Award) and should consider achievements such as funding levels, quality of research, graduate/undergraduate student research support, mentoring and placement, publications, teaming eforts, patents, licensing agreements and other relevant information. A curriculum vita for the nominee for only the last five years. The vita should include a detailed list of research contracts/grants that specifies whether the faculty member is PI or Co-PI and states the prorated funding share for each entry, refereed journal articles, refereed proceedings, refereed book chapters, authored books, edited books, invited presentations, patents, license agreements, and students with degree and graduation year for which the nominee served as major professor plus a list of MS and PhD students currently being supervised. IMPORTANT NOTE: The CV should only contain these items and they should be placed in this order. A separate resume reporting on teaching and university and professional service for the last five years only.  
+
+Up to four awards will be made annually. Because of the difering number of faculty members between departments, the maximum number of nominations from each department is:  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+Chemical and Biomolecular Engineering: 1   
+Civil and Environmental Engineering: 2   
+Electrical Engineering and Computer Science: 2   
+Industrial and Systems Engineering: 1   
+Materials Science and Engineering: 2   
+Mechanical, Aerospace, and Biomedical Engineering: 2   
+Nuclear Engineering: 1  
+
+# Research Achievement Award  
+
+The purpose of these awards is to recognize tenured faculty members who have received national and/or international recognition in their field, to stimulate research and creative achievement, and to emphasize that faculty research is integral to the mission of the college.  
+
+Submit nominations to Morgan Kramer (mkramer9@utk.edu).  
+
+Eligibility:  
+
+Only tenured faculty members who, by the end of 2022-2023, have more than 10 years of as a tenure-line faculty member are eligible. Nominees must have a minimum of three years of service as a tenure-line faculty member in the college (UT or UTSI). If applicable, a nominee may not have received the Tickle College of Engineering Professional Promise in Research Award or the Tickle College of Engineering Research Achievement Award in the last five years Note: Governors Chairs and Distinguished Scientists are not eligible.  
+
+The nomination package should include the same items as the package for the Professional Promise in Research Award (see above).  
+
+Up to four awards will be made annually.  Because of the difering number of faculty members between departments, the maximum number of nominations from each department is:  
+
+Chemical and Biomolecular Engineering: 1   
+Civil and Environmental Engineering: 2   
+Electrical Engineering and Computer Science: 2   
+Industrial and Systems Engineering: 1   
+Materials Science and Engineering: 2   
+Mechanical, Aerospace, and Biomedical Engineering: 2   
+Nuclear Engineering: 1  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Research Award for Research Faculty  
+
+The purpose of this award is to recognize a research faculty member who has received a national and/or international recognition for research and scholarship in their field and to recognize the contribution of the research faculty to the scholarly and research enterprise of the college.  
+
+Submit nominations to Morgan Kramer (mkramer9@utk.edu).  
+
+# Eligibility:  
+
+Nominees must have a minimum of three years of service as a full-time UT/UTSI research faculty member. • Nominees may not have received this award in the last five years.  
+
+The nominating package should include:  
+
+• A narrative summary of accomplishments (maximum of two pages). This summary is provided by the department and describes the nominee’s accomplishments during appointment at UTK as a research faculty member and focusing on the last five years (January 2020 - December 2024, or less for faculty with less than five years at UTK).  The summary should consider achievements such as funding levels, quality of research, student research support, mentoring of students, publications, teaming efforts, patents, licensing agreements and other relevant information.  IMPORTANT NOTE: Only accomplishments during appointment at UTK are to be included. A curriculum vita for the nominee for only the last five years (January 2020 - December 2024). The vita should include a detailed list of research contracts/grants that specifies whether the faculty member is PI, Co-PI, or senior personnel and states the prorated funding share for each entry, refereed journal articles, refereed proceedings, refereed book chapters, authored books, edited books, invited presentations, patents, license agreements, and students for which the nominee served as advisor, co-advisor, or member of the graduate committee, including current and past students, with graduation date if known. IMPORTANT NOTE: The CV should contain only these items and they should be placed in this order.  Accomplishments prior to the appointment at UTK are acceptable if they occurred within the last five years.  
+
+One award will be made annually. Each department or college-based research center that employs research faculty may submit one nomination for this award.  Nominations for research faculty members who are appointed and supervised in a TCE department will be considered departmental submissions.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Research Award for Postdoctoral Associates  
+
+This award recognizes the contribution of a postdoctoral associate to external recognized research during their work here in the Tickle College of Engineering at UTK.  This award encourages the College culture to position postdoctoral associates to lead within their research group through achievements such as successful grant principal investigators, corresponding and first authors on key publications, individual prestigious awards from national professional organizations, etc.  This award emphasizes the importance of focusing on the professional development of postdoctoral associates during their time at UTK and recognizing their critical role in the success of particularly the larger research initiatives on campus.  
+
+Submit nominations to Morgan Kramer (mkramer9@utk.edu).  
+
+# Eligibility:  
+
+• Limited to postdoctoral associates presently at the University of Tennessee. Key featured outcomes in the award nomination must have occurred at the University. Nominees may not have received this award previously.  
+
+The nomination package should include:  
+
+• A narrative summary of accomplishments (maximum of two pages). This summary is provided by the department and describes the nominee’s accomplishments focusing on their time at the University of Tennessee.  A nomination should consider achievements such as leadership in proposal writing, receiving a externally funded grant as a PI, serving as lead corresponding author for one or more impactful refereed publications, invited presentations at professional societies, external awards for research conducted at UTK, and/or professional development of graduate students and/or undergraduates as researchers. A curriculum vita for the nominee. The vita should include a list of professional awards, research contracts/grants that specifies whether the postdoctoral associate is PI or Co-PI and states the prorated funding share for each entry, refereed journal articles, refereed proceedings, refereed book chapters, authored books, edited books, invited presentations, patents, and/or license agreements.  IMPORTANT NOTE: The CV should only contain these items and they should be placed in this order.  
+
+e made annually. Each department may have a single nomine  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Important Submission Information: Student Awards  
+
+Nominations for student awards must be submitted electronically via tiny.utk.edu/NominateTCEStudent. Anyone in any department/unit may nominate any eligible student for an award. View details of each student award below or tiny.utk.edu/TCEStudentAwards. Nomination submissions will be kept confidential.  
+
+Student award winners will receive a scholarship or cash award (dependent on the award).  
+
+# Undergraduate Student Awards  
+
+# Outstanding Engineering Achievement Award  
+
+This award recognizes an undergraduate student who has demonstrated exceptional academic performance across their entire undergraduate studies, highlighting the most academically outstanding student in the college. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships.  
+
+Eligibility:  
+
+Must be an undergraduate student.   
+Must be a senior or junior.   
+Must be in good academic standing with a high $\mathsf{G P A}>3.5$ .  
+
+# o Nomination Criteria:  
+
+• Individual nominations are accepted from faculty or staf.   
+• Consideration of the performance in coursework, research/project accomplishments, and overall contribution to the academic environment. A maximum of 2 nominations per department approved by the Department Head.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Leadership Excellence Award  
+
+This award honors an undergraduate student who has demonstrated outstanding leadership skills in academic, extracurricular, or community settings. It is designed to recognize individuals who have made a significant impact through their leadership. The award for this category is $\Phi1$ ,000 from TCE Endowed Scholarships.  
+
+Eligibility:  
+
+• Must be an undergraduate student. Must have a proven track record of leadership in student organizations, community projects, or academic initiatives. Must be in good academic standing with a $\mathsf{G P A}>3.0$  
+
+# Nomination Criteria:  
+
+Individual nominations are accepted from faculty or staf.   
+Nominees should demonstrate evidence of leadership qualities, such as initiative, decision-making, and the ability to inspire and positively influence others.   
+Contributions to campus life, student organizations, or community outreach will be considered.  
+
+# Undergraduate Research Award  
+
+This award recognizes an undergraduate student who has made significant contributions to research in their field of study or a related field of study. It is aimed at students who have excelled in conducting original research, either independently or as part of a research group. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships.  
+
+Eligibility:  
+
+Must be an undergraduate student actively engaged in research. Research may be part of coursework, independent study, or as a research assistant.  
+
+# o Nomination Criteria:  
+
+• Individual nominations are accepted from faculty or research advisors. Nominees should demonstrate innovation, critical thinking, and significant involvement in a research project. Contributions to published work, presentations, or research dissemination will be considered. A maximum of 2 nominations per department approved by the Department Head.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Internship/Co-op Award  
+
+This award honors an undergraduate student who has excelled in internship or co-op experiences. It is designed to recognize those who have demonstrated significant professional growth, applied academic knowledge in an industry setting, and contributed to their employer. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships earmarked for Engineering Professional Practice.  
+
+o Eligibility: Must be an undergraduate student who has completed or is currently in an internship or co-op program. Internship or co-op must be related to their field of study.  
+
+# o Nomination Criteria:  
+
+Individual nominations are accepted from supervisors, faculty, or career services staf.   
+Nominations should be accompanied by approval from the Engineering Professional Practice ofice.   
+Nominees should provide evidence of exceptional performance,   
+professionalism, and contribution to the company or organization.   
+Feedback from employers and reflections on the learning experience will be considered.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Graduate Student Awards  
+
+# Leadership Excellence Award  
+
+This award recognizes a graduate student who has demonstrated outstanding leadership skills within their academic program, student organizations, or the community. The award is designed to acknowledge leadership eforts that enhance the graduate student experience or benefit the broader community. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships.  
+
+Eligibility:  
+
+• Must be a graduate student in good academic standing with a $\mathsf{G P A}>3.0$ . • Must have demonstrated leadership in academic, extracurricular, or community activities.  
+
+Nomination Criteria:  
+
+• Individual nominations are accepted from faculty or staf. Nominees should demonstrate clear leadership qualities, such as leading initiatives, influencing positive change, and mentoring others. Consideration of leadership roles within graduate student organizations, community service, or academic contributions.  
+
+# Graduate Research Award  
+
+This award honors a graduate student who has made exceptional contributions to research in their respective fields. The award is aimed at recognizing original research, innovative methodologies, or significant scholarly output. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships.  
+
+o Eligibility:  
+
+• Must be a graduate student actively engaged in research. Must have contributed significantly to research projects within their department or discipline. Must have at least one publication as the first author in either a refereed journal or a published conference proceeding.  
+
+# o Nomination Criteria:  
+
+Individual nominations are accepted from faculty or research supervisors. Nominees should demonstrate innovative research, contribution to scholarly publications, or presentations at academic conferences.   
+The quality, originality, and impact of research contributions will be considered. A maximum of 2 nominations per department approved by the Department Head.  
+
+# 2025 TCE AWARDS SUBMISSION GUIDELINES  
+
+# Best Graduate Teaching Assistant Award  
+
+This award recognizes a graduate teaching assistant (GTA) who has shown exemplary teaching skills, dedication to students, and a commitment to improving the learning environment. It is designed to honor a GTA who has gone above and beyond in their teaching duties. The award for this category is $\mathbb{S}1\,,000$ from TCE Endowed Scholarships.  
+
+Eligibility:  
+
+Must be a graduate teaching assistant.   
+Must be in good academic standing with a $\mathsf{G P A}>3.0$ .  
+
+Nomination Criteria:  
+
+Individual nominations are accepted from faculty or staf. • Nominees should provide evidence of efective teaching, such as student evaluations, peer reviews, or innovative teaching practices. Commitment to student learning, creativity in the classroom, and contributions to course improvement will be considered. A maximum of 2 nominations per department approved by the Department Head.  
+
+# Student Group Award  
+
+# Community Service Award  
+
+This award recognizes outstanding community service initiatives led by an undergraduate or graduate student organization. The award is designed to support ongoing service projects. The award for this category is $\mathbb{S}1\,,000$ to be used by the student organization to support service initiatives.  
+
+o Eligibility:  
+
+• Open to both undergraduate and graduate student organizations. Must have completed or be engaged in a community service project during the academic year. Only registered student organizations will be considered.  
+
+# Nomination Criteria:  
+
+• Nominations are accepted from faculty, staf, or community partners. Projects should demonstrate a significant positive impact on the community and active student participation. Sustainability of the project, number of students involved, and partnerships with external organizations will be considered.  
