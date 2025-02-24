@@ -1,0 +1,850 @@
+[
+    {
+        "type": "text",
+        "text": "Optimal delivery route planning for a fleet of heterogeneous drones: A rescheduling-based genetic algorithm approach ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Xudong Wang a, Zeyu Liu b, Xueping Li a,∗ ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "a Department of Industrial and Systems Engineering, The University of Tennessee, Knoxville, TN 37996, USA b Department of Industrial and Management Systems Engineering, West Virginia University, Morgantown, WV 26506, USA ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "A R T I C L E I N F O ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "A B S T R A C T ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Keywords:   \nDrone delivery   \nVehicle routing problem   \nMixed integer linear programming   \nGenetic algorithm ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "The past decade has witnessed the rapid growth of pilot studies and the adoption of drone-assisted delivery by many e-commerce companies. In practice, delivery companies usually assemble fleets of drones consisting of heterogeneous configurations to satisfy various customer package demands, and this calls for in-depth research on how to deliver packages via drones efficiently. In this study, we extend the classic vehicle routing problem (VRP) by optimally scheduling the operations in a package depot center with a fleet of drones with different capacities, speeds, and maximum flight ranges. The drones travel multiple sorties to serve customers nearby. We formulate this problem as a mixed integer programming (MIP) model that minimizes the total delivery time for a set of packages. Due to the NP-hardness of the problem, we first develop a FIFO-based genetic algorithm (FBGA) to solve the problem. In anticipation of multiple trips, we further propose a modified, rescheduling-based genetic algorithm (RBGA) that incorporates a small-scale routing-planning optimization model that ‘‘reschedules’’ drone operations at the end of drone sorties, with the objective of minimizing the completion time. The RBGA features the combination of the knapsack problem, the shortest path problem, and a scheduling problem, from which near-optimal delivery plans are obtained for the fleet of drones. We conduct extensive numerical experiments with different numbers of customers and drones to evaluate the performance of the algorithms. The results suggest that compared with MIP, the proposed algorithms solve the problem efficiently for the testing instances, particularly for large instances that MIP fails to solve in time, indicating the practicality of the proposed methods for real-world implementations. ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1. Introduction ",
+        "text_level": 1,
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "With the growing popularity of e-commerce, parcel delivery logistics has become the lifeline of many companies, wherein, traditionally, trucks play major roles in last-mile deliveries. However, e-commerce giants such as Amazon and Walmart have grown more inclined to use Unmanned Aerial Vehicles (UAVs), or commonly known as drones. For example, in August 2020, Amazon received the Federal Aviation Administration (FAA) certificate (Amazon, 2019), signifying that Prime Air drones are officially in operation. In September 2020, Walmart also announced its first drone delivery through the partnership with Flytrex, launching a pilot program in Fayetteville, North Carolina (Walmart, 2020). Compared with trucks, drones travel faster and are less affected by terrains, providing them with great advantages in last-mile deliveries (Macrina, Pugliese, Guerriero, & Laporte, 2020). However, the compact size of delivery drones limits their battery capacity, putting constraints on the carrying capacity and flight duration. For example, the Amazon Prime Air drones can only carry packages no more than ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "5 pounds and their batteries only support $30{\\-m i n}$ flights. As a result, in practical implementations, the limited carrying capacity and flight duration have to be taken into consideration. ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Early research has aimed to optimize the usage of drones by exploring the advantages of incorporating them into vehicle routing problems, with a focus on the unique features of drones in comparison to traditional ground transportation. Timely delivery and high efficiency of drones can greatly improve the healthcare delivery network, especially in remote and inaccessible areas (Claesson et al., 2017). In emergency situations, drones have the potential to respond faster than ground vehicles, increasing the likelihood of saving lives (Cheskes et al., 2020). However, the limitations of drones must be carefully considered in real-world applications, as they may significantly impact the success of drone delivery. Dorling, Heinrichs, Messier, and Magierowski (2017) study drones in last-mile delivery, which considers the limited capacity. In addition to their limited payload capacity, the range of a drone’s flight is also restricted by its battery. All these restrictions need to be considered for drone delivery in urban areas (Pugliese, Guerriero, & Macrina, 2020). ",
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "In fact, many studies have been focusing on improving the vehicle routing problem (VRP) with specific constraints to drone delivery, especially on their flight range. For example, Dorling et al. (2017) consider the drone routing problem with multiple trips under a linear relationship between energy consumption and drone capacity. Song, Park, and Kim (2018) optimize the delivery with capacity limitations in an area featuring recharge stations, which expand the drone flight duration and improves their efficiency. In the literature, Cheng, Adulyasak, and Rousseau (2020) show that the linear approximation of energy consumption could cause infeasible drone delivery routes due to its shortened flight range, which suggests modeling drone energy consumption using a nonlinear function of payload and travel distance instead. Considering the limited life of the drones’ batteries, in many applications, drone flying distance and drone payload weight usually affect the battery consumption rate (BCR). Neglecting the impact of these factors to BCR could potentially cause the drone to run out of power halfway (Torabbeigi, Lim, & Kim, 2020), resulting in package damage or loss. Besides, energy consumption will also affect the drone’s speed (Raj & Murray, 2020), which will affect the actual delivery time. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "To address the unique challenges posed by drone delivery, the most widely researched solution is the coordinated use of both trucks and drones. Bouman, Agatz, and Schmidt (2018), de Freitas and Penna (2020), Murray and Chu (2015) and Murray and Raj (2020). In such cases, drones are carried by trucks, the delivery range is hence expanded, and the impact of changeable capacity and speed become less significant. The type of coordinated delivery approach also benefits from the drones’ capability to fly over obstacles like rivers and lowrise buildings, saving the total delivery time compared with truck-only deliveries. However, similar to traditional delivery approaches, the truck-drone coordinated delivery still heavily relies on the local road network, where traffic congestion could delay the delivery by hours. In addition, the participation of heavy vehicles inevitably involves negative externalities such as noise and pollutant emissions (Pugliese et al., 2020). ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Fortunately, with recent advancements in the industry, the availability of high-performance drones has made it possible to exclusively use drones for package delivery. Nowadays, drones can carry heavier payloads up to $40\\,\\mathrm{kg}$ (Kirschstein, 2020), and fly longer distances (Macrina et al., 2020). As such, drones have great potential to assist or even replace trucks in future parcel delivery logistics (Macrina et al., 2020). In reality, drones have heterogeneous configurations. A study shows that the realistic drones considered in many studies have flight endurance ranging from 0.15 to $4~\\mathrm{km}$ , speed from 6 to $15~\\mathrm{m/s}$ , and payload capacity from 1.2 to $20~\\mathrm{kg}$ (Macrina et al., 2020). Previous studies have provided many methods on VRP with heterogeneous vehicles. However, the features of drones, such as very limited capacity and flight range, will make a difference with VRP compared to traditional trucks. Besides, since drone BCR heavily depends on travel distance, payload, and speed (Cheng et al., 2020; Raj & Murray, 2020), different types of drones are suited for different tasks, such as long/short range or heavy/light payload. Combining heterogeneous drones in a fleet allows decision makers to exploit the advantage of every type of drone to satisfy different customer demands. Indeed, in the literature, many have shown the benefit of combining heterogeneous vehicles under a variety of contexts (Clarke & Wright, 1964; Dantzig & Ramser, 1959) and they inspire the delivery with heterogeneous drones in nowadays (Murray & Raj, 2020). ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Furthermore, recent progress in technology has enabled the recharging of drone batteries, allowing for extended delivery capabilities by permitting drones to return to the depot for recharging and executing additional delivery tasks (Hassanalian & Abdelkefi, 2017). The literature has seen a wealth of studies on the scheduling of drone deliveries, including the use of battery charging or replacement, in order to mitigate the limitations of their limited payload capacity and flight range. For example, Sundar and Rathinam (2013) explored the shortest path for a drone to visit all targets by allowing for refueling to extend the flight distance, considering one drone and multiple depots in a VRP. Gonzalez, Canca, Andrade-Pineda, Calle, and Leon-Blanco (2020) proposed the use of a truck as a ‘‘recharging station’’, where drones could return to for another trip. Despite the limited capacity and flight range of each drone, efficient delivery can be achieved through multiple short-distance deliveries. Liu, Chen, Li, and Liu (2021) studied the scheduling of multiple homogeneous drones in one depot, where drones can change batteries at the depot after completing a delivery to avoid the problems caused by carrying only a few packages for short-distance delivery each time. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "However, to the best of our knowledge, few have studied the scheduling problem of heterogeneous drones with multiple trips. In this study, we consider the drone delivery problem where a fleet of heterogeneous, rechargeable drones deliver packages to customers through multiple trips. We model this problem using mixed integer programming (MIP), which has been widely used in many other similar studies (Murray & Chu, 2015; Murray & Raj, 2020). ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Due to the NP-hardness of the classic grounded VRP, drone-based VRP with additional constraints like capacity and flight range is also NP-hard (Wang, Poikonen, & Golden, 2017). As a result, MIP models usually scale poorly when the size of the problem increases and often become intractable for large-scale implementations. As such, many studies in the literature have contributed to various algorithms aiming to obtain faster solutions, such as branch-and-cut (Tamke & Buscher, 2021), neighborhood search (Ropke & Pisinger, 2006), simulated annealing (Dorling et al., 2017) and others heuristics (Kim, Lim, Cho, & Côté, 2017; Kitjacharoenchai et al., 2019; Toth & Vigo, 2002). However, the research on combining heterogeneous drones with multiple trips has not been fully explored. Thus, in this study, we develop a Genetic Algorithm (GA) by incorporating a small-scale IP model with only binary variables that expertly ‘‘reschedules’’ drone operations when drones have completed their sorties. The rescheduling-based GA features the combination of a knapsack problem, a shortest-path problem, and a scheduling problem, from which near-optimal delivery plans are obtained for the fleet of drones. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The main contributions of this study are as follows. First, we extend the traditional drone delivery problem by allowing heterogeneous drones with different flight ranges, capacities, and speeds, which perform multiple trips after changing batteries at the depot. Second, we formulate the problem as an MIP model to optimize the shortest delivery time. Third, we develop a rescheduling-based GA that solves the problem effectively. Last but not least, we conduct extensive numerical experiments to show the advantages of the proposed algorithms compared with the benchmark solution obtained by Gurobi. Sensitive analysis is conducted to compare how different types of drones’ flight ranges, capacities, and speeds affect the delivery tasks. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "This paper is organized as follows. In Section 2, we formally define the problem along with pertinent assumptions. We then develop the MIP formulation of the problem. In Section 3, we first present a traditional GA and then improve it through a rescheduling-based process. In Section 4, we conduct different experiments to evaluate the performance of the proposed methods. In Section 5, we draw conclusions and discuss further research directions. ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2. Problem formulation ",
+        "text_level": 1,
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Fig. 1 illustrates the heterogeneous drone delivery problem with multiple sorties. There are different types of drones in a depot delivering packages, and some of them may travel for multiple flights. We make the following assumptions: ",
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "– No priorities are considered among customers. – When a drone arrives, the customer receives the package immediately. ",
+        "page_idx": 1
+    },
+    {
+        "type": "image",
+        "img_path": "images/fac4bbbadab81bcb233ea90ebe7517afe7957ad6dd2a2649a9121cd1c8c9c26f.jpg",
+        "img_caption": [
+            "Fig. 1. Packages delivery with heterogeneous drones and multiple trips. "
+        ],
+        "img_footnote": [],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "– The flight range, capacity, and speed of each type of drone are established a priori.   \n– The number of different types of drones is known and fixed.   \n– A battery supports a drone for one sortie, and after the drone returns to the hub, the battery must be changed or recharged.   \n– No customer’s package weight exceeds the maximum load for all types of drones.   \n– The time for drones to load packages is included in the time to recharge the drone/replace the battery.   \n– Each customer must be served by only one drone in a sortie.   \n– The delivery ends when all the packages are delivered and all the drones return to the hub. ",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "In this study, we consider a drone delivery problem in a given area where $K$ types of drones deliver packages from a depot to $N$ customers. We will focus on minimizing the total delivery time, so that the fixed cost of facilities and operation cost of drones are not considered in this problem. This area is represented by a fully connected graph $G(V,E),$ , where $V$ represents the set of customers, and $E$ denotes the set of available routes between customers. Especially we denote the drone hub as a special customer 0; hence, we have $V\\,=\\,\\{0,1,2,\\dots,N\\}$ and $E$ contains all the edges between customers. Each node (customer) is associated with a package with weight $\\omega_{i}$ , $i\\,=\\,0,1,2,\\dots,N$ , with the depot having weight 0, i.e., $\\omega_{0}~=~0$ . In addition, we let $D_{h,i}$ be the distance from customer $h$ to $i$ . ",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "In the drone hub, the $K$ types of drones have different capacities, speeds and flight ranges. For each type $k$ , where $k=1,2,\\ldots,K$ , there are $J_{k}$ drones. The total number of drones in the hub can be represented by $\\scriptstyle\\sum_{k\\in K}J_{k}$ . Each drone loads packages within a weight limit of $W_{k}$ , $k=1,2,\\ldots,K$ , travels with a speed $v_{k}$ , $k=1,2,\\ldots,K,$ , and cannot fly beyond a certain range $R_{k}$ , $k\\,=\\,1,2,\\dots,K$ . When a drone returns to the hub, the next delivery task can be carried out after the battery is charged, which takes time $L_{k}$ , ${k=1,2,\\dots,K}$ . ",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "To keep track of the package weights carried by the drone, we denote $U_{i,j,k}$ to the total package weight of the $j$ th drone in type $k$ after visiting customer $i$ . A similar variable $u_{i,j,k}$ aims to keep track of the maximal remaining flight range after the $j$ th drone of type $k$ visiting customer $i$ . The capacity and range limits of type $k$ drone are $W_{k}$ and $R_{k}$ , respectively. In addition, we define a binary variable $X_{h,i,j,k}$ , which takes the value 1 if the $j$ th drone of type $k$ is flying from node $h$ to node $i$ , otherwise $X_{h,i,j,k}=0$ . We show all the notations in Table 1. The total traveling time for each drone can be calculated as $\\begin{array}{r}{\\sum_{h\\in V}\\sum_{i\\in V}\\frac{1}{v_{k}}(X_{h,i,j,k}*D_{h,i})}\\end{array}$ . The objective of the model is to minimize the total delivery time, between the time when the first drone leaves for delivery, and the time the last drone returns, i.e., ",
+        "page_idx": 2
+    },
+    {
+        "type": "table",
+        "img_path": "images/04315cc5aadb7d26573759481e5adff8c32227c8092ea9f627a96766915e914a.jpg",
+        "table_caption": [
+            "Table 1 ",
+            "A summary of notations. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Notation Definition</td><td></td></tr><tr><td>Index</td><td></td></tr><tr><td>h,i</td><td>Index of a customer, including the hub depot 0</td></tr><tr><td>k</td><td>Index of the drone type</td></tr><tr><td>j</td><td>Index of a drone for a specific drone type</td></tr><tr><td>Variables</td><td></td></tr><tr><td>xfrux</td><td>Whether customer iis visited bykth type dronej from node h</td></tr><tr><td>Uij.k</td><td>The total package weight of the k type drone j after visiting the customeri</td></tr><tr><td>uij.k</td><td>The remaining travel distance of the drone j with type k after visiting the customer iin this trip</td></tr><tr><td>Parameters</td><td></td></tr><tr><td>V</td><td></td></tr><tr><td>K</td><td>The set of customers</td></tr><tr><td>Dn.i</td><td>Total number of types of drones</td></tr><tr><td>Uk</td><td>The distance between customer h and i</td></tr><tr><td></td><td>The speed of type k drones</td></tr><tr><td>Jk</td><td>The number of type k drones</td></tr><tr><td>T</td><td>The total delivery time</td></tr><tr><td>Wk</td><td>The weight limit of aktype drone The package weight of customer i, while the weight for the depot</td></tr><tr><td></td><td>is 0</td></tr><tr><td>Lk Rk</td><td>The time to recharge/replace the battery in the depot for type k drones The maximal flight range of type k drones</td></tr></table></body></html>\n\n",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\operatorname*{min}\\left\\{\\operatorname*{max}\\sum_{h\\in V}\\sum_{i\\in V}\\frac{1}{v_{k}}(X_{h,i,j,k}*D_{h,i})+(\\sum_{i\\in V}X_{0,i,j,k}-1)*L_{k},\\forall j,k\\right\\}.\n$$",
+        "text_format": "latex",
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "As a min–max function, the upper bound can be replaced by a continuous variable and a constraint. That is, $\\begin{array}{r}{T\\ge\\sum_{h\\in V}\\sum_{i\\in V}\\frac{1}{v_{k}}(\\underline{{X}}_{h,i,j,k}\\ \\ast}\\\\ {.}\\end{array}$ $D_{h,i}),\\forall j,k$ The objective function is to minimize the total time $T$ . Thus, we formulate the integer programming model as follows. ",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{r l}{\\operatorname*{min}}&{T}\\\\ {s.t.}&{T\\geq\\displaystyle\\sum_{h\\in V}\\sum_{i\\in V}\\frac{1}{v_{k}}(X_{h,i,j,k}*D_{h,i})}\\\\ &{\\quad+(\\displaystyle\\sum_{i\\in V}X_{0,i,j,k}-1)*L_{k}\\qquad\\forall\\;k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}}\\end{array}\n$$",
+        "text_format": "latex",
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\sum_{h\\in V}X_{h,i,j,k}=\\sum_{h\\in V}X_{i,h,j,k}\\qquad\\forall\\;i\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\sum_{i\\in V}\\sum_{k=0}^{K}\\sum_{j=1}^{J_{k}}X_{h,i,j,k}=1\\qquad\\forall\\ h\\in V,h\\neq0\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{r l}&{U_{0,j,k}\\le W_{k},\\qquad\\forall~k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}}\\\\ &{U_{h,j,k}-U_{i,j,k}-\\omega_{i}\\ast X_{h,i,j,k}}\\\\ &{\\ge W_{k}*(X_{h,i,j,k}-1)\\qquad\\forall~h,i\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}}\\end{array}\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{r l r}&{U_{i,j,k}\\geq0\\quad}&{\\forall\\;i\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}\\qquad\\qquad\\quad}&{(7)}\\\\ &{u_{0,j,k}\\leq R_{k},\\qquad\\forall\\;k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}\\qquad\\qquad\\quad}&{(8)}\\\\ &{u_{h,j,k}-u_{i,j,k}-D_{h,i}*X_{h,i,j,k}}\\\\ &{\\quad\\geq R_{k}*(X_{h,i,j,k}-1)\\qquad\\forall\\;h,i\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}\\quad}\\end{array}\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{r l}&{u_{i,j,k}\\ge0\\qquad\\forall\\ i\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}}\\\\ &{X_{h,i,j,k}\\in\\{0,1\\}\\qquad\\forall\\ i,h\\in V,k=1,2,\\ldots,K,j=1,2,\\ldots,J_{k}.}\\end{array}\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "In the model, Eq. (1) shows the objective function of the model which aims to minimize the overall time for all drones to complete their delivery tasks. Constraint (2) implies that every drone can return to the drone hub before time $T$ . In order to consider multiple trips for a drone, Constraint (2) also includes the time for drones to recharge/change batteries. Constraint (3) guarantees that drones complete the sorties in circles. Constraint (4) ensures that only the depot could be the intersection points of the circles. Constraint (3)–(4) together ensure that all customers are served and the drones must return to the depot. Constraint (5) limits the payload weight of each drone within its capacity. Constraint (6) is proposed to eliminate subtours, which is similar to the approach used in the Miller–Tucker–Zemlin formulation (Desrochers & Laporte, 1991). Specifically, in this equation, we use the actual load weight of a drone when sending a package to customers. If the $j$ th drone of type $k$ sends a package to the customer $i$ after $h$ , the load weight at 𝑖 should be $\\omega_{i_{n}}$ less than what it was at $h$ , where $\\omega_{i}$ is the weight of the package of the 𝑖th customer. Similar with constraints (5)–(7), constraints (8)–(10) ensure that each drone will not exceed its flight range in a trip. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3. Solution approach ",
+        "text_level": 1,
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "In this section, we discuss solution approaches to the above Model defined in Eqs. (1)–(11). Preliminary experiment results show that the MIP model is hard to solve, even for relatively small instances. For example, computing an instance with 20 customers and 5 drones takes more than $3600\\;s$ . Thus, we employ meta-heuristic algorithms to obtain near-optimal solutions within a reasonable time. Specifically, we propose two GAs to solve the problem, where one designs drone routes based on the first-in–first-out (FIFO) customer sequence as a baseline and the other incorporates a small MIP to reschedule different types of drones. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "GA is one of the most successful meta-heuristic algorithms. It was first proposed by Fraser (1957) and developed by Holland et al. (1992) and has been applied to a wide range of problems, such as bin packing (Falkenauer, 1996), facility location (Rahmani & MirHassani, 2014), traveling salesman (Razali, Geraghty, et al., 2011) and VRP with drones (Peng et al., 2019). In this study, we use GA because it appropriately simulates the customer order sequence for the fleet of drones, facilitating the heuristic search for near-optimal solutions. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "As a meta-heuristic algorithm, GA mimics the process of natural selection. GA considers a population of chromosomes (individuals), each consisting of different types of genes. In a competing environment, some individuals with particular genes may perform better than others. GA uses a fitness function to measure the quality of individual performance. Then, in order to preserve the best-fit gene, only the individuals with better performances can mate with each other to generate offspring through crossover operations. During the crossover, genes in the offspring’s chromosome have a small probability of mutating, from which stronger individuals may emerge. The entire evolution process continues until a certain termination criterion is met. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3.1. FIFO-based GA (FBGA) ",
+        "text_level": 1,
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The FIFO-Based GA works similarly to a generic GA. Let $S$ denote the size of the population and $M$ the maximum number of multiplication iterations. For the drone delivery problem, we consider $N$ customers with $K$ drones. The chromosomes are randomly initialized by permuting from 1 to $N$ , until the population size $S$ is reached. Here we consider each drone separately, not just different types of drones. For each single drone $k$ , $k=1,2,\\ldots,K$ , we use $t i m e_{k}$ to represent the total time for drone $k$ to complete its delivery task and return to the hub. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "In order to translate chromosomes into drone routes, we use the FIFO rule to distribute customers. That is, we treat the chromosome as a customer queue $(C_{1},C_{2},\\ldots,C_{N})$ along with a drone queue $(d_{1},d_{2},\\dotsc$ $d_{K})$ , where each customer or drone is now represented by a gene in the chromosome. Then, we assign the customers from the customer queue to the first available drone in the drone queue. If the package weight exceeds the first available drone’s residual load capacity, or the battery (flight range) cannot support the drone completing this trip, we assign the package to the next drone in the queue. And the previous drone will visit its customers in the assignment order and then return to the hub. When the last drone in the queue fails to load the remaining packages, we go back to the beginning of the drone queue and assign the remaining packages to the first drone as its second delivery task after its first trip. In this method, we ignore the sequence of drones returning to the hub and only determine the customer assignment according to the sequence of the drone queue. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Fig. 2 shows an illustrative example of the process. Before the delivery, in Fig. 2(a), we assign the customers to the first drone in the sequence of the customer list. When it comes to customer 10, its package weight exceeds the remaining capacity of drone $d_{1}$ (or the distance of trip $h u b\\;\\rightarrow\\;1\\;\\rightarrow\\;7\\;\\rightarrow\\;4\\;\\rightarrow\\;10\\;\\rightarrow\\;h u b$ exceeds the flight range of drone $d_{1}.$ ). As a result, the drone $d_{1}$ will start its first trip by $h u b\\rightarrow1\\rightarrow7\\rightarrow4\\rightarrow h u b_{1}$ , and the following packages are distributed starting from drone $d_{2}$ and the following drones. However, the package weight of customer 10 exceeds the capacity of drone $d_{2}$ (or drone $d_{2}$ cannot travel to customer 10 then return to the hub for the limitation of its flight range). As a result, drone $d_{3}$ takes this package and serves other customers according to the sequence until the remaining capacity becomes inadequate (or reaches its maximum flight range). As shown in Fig. 2(b), customer 2 is allocated to the first available drone $d_{5}$ , but the next customer 6 cannot be served by $d_{5}$ in the same trip because the limitation of its capacity of flight range. Thus, the drone $d_{5}$ will only serve the customer 2, and the customer 6 will have to be allocated to drone $d_{1}$ as the second trip after $d_{1}$ returning to the hub. Therefore, $d_{1}$ will travel according to the route $h u b\\rightarrow1\\rightarrow7\\rightarrow h u b\\rightarrow6\\rightarrow h u b,$ . The drone $d_{1}$ should send the package to customer 6 after finishing its first task of customer 1 and 7, including the time of returning to the hub and changing a battery. ",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Based on the FIFO rule, we can ‘‘decode’’ the chromosome into drones’ routes, and the time cost $t i m e_{k}$ for each drone $k$ can be computed. For the 𝑖th chromosome, $i\\ =\\ 1,2,\\ldots,S$ , the fitness value of chromosome $i$ is computed as follows: ",
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf i t n e s s_{i}=\\frac{1}{m a x\\left\\{t i m e_{k},\\forall k\\right\\}}\n$$",
+        "text_format": "latex",
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "After all the fitness values of chromosomes in a population have been generated, we select two chromosomes as parent chromosomes according to the probability computed from the fitness value. In order to make the next generation perform better, we design the probability in such a way that the algorithm tends to choose chromosomes with larger fitness values as parents. The probability for the 𝑖th chromosome $\\left(P_{i}\\right)$ is defined as: ",
+        "page_idx": 3
+    },
+    {
+        "type": "image",
+        "img_path": "images/24411b15fc02219c5130c23b01362faa68e70170ba6b5bf82549630632e1b6a5.jpg",
+        "img_caption": [
+            "(a) When the package weight exceeds the previous (b) When the package weight exceeds the last drone's drone's remaining capacity (or flight range exceeds) remaining capacity (or fight range exceeds) "
+        ],
+        "img_footnote": [],
+        "page_idx": 4
+    },
+    {
+        "type": "image",
+        "img_path": "images/8b53bf53d627807948a8e1fc4d9881b65cb9466492003dab761d234c52e81991.jpg",
+        "img_caption": [
+            "Fig. 2. Drone allocation based on FIFO. ",
+            "Fig. 3. An illustration of the crossover operation. "
+        ],
+        "img_footnote": [],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\nP_{i}=\\frac{f i t n e s s_{i}}{\\sum f i t n e s s}\n$$",
+        "text_format": "latex",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "When the parents are determined, the child’s chromosomes will be generated by first crossing over two parents’ chromosomes and then mutating the new chromosome according to the mutation probability. Since each chromosome has two parts, customers $(C_{1},C_{2},\\ldots,C_{N})$ and drones $(d_{1},d_{2},\\dots,d_{K})$ , we do the same crossover and mutation process for each part respectively. The crossover can be carried out by moving several genes in the front part of a chromosome into the front part of another. The duplicated genes in the second chromosome are then deleted to generate a new chromosome. As shown in Fig. 3, chromosome 1 and chromosome 2 are the parents, and chromosome 3 is the child. First, we put the first three genes in chromosome 1 at the front of chromosome 2. The new chromosome, chromosome 3, will be generated by deleting the duplicated genes (1, 7, and 4) in the last 10 genes. To mutate a chromosome, we exchange two nodes at random according to a mutation rate, $1/N$ . ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The crossover and mutation procedures repeat $S-1$ times so that a new generation of a population containing $S\\mathrm{~-~}1$ chromosomes is generated. In addition, the chromosome with the largest fitness value in the previous generation is added to the current generation as well, completing the new population with size $S$ . ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The above processes are repeated $M$ times. The chromosome with the best fitness value is considered to be the final solution to the problem. The overall FIFO-based GA is shown in Algorithm 1: ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.2. A rescheduling-based GA (RBGA) ",
+        "text_level": 1,
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Since the FBGA utilizes a fixed drone queue for each customer sequence, the algorithm may result in sub-optimal solutions where larger drones are overloaded with packages that should have been delivered by smaller drones. Note that assigning customer packages to different types of drones resembles the well-known knapsack problem, with a different objective to minimize the total delivery time. If all the drones only need at most one flight to complete the delivery, solving a traveling salesman problem (TSP) on top of the knapsack problem would provide an optimal solution to the original problem. However, in the problem under study, the weight of all the packages exceeds the capacity of all drones combined, meaning that some drones must return to the hub for multiple trips to deliver the remaining packages, causing the FBGA to produce sub-optimal solutions. Thus, in the following, we improve the FBGA by considering customer assignments and incorporating a subproblem that plans drone routes optimally. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "In order to improve the FIFO assignment rule, we provide a new method that does not rely on the sequence of drones, so the chromosome will only consist of customers. We divide the decoding step of the customer-only chromosome into two levels. The first level divides all customer node chromosomes into several groups, where the sum of each group’s package weight does not exceed the maximum loading capacity of all the drones combined, and the distance of each trip does not go beyond the maximum flight range among all drones. Then, we generate a set of routes by the sequence of chromosomes and their corresponding travel time without considering which specific drone will take the route. In the second level, we allocate the generated routes to drones by constructing a subproblem using the delivery time of the generated routes and the capacity of different types of drones as inputs. ",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Specifically, the objective of the subproblem minimizes the reciprocal of GA’s fitness function ",
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf i t n e s s_{i}=\\frac{1}{m a x\\left\\{\\sum_{\\rho}t i m e_{\\rho,k},\\forall k\\right\\}},\n$$",
+        "text_format": "latex",
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "where $t i m e_{\\rho,k}$ represents the required time for drone $k$ to serve the customers in a group $\\rho$ . To calculate the optimal fitness value, we build ",
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$m\\leftarrow m+1,g\\leftarrow g+1$ ",
+        "text_format": "latex",
+        "page_idx": 5
+    },
+    {
+        "type": "table",
+        "img_path": "images/c51b643bca641199d48a6a69d1c56ff0111098b96ae506f365db1328d5a21c2e.jpg",
+        "table_caption": [
+            "Algorithm 1: Pseudo-code for the FIFO-based GA. ",
+            "Table 2 Model notations. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Notation</td><td>Definition</td></tr><tr><td>Index</td><td></td></tr><tr><td>i</td><td>Indexofadronetype</td></tr><tr><td></td><td>Indexofaroute</td></tr><tr><td colspan=\"2\">Binaryvariables</td></tr><tr><td>Xijk</td><td>Equals to 1,if route j is allocated to the kth drone of i type; 0, otherwise</td></tr><tr><td>Parameters</td><td></td></tr><tr><td>rj</td><td>The totaldistanceforroutej</td></tr><tr><td>T</td><td>The maximum traveling time for a drone to finish all its delivery assignment</td></tr><tr><td>W</td><td>Thecapacityof atypei drone</td></tr><tr><td>V</td><td>The speedof a typei drone</td></tr><tr><td>Li</td><td>The time to recharge/replace the battery in the depot for type i</td></tr><tr><td>R</td><td>drone Themaximumflightrangeofatypeidrone</td></tr><tr><td></td><td>Thepackageweight of routej assignment</td></tr></table></body></html>\n\n",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "a small integer programming (IP) model to optimally arrange delivery routes for the drones. The notations and mathematical model are shown in Table 2. ",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Here we use $i$ to represent the index of drone type, and each type 𝑖 has $n_{i}$ drones. Each drone of type $i$ has the same capacity $W_{i}$ , the same speed $V_{i}$ and the same maximum flight range $R_{i}$ . We denote $j$ the index of routes. The traveling distance for route $j$ is denoted by $r_{j}$ . Besides, each route will send packages to some customers, and the weight of all packages is recorded as $\\omega_{j}$ . The purpose is to minimize the total time $T$ . ",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "The decision variable is $X_{i j k}$ , indicating whether route $j$ is allocated to the $k$ th drone of $i$ type. The scale of the model depends on the number of routes and the number of drone types. ",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l}{T\\geq\\displaystyle\\sum_{j}(X_{i j k}*r_{j})/V_{i}+(\\sum_{j}X_{i j k}-1)*L_{i},\\qquad\\forall i,k}\\\\ {\\omega_{j}*X_{i j k}\\leq W_{i},\\qquad\\forall i,j,k}\\\\ {r_{j}*X_{i j k}\\leq R_{i},\\qquad\\forall i,j,k}\\\\ {\\displaystyle\\sum_{i}\\sum_{k}X_{i j k}=1,\\qquad\\forall j}\\end{array}\n$$",
+        "text_format": "latex",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "In the IP model, constraint (15) shows that all the drones can finish their work within time $T$ . Constraint (16) requires that the package weight of route $j$ does not exceed the capacity limitation of the selected drone. Constraint (17) makes sure the flight range of the selected drone can cover the total distance of the trip. Constraint (18) guarantees that each route is assigned to only one drone. Since all variables in the model are binary, it is easier to solve than the original MIP model in Section 2. Considering a scenario with $I$ drones and $J$ different routes, note that the IP model of the subproblem is also smaller in scale compared with the MIP model, with only $I\\;*\\;J$ variables and $I^{2}\\ *\\ J$ constraints. ",
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "From a different perspective, the LP model proposed above essentially solves a scheduling problem for drones. The optimal objective and solution of the scheduling problem are then incorporated into the rescheduling-based GA through the fitness function and chromosome decoding. Thus, including such a subproblem does not affect other operations in GA, such as crossover or mutation. The detailed rescheduling-based GA is shown in Algorithm 2. ",
+        "page_idx": 5
+    },
+    {
+        "type": "table",
+        "img_path": "images/f08ce4c57df06a3966f5e43e3774227763ea358995875cfe4163fff68dba0dab.jpg",
+        "table_caption": [
+            ""
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td colspan=\"2\"></td></tr><tr><td colspan=\"2\">1: for all Chromosome i ∈ P, do</td></tr><tr><td colspan=\"2\" rowspan=\"2\">2:</td></tr><tr><td rowspan=\"2\">Choose drone d1, remaining capacity U, traveling distance</td></tr><tr><td>R1,working time ∈1 = 0</td></tr><tr><td>3:</td><td>for all Customer j ∈i do</td></tr><tr><td>4:</td><td>if Customer j can be served by drone dk then</td></tr><tr><td>5: else</td><td>Update Uk, Rk and ek</td></tr><tr><td>6: 7:</td><td></td></tr><tr><td>8:</td><td>Record the type of dk as n Record drone dk's traveling distance as rn, its packages weight W,</td></tr><tr><td>9:</td><td>if dkis thelast drone in the queue then</td></tr><tr><td>10:</td><td>Choose drone d1</td></tr><tr><td>11:</td><td></td></tr><tr><td>12:</td><td>Update U,, R, and E1 else</td></tr><tr><td>13:</td><td>Choose drone dk+1</td></tr><tr><td>14:</td><td>Update Uk+1, Rk+1 and Ek+1</td></tr><tr><td>15:</td><td>end if</td></tr><tr><td>16:</td><td>Update ek after returning to the hub</td></tr><tr><td>17: end if</td><td></td></tr><tr><td colspan=\"2\">18: end for</td></tr><tr><td>19:</td><td>Input all rn, W, and drones data into the IP model</td></tr><tr><td>20: all drones</td><td>Compute the optimal time T; by allocating all routes r, to</td></tr><tr><td colspan=\"2\">21: end for</td></tr><tr><td colspan=\"2\"></td></tr></table></body></html>\n\n",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4. Numerical results ",
+        "text_level": 1,
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.1. Experiments design ",
+        "text_level": 1,
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "To evaluate the performance of the proposed algorithms, we consider multiple instances with different numbers of customers and drone types. For each instance, we are given the number of customers. The locations of depots and customers are arbitrarily generated on a $5^{\\ast}5$ miles map. The type and number of drones in the depot are also generated arbitrarily before experiments. In order to ensure that each experiment has at least one feasible solution, the distance from each customer to the depot does not exceed half of the flight range of all drones and the weight of each package does not exceed the capacity of the largest drone in the depot. According to the literature and the industry practice (Amazon, 2019; Tamke & Buscher, 2021), we consider 5 different types of drones with different payload $\\left(\\mathrm{k}g\\right)$ , speed (miles per hour - mph), and flight range (miles): [5 kg, 12 mph, 15 miles], $[10\\,\\mathrm{kg}]$ , $10\\;\\mathrm{mph}$ , 15 miles], $[15\\,\\mathrm{kg}$ , 8 mph, 20 miles], $[20\\;\\mathrm{kg}.$ 8 mph, 25 miles], and [50 kg, 6 mph, 50 miles], respectively. ",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "In these experiments, we use the optimizer Gurobi 9.1, with an Intel ${2.70\\:\\mathrm{GHz}}$ CPU and an 8 G memory running on the Windows system. We impose a solution time limit of $3600~\\mathrm{s}$ on the solution time of the MIP model and use $T(s)$ to record the solving time of MIP for each instance. To account for the randomness in GA, each test instance is solved 10 times, where all parameters remain the same. The mean value of the experiments is then reported and we record their average solving time as $A v g.T(s)$ . We summarize experiment design parameters in Table 3. ",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.2. Comparison in single trip ",
+        "text_level": 1,
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We conjecture that the RBGA should perform better than the FBGA only when some drones have to travel multiple times. To verify this idea, in the following, we consider two setups to configure the experiment. First, we conduct experiments with the assumption that all drones can only travel one trip. Then, we relax the condition to allow the drones to travel on multiple trips. ",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "In this section, we conduct experiments where drones cannot travel for more than one trip. In addition, we introduce a few metrics to compare the solution quality. First, the Range Percent Difference (RPD) ",
+        "page_idx": 6
+    },
+    {
+        "type": "table",
+        "img_path": "images/136f2d9c62e5d80137e481597ab2230a83f0a03e245adac03b6f7402de315ff1.jpg",
+        "table_caption": [
+            "Table 3 Parameter settings for the experiment. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Notation</td><td>Parameter</td><td>Value</td></tr><tr><td>N</td><td>Numberofcustomers</td><td>10,20,100,200,300</td></tr><tr><td>K</td><td>Number of drone types</td><td>2,3,5</td></tr><tr><td>D</td><td>Numberofalldrones</td><td>Vary</td></tr><tr><td>S</td><td>Numbersofchromosomesinpopulation</td><td>10</td></tr><tr><td>M</td><td>Themutationrate</td><td>1/N</td></tr><tr><td>G</td><td>Maximum number ofpopulation iterations</td><td>100</td></tr></table></body></html>\n\n",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "shows the percent difference between each GA’s solution and the minimum objective among all these three methods, where ",
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\nR P D(a l g)=\\frac{\\varOmega_{b e s t}-m i n(\\varOmega_{M I P},\\varOmega_{F B G A},\\varOmega_{R B G A})}{m i n(\\varOmega_{M I P},\\varOmega_{F B G A},\\varOmega_{R B G A})}*100\\%\n$$",
+        "text_format": "latex",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Then, the Fluctuation Percent Difference (FPD) represents the fluctuation range of ten solutions to the same instance for each GA: ",
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\nF P D(a l g)=\\frac{\\mathcal{Q}_{b e s t}-\\mathcal{Q}_{w o r s t}}{\\mathcal{Q}_{b e s t}}*100\\%\n$$",
+        "text_format": "latex",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "The ‘‘alg’’ refers to a specific algorithm, FBGA or RBGA. $\\varOmega_{a l g}$ denotes to the result obtained by this algorithm, and $\\varOmega_{b e s t}$ is the best result obtained in many experiments for the same instance by this algorithm. Smaller FPD values suggest more stable algorithm performances. Table 4 shows the comparison of the algorithms under different metrics for different test instances. ",
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Based on the numerical results in Table 4, when the number of customer nodes is small, the solutions of the two GAs are close to the true objective value. In these instances, when the number of nodes is less than 20, the solutions provided by FBGA and RBGA are almost optimal. However, as the number of nodes increases, the gap between both GAs and MIP becomes larger. When the customer number continues to increase, MIP will not get a suitable upper bound in $3600\\ \\mathrm{s},$ while both heuristic algorithms still perform well, especially when the number of nodes is more than 100. Moreover, from Table 4, we can observe that with the same number of customers, increasing the drone types will significantly increase the solving time of MIP. But the impact on RBGA and FBGA solution time and quality are small, as expected. For FBGA and RBGA, when the number of customers increases, the ",
+        "page_idx": 6
+    },
+    {
+        "type": "table",
+        "img_path": "images/ccd51a29ca3be68e52e6805126630cefda04baf38695eeef9b479380ba77a384.jpg",
+        "table_caption": [
+            "Table 4 Comparison among three methods in single trip. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">N</td><td rowspan=\"2\">D</td><td rowspan=\"2\">K</td><td colspan=\"3\">MIP</td><td colspan=\"5\">FBGA</td><td colspan=\"5\">RBGA</td></tr><tr><td>Obj</td><td>Gap (%)</td><td>T (s)</td><td>Avg.T (s)</td><td>best</td><td>worst</td><td>RPD (%)</td><td>FPD (%)</td><td>Avg.T (s)</td><td>best</td><td>worst</td><td>RPD (%)</td><td>FPD (%)</td></tr><tr><td>10</td><td>10</td><td>2</td><td>2.4</td><td>0</td><td>0.14</td><td>0.1</td><td>2.4</td><td>2.4</td><td>0</td><td>0</td><td>5.1</td><td>2.4</td><td>2.4</td><td>0</td><td>0</td></tr><tr><td>10</td><td>11</td><td>3</td><td>2.96</td><td>0</td><td>1.42</td><td>0.1</td><td>2.96</td><td>2.96</td><td>0</td><td>0</td><td>0.1</td><td>2.96</td><td>2.96</td><td>0</td><td>0</td></tr><tr><td>10</td><td>8</td><td>5</td><td>2.97</td><td>0</td><td>0.55</td><td>0.1</td><td>2.97</td><td>2.97</td><td>0</td><td>0</td><td>0.8</td><td>2.97</td><td>2.97</td><td>0</td><td>0</td></tr><tr><td>15</td><td>16</td><td>2</td><td>5.67</td><td>0</td><td>170.8</td><td>0.2</td><td>8.03</td><td>8.06</td><td>41.62</td><td>0.37</td><td>0.2</td><td>8.03</td><td>8.03</td><td>41.62</td><td>0</td></tr><tr><td>15</td><td>7</td><td>3</td><td>5.05</td><td>0</td><td>844.1</td><td>0.2</td><td>5.1</td><td>5.36</td><td>0.99</td><td>5.1</td><td>2.7</td><td>5.1</td><td>5.29</td><td>0.99</td><td>3.73</td></tr><tr><td>15</td><td>14</td><td>5</td><td>5.13</td><td>0</td><td>3.32</td><td>0.2</td><td>5.13</td><td>5.22</td><td>0</td><td>1.75</td><td>0.9</td><td>5.13</td><td>5.13</td><td>0</td><td>0</td></tr><tr><td>20</td><td>14</td><td>2</td><td>5.27</td><td>4.35</td><td>3600</td><td>0.2</td><td>5.27</td><td>5.27</td><td>0</td><td>0</td><td>2.5</td><td>5.27</td><td>5.27</td><td>0</td><td>0</td></tr><tr><td>20</td><td>29</td><td>3</td><td>6.81</td><td>28.3</td><td>3600</td><td>0.3</td><td>6.81</td><td>6.81</td><td>0</td><td>0</td><td>2.8</td><td>6.81</td><td>6.81</td><td>0</td><td>0</td></tr><tr><td>20</td><td>19</td><td>5</td><td>8.38</td><td>0</td><td>62.3</td><td>0.2</td><td>8.38</td><td>8.38</td><td>0</td><td>0</td><td>4.7</td><td>8.38</td><td>8.38</td><td>0</td><td>0</td></tr><tr><td>25</td><td>26</td><td>2</td><td>9.85</td><td>58.4</td><td>3600</td><td>0.3</td><td>9.85</td><td>10.68</td><td>0</td><td>8.43</td><td>0.3</td><td>9.85</td><td>10.4</td><td>0</td><td>5.58</td></tr><tr><td>25</td><td>30</td><td>3</td><td>9.79</td><td>50.6</td><td>3600</td><td>0.3</td><td>9.79</td><td>11.87</td><td>0</td><td>21.25</td><td>0.3</td><td>9.79</td><td>9.79</td><td>0</td><td>0</td></tr><tr><td>25</td><td>17</td><td>5</td><td>10.79</td><td>45</td><td>3600</td><td>0.2</td><td>10.79</td><td>10.79</td><td>0</td><td>0</td><td>0.3</td><td>10.79</td><td>10.79</td><td>0</td><td>0</td></tr><tr><td>30</td><td>26</td><td>2</td><td>9.53</td><td>32.8</td><td>3600</td><td>0.3</td><td>9.53</td><td>9.85</td><td>0</td><td>3.36</td><td>6.4</td><td>9.55</td><td>9.55</td><td>0.21</td><td>0</td></tr><tr><td>30</td><td>41</td><td>3</td><td>10.3</td><td>54.7</td><td>3600</td><td>0.4</td><td>10.3</td><td>13.75</td><td>0</td><td>33.5</td><td>0.4</td><td>11.56</td><td>12.92</td><td>12.23</td><td>11.76</td></tr><tr><td>30</td><td>34</td><td>5</td><td>13.34</td><td>47.7</td><td>3600</td><td>0.4</td><td>13.34</td><td>14.39</td><td>0</td><td>7.87</td><td>6.3</td><td>13.34</td><td>14.23</td><td>0</td><td>6.67</td></tr><tr><td>40</td><td>40</td><td>2</td><td>11.43</td><td>34.9</td><td>3600</td><td>0.5</td><td>13.14</td><td>16.15</td><td>14.96</td><td>22.91</td><td>13.3</td><td>13.67</td><td>17.46</td><td>19.6</td><td>27.72</td></tr><tr><td>40</td><td>46</td><td>3</td><td>11.33</td><td>85.7</td><td>3600</td><td>0.5</td><td>12.79</td><td>14.94</td><td>12.89</td><td>16.81</td><td>21.6</td><td>12.87</td><td>15.53</td><td>13.59</td><td>20.67</td></tr><tr><td>40</td><td>30</td><td>5</td><td>12.24</td><td>52.4</td><td>3600</td><td>0.5</td><td>13.9</td><td>17.7</td><td>13.56</td><td>27.34</td><td>19</td><td>14.09</td><td>16.32</td><td>15.11</td><td>15.83</td></tr><tr><td>50</td><td>48</td><td>2</td><td>22.41</td><td>93.4</td><td>3600</td><td>0.6</td><td>22.41</td><td>22.41</td><td>0</td><td>0</td><td>0.6</td><td>22.41</td><td>22.41</td><td>0</td><td>0</td></tr><tr><td>50</td><td>54 47</td><td>3</td><td>15.29</td><td>69.3</td><td>3600</td><td>0.6</td><td>16.27</td><td>23.23</td><td>6.41</td><td>42.78</td><td>23.5</td><td>17.13</td><td>22.28</td><td>12.03</td><td>30.06</td></tr><tr><td>50</td><td>41</td><td>5</td><td>16.49</td><td>79</td><td>3600</td><td>0.6</td><td>19.61</td><td>22.59</td><td>18.92</td><td>15.2</td><td>24.1</td><td>20.56</td><td>23.6</td><td>24.68</td><td>14.79</td></tr><tr><td>70</td><td></td><td>2</td><td>21.27</td><td>81.1</td><td>3600</td><td>0.8</td><td>28.15</td><td>34.14</td><td>32.35</td><td>21.28</td><td>40.7</td><td>26.35</td><td>35.09</td><td>23.88</td><td>33.17</td></tr><tr><td>70</td><td>57 65</td><td>3</td><td>28.77</td><td>92.8</td><td>3600</td><td>0.8</td><td>30.26</td><td>34.31</td><td>5.18</td><td>13.38</td><td>0.8</td><td>31.47</td><td>33.41</td><td>9.38</td><td>6.16</td></tr><tr><td>70</td><td>70</td><td>5 2</td><td>105.44</td><td>97.6</td><td>3600</td><td>0.9</td><td>40.84</td><td>53.8</td><td>0</td><td>31.73</td><td>44.3</td><td>41.04</td><td>48.06</td><td>0.49</td><td>17.11</td></tr><tr><td>100</td><td>94</td><td>3</td><td>1188.08 1062.26</td><td>100</td><td>3600 3600</td><td>1.3 1.3</td><td>43.78 64.99</td><td>54.95 77.19</td><td>0 0.32</td><td>25.51 18.77 30.68</td><td>16.5 102.5 119.4</td><td>50.48 64.78 58.39</td><td>61.68 78.41 74.13</td><td>15.3 0 0</td><td>22.19 21.04 26.96</td></tr><tr><td>100 100</td><td>103</td><td>5</td><td>165.05</td><td>100 99.2</td><td>3600</td><td>1.4</td><td>62.32</td><td>81.44 6.73</td></table></body></html>\n\n",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "FPD also increases, meaning that it becomes more difficult to obtain good-quality solutions within a limited time. As a result, increasing the number of iterations and repeat times becomes necessary when the scale of VRP becomes larger. ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "4.3. Comparison in multiple trips ",
+        "text_level": 1,
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "In Table 4, there are enough drones so that one flight can serve all customers, which leads to no significant difference between the two GAs as we expected. To compare the objective and the solving time gap between these two algorithms, another set of numerical experiments (Table 5) is carried out with much fewer drones. All the scenarios use 2 types of drones, a larger type and a smaller type. The average flight (AVG Flights) means the average trips for all drones to complete their delivery tasks. And it is formulated as the ratio of total flights of all drones in the best solution we obtained to the number of all drones. Different from previous sections, here we set the original speed for larger drones as $4\\,\\mathrm{mph}$ and their flight range as 20 miles. The smaller drones’ original speed is $5~\\mathrm{mph}$ , and their maximum flight range is 25 miles. The initial capacity for two types of drones is $5~\\mathrm{kg}$ and $10~\\mathrm{kg}$ . In this section, we develop several experiments to compare the performance of these algorithms when drones have different capacities, different speeds, and different flight ranges. To compare the performance of different algorithms, we use $O b j$ to represent the best result obtained by each algorithm, and 𝑡𝑖𝑚𝑒(𝑠) represents the computational time for each algorithm to obtain the best result. ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "4.3.1. Different capacity ratio ",
+        "text_level": 1,
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "In this section, we use drones with different capacities in the same scenario. That is, the locations of customers and the depot will not be changed in one instance. As only two types of drones are in this section and the weight of each package should not exceed the largest drone’s capacity, we only change the capacity of smaller drones. For convenience, in each instance, we fix the smaller drones’ capacity and set the larger drone capacity as 2, 3, and 5 times to the smaller ones’ according to the value of $Q$ . Besides, when the number of nodes getting larger, the solution of MIP will be very bad or even could not be obtained within 3600 s. Here we compute the RPD of each GA with a new function: ",
+        "page_idx": 7
+    },
+    {
+        "type": "table",
+        "img_path": "images/2e5be369e127db10c69d233b3feb5c31d132d837e9819b282c36e1c67683fe93.jpg",
+        "table_caption": [
+            "Table 5 Parameter settings for the experiment. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Notation</td><td>Parameter</td><td>Value</td></tr><tr><td>N</td><td>Numberofcustomers</td><td>10,20,100, 200,300</td></tr><tr><td>D</td><td>Numberofalldrones</td><td>Vary</td></tr><tr><td>S</td><td>Numbers of chromosomes inpopulation</td><td>10</td></tr><tr><td>M</td><td>The mutationrate</td><td>1/N</td></tr><tr><td>G</td><td>Maximumnumber ofpopulation iterations</td><td>100</td></tr><tr><td>IaNQVk1Fm</td><td>Instance naming notations:Theinstance I。with N,customers,the capacity Q;of larger drones is j times that of the smaller ones,the speed Vkof two types of drones are k and 1,respectively,and the flight range Fkis m times the original setting.</td><td></td></tr></table></body></html>\n\n",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\nR P D(G A)=\\frac{\\Omega_{G A}-\\Omega_{M I P}}{\\Omega_{M I P}}*100\\%\n$$",
+        "text_format": "latex",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "When RPD is less than 0, the solution obtained by this type of GA is better than that of MIP. And when the value of RPD is smaller, this GA will have more improvement than MIP. ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "In Table 6, we reduce the capacity of the smaller drones in the same scenario. With the same index $\\boldsymbol{I}_{a},$ the capacity of smaller drones is a constant number, and the capacity of smaller drones is 1/2, 1/3, 1/5 of the larger ones’ according to the index of $Q_{j}$ . ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "As shown in Table 6, both GAs improve significantly when the number of nodes exceeds 100. While the RBGA gets a better solution than FBGA consistently. When the number of nodes grows, both GAs outperform the MIP more, as shown in Fig. 4. ",
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "To compare how the capacity ratio effect this improvement of each GA, we compute the improvement ratio (IR) as the difference of RDP between RBGA and FBGA, which is formulated as $I R=R P D(F B G A)-$ $R P D(R B G A)$ . As depicted in Fig. 4, when we fix the smaller drones’ capacity and increase the larger ones’ will lead to an decreased average number of flights. From each group of instances, we can see a larger AVG Flights makes the improvement of RBGA more notable than that of FBGA. ",
+        "page_idx": 7
+    },
+    {
+        "type": "table",
+        "img_path": "images/3849ad807c31fe21afd3d39584033bf5d586582cafb831bde85c7693fc880aff.jpg",
+        "table_caption": [
+            "Table 6 Comparison in multiple trips with different capacities. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td colspan=\"2\">D</td><td rowspan=\"2\">AVG Flights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Smaller</td><td>Larger</td><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>IN10Q2</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>3.59</td><td>0</td><td>2.68</td><td>0.76</td><td>0.00</td><td>2.68</td><td>3.54</td><td>0.00</td></tr><tr><td>IN10Q3</td><td>1</td><td>1</td><td>2.5</td><td>2.48</td><td>20.36</td><td>0</td><td>2.86</td><td>1.55</td><td>15.32</td><td>2.48</td><td>3.08</td><td>0.00</td></tr><tr><td>IN10Q5</td><td>1</td><td>1</td><td>1.67</td><td>2.1</td><td>16.73</td><td>0</td><td>2.1</td><td>1.07</td><td>0.00</td><td>2.1</td><td>0.9</td><td>0.00</td></tr><tr><td>IN20Q2</td><td>2</td><td>1</td><td>5</td><td>5.59</td><td>3600</td><td>56.05</td><td>8.4</td><td>1.27</td><td>50.27</td><td>6.25</td><td>40.94</td><td>11.81</td></tr><tr><td>IN20Q3</td><td>2</td><td>1</td><td>4</td><td>4.42</td><td>3600</td><td>62.53</td><td>7.76</td><td>2.49</td><td>75.57</td><td>6.03</td><td>26.64</td><td>36.43</td></tr><tr><td>IN20Q5</td><td>2</td><td>1</td><td>2.85</td><td>4.09</td><td>3600</td><td>56.61</td><td>6.13</td><td>2.07</td><td>49.88</td><td>5.5</td><td>13.43</td><td>34.47</td></tr><tr><td>I3N100Q2</td><td>5</td><td>3</td><td>9.09</td><td>81.69</td><td>3600</td><td>99.23</td><td>40.44</td><td>9.26</td><td>-50.50</td><td>10.92</td><td>3405.02</td><td>-86.63</td></tr><tr><td>IN100Q3</td><td>5</td><td>3</td><td>7.14</td><td>75.64</td><td>3600</td><td>99.12</td><td>34.96</td><td>17.66</td><td>-53.78</td><td>10.62</td><td>743.18</td><td>-85.96</td></tr><tr><td>I3N100Q5</td><td>5</td><td>3</td><td>5</td><td>22.14</td><td>3600</td><td>96.94</td><td>30.06</td><td>12.12</td><td>35.77</td><td>11.99</td><td>276.12</td><td>-45.84</td></tr><tr><td>IN200Q2</td><td>8</td><td>1</td><td>20</td><td>193.01</td><td>3600</td><td>98.83</td><td>163.69</td><td>29.58</td><td>15.19</td><td>24.59</td><td>528.67</td><td>-87.26</td></tr><tr><td>I4N200Q3</td><td>8</td><td>1</td><td>18.18</td><td>208.8</td><td>3600</td><td>98.99</td><td>149.02</td><td>45.03</td><td>-28.63</td><td>28.88</td><td>162.88</td><td>-86.17</td></tr><tr><td>I4N200Q5</td><td>8</td><td>1</td><td>15.38</td><td>206.51</td><td>3600</td><td>98.96</td><td>121.84</td><td>33.16</td><td>-41.00</td><td>40.86</td><td>59.99</td><td>-80.21</td></tr><tr><td>I5 N300Q2</td><td>15</td><td>2</td><td>15.78</td><td>296.14</td><td>3600</td><td>100</td><td>227.39</td><td>86.6</td><td>23.22</td><td>26.98</td><td>399.53</td><td>-90.89</td></tr><tr><td>I5N300Q3</td><td>15</td><td>2</td><td>14.28</td><td>296.14</td><td>3600</td><td>100</td><td>197.47</td><td>61.73</td><td>-33.32</td><td>32.29</td><td>381.83</td><td>89.10</td></tr><tr><td>I5N300Q5</td><td>15</td><td>2</td><td>12</td><td>41.82</td><td>3600</td><td>97.86</td><td>177.97</td><td>41.84</td><td>325.56</td><td>39.56</td><td>234.89</td><td>-5.40</td></tr></table></body></html>\n\n",
+        "page_idx": 8
+    },
+    {
+        "type": "image",
+        "img_path": "images/87de590dda6e88817b97adaf8e61963e777311f891002fef2591b5b8bc9cbf79.jpg",
+        "img_caption": [
+            "Fig. 4. The relationship between capacity ratio and the improvement ratio. "
+        ],
+        "img_footnote": [],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "4.3.2. Different speed ",
+        "text_level": 1,
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "In this section, we keep the same location information while varying the drone’s speed. Without loss of generality, we fix the speed of the larger drones as $5~\\mathrm{mph}$ and change the smaller drone’s speed to $1/2$ , $2/3,3/2,$ , or 2 times that of the larger ones. Additionally, we investigate the situation when all drones have the same speed. In Table 7, $V_{1,1}$ means both types of drones have the same speed. $V_{1,2}$ indicates that the speed of the smaller drone is fixed and the speed of the larger drone is twice. $V_{2,1}$ fixes the speed of larger drones, and the smaller drones have half of the speed. $V_{2,3}$ fixes the smaller drone’s speed, and the larger drone’s speed is $50\\%$ faster. Finally, $V_{3,2}$ shows that the speed of the smaller drones is 1.5 times the larger drones’ speed. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "As it is trivial to note that increasing the speed of drones will reduce the total delivery time, from the results in Table 7, varying different speed ratios will not have a significant impact on the results of the two GAs. Also, the improvement ratio of RBGA to FBGA appears to show no obvious correlation with the speed ratios according to Fig. 5. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "4.3.3. Different flight range ",
+        "text_level": 1,
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "In this section, we use the same information as the previous two experiments except for the drones’ flight ranges. We changed the original flight range of drones, going down and up by 0.5 and 0.2, respectively, ",
+        "page_idx": 8
+    },
+    {
+        "type": "image",
+        "img_path": "images/4becd31724917ee4c1e5a6868674fdb6089a093a2779667ae9bed5b187a96551.jpg",
+        "img_caption": [
+            "Fig. 5. The relationship between speed and the improvement ratio. "
+        ],
+        "img_footnote": [],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "which are represented by $I_{a}N_{i}F_{0.5}$ , $I_{a}N_{i}F_{0.8}$ , $I_{a}N_{i}F_{1}$ , $I_{a}N_{i}F_{1.2}$ , $I_{a}N_{i}F_{1.5}$ .   \nTable 8 shows the results obtained by different algorithms. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "According to the results in Table 8, changing the flight range does not make a big difference since the AVG Flight does not change significantly. This can be explained due to the fact that in all the cases every customer is ensured to be served by at least one type of drone, which forces the largest drones to have a large flight range to reach every location in the area. While for RBGA, the increase in flight range helps this algorithm obtain its solution faster. A larger flight range allows drones to serve more customers in one trip, which decreases the number of variables of that IP model in RBGA. This inspires us to relax the constraints of flight range to provide an initial solution when the flight range is very limited, which may significantly reduce the solving time for the MIP model. Besides, according to our conjecture, in certain cases, the decrease in flight range will make the drones travel for more trips to serve the same customers, which will make a difference in total working time. ",
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "4.4. Parameters in GA ",
+        "text_level": 1,
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "In this section, we change the parameters of two types of GA to compare their performance. In general, parameters that affect the result of GA are the mutation rate, crossover rate, population size, and iteration times. The mutation rate of GA used in this study refers to the number of mutated genes in each chromosome without changing the crossover rate. Thus we focus on the mutation rate and population size of each GA. To compare how these parameters affect the result, we adopt the same instances and change the parameters in both GAs. The notations and parameters are shown in Table 9. ",
+        "page_idx": 8
+    },
+    {
+        "type": "table",
+        "img_path": "images/e273b5b810f0c12116195499b8c3e360b449d8a597ae3acf038f118491136741.jpg",
+        "table_caption": [
+            "Table 7 Comparison in multiple trips with different speeds. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td colspan=\"2\">D</td><td rowspan=\"2\">AVG Flights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Smaller</td><td>Larger</td><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>I,N10 V1,2</td><td>1</td><td>1</td><td>3.33</td><td>10.89</td><td>5.19</td><td>0</td><td>10.89</td><td>0.49</td><td>0.00</td><td>10.89</td><td>4.73</td><td>0.00</td></tr><tr><td>IN10 V2,3</td><td>1</td><td>1</td><td>3.33</td><td>9.17</td><td>18.64</td><td>0</td><td>9.54</td><td>1.29</td><td>4.03</td><td>9.38</td><td>1.68</td><td>2.29</td></tr><tr><td>I,N10 V1,1</td><td>1</td><td>1</td><td>3.33</td><td>8.22</td><td>8.77</td><td>0</td><td>8.34</td><td>1.11</td><td>1.46</td><td>8.34</td><td>0.97</td><td>1.46</td></tr><tr><td>I, N10 V3.2</td><td>1</td><td>1</td><td>3.33</td><td>7.31</td><td>9.78</td><td>0</td><td>7.31</td><td>0.53</td><td>0.00</td><td>7.3</td><td>0.84</td><td>0.14</td></tr><tr><td>I,N10V2.1</td><td>1</td><td>1</td><td>3.33</td><td>6.04</td><td>8.59</td><td>0</td><td>6.09</td><td>0.66</td><td>0.83</td><td>6.09</td><td>0.77</td><td>0.83</td></tr><tr><td>IN20V1.2</td><td>2</td><td>1</td><td>5</td><td>48.28</td><td>3600</td><td>61.25</td><td>91.28</td><td>1.67</td><td>89.06</td><td>54.94</td><td>65.7</td><td>13.79</td></tr><tr><td>IN20V2.3</td><td>2</td><td>1</td><td>5</td><td>44.47</td><td>3600</td><td>62.52</td><td>69.78</td><td>2.87</td><td>56.91</td><td>49.21</td><td>15.69</td><td>10.66</td></tr><tr><td>IN20V1,1</td><td>2</td><td>1</td><td>5</td><td>35.19</td><td>3600</td><td>54.34</td><td>53.46</td><td>2.29</td><td>51.92</td><td>44.93</td><td>5.13</td><td>27.68</td></tr><tr><td>IN20V3,2</td><td>2</td><td>1</td><td>5</td><td>29.22</td><td>3600</td><td>39.23</td><td>44.67</td><td>1.49</td><td>52.87</td><td>37.62</td><td>1.92</td><td>28.75</td></tr><tr><td>IN20V2.1</td><td>2</td><td>1</td><td>5</td><td>24.45</td><td>3600</td><td>30.5</td><td>38.63</td><td>1.93</td><td>58.00</td><td>36</td><td>1.87</td><td>47.24</td></tr><tr><td>I3N100 V1,2</td><td>5</td><td>3</td><td>9.09</td><td>4558.45</td><td>3600</td><td>99.13</td><td>1761.8</td><td>11.13</td><td>-61.35</td><td>441.1</td><td>1191.57</td><td>-90.32</td></tr><tr><td>I3N100 V2,3</td><td>5</td><td>3</td><td>9.09</td><td>3421.05</td><td>3600</td><td>98.99</td><td>1455.95</td><td>15.97</td><td>57.44</td><td>387.25</td><td>935.6</td><td>-88.68</td></tr><tr><td>I3N100 V1,1</td><td>5</td><td>3</td><td>9.09</td><td>2295.13</td><td>3600</td><td>98.77</td><td>1226.87</td><td>11.92</td><td>-46.54</td><td>355.12</td><td>583.82</td><td>-84.53</td></tr><tr><td>I3N100 V3,2</td><td>5</td><td>3</td><td>9.09</td><td>1440.89</td><td>3600</td><td>98.43</td><td>1090.98</td><td>5.25</td><td>-24.28</td><td>306.68</td><td>716.88</td><td>-78.72</td></tr><tr><td>I3N100 V2,1</td><td>5</td><td>3</td><td>9.09</td><td>1063.97</td><td>3600</td><td>98.2</td><td>1082.58</td><td>9.28</td><td>1.75</td><td>340.67</td><td>643.97</td><td>-67.98</td></tr><tr><td>I4N200 V1,2</td><td>8</td><td>1</td><td>20</td><td>25 716.88</td><td>3600</td><td>99.96</td><td>18 620.34</td><td>32.93</td><td>27.59</td><td>2402.33</td><td>1122.49</td><td>-90.66</td></tr><tr><td>I4 N200 V2.3</td><td>8</td><td>1</td><td>20</td><td>19 295.21</td><td>3600</td><td>99.95</td><td>13 772.84</td><td>40.06</td><td>-28.62</td><td>1883.95</td><td>367.2</td><td>-90.24</td></tr><tr><td>I4 N200 V1,1</td><td>8</td><td>1</td><td>20</td><td>12 873.54</td><td>3600</td><td>99.93</td><td>9503.23</td><td>33.78</td><td>-26.18</td><td>1451.89</td><td>39.81</td><td>-88.72</td></tr><tr><td>I4N200V3.2</td><td>8</td><td>1</td><td>20</td><td>8586.57</td><td>3600</td><td>99.9</td><td>6281.97</td><td>23.52</td><td>-26.84</td><td>1699.55</td><td>35.33</td><td>-80.21</td></tr><tr><td>I4N200 V2.1</td><td>8</td><td>1</td><td>20</td><td>6447.48</td><td>3600</td><td>98.48</td><td>4729.71</td><td>25.59</td><td>-26.64</td><td>1552.94</td><td>30.33</td><td>-75.91</td></tr><tr><td>Is N300 V1,2</td><td>15</td><td>2</td><td>15.78</td><td>59 125.04</td><td>3600</td><td>99.61</td><td>47 315.76</td><td>67.16</td><td>19.97</td><td>3206.09</td><td>1292.03</td><td>-94.58</td></tr><tr><td>Is N300 V2.3</td><td>15</td><td>2</td><td>15.78</td><td>44 354.48</td><td>3600</td><td>99.54</td><td>35740</td><td>65.53</td><td>19.42</td><td>2566.56</td><td>540.72</td><td>94.21</td></tr><tr><td>I5 N300 V1.,1</td><td>15 15</td><td>2</td><td>15.78</td><td>29 583.92</td><td>3600</td><td>99.43</td><td>23 823.46</td><td>39.53</td><td>19.47</td><td>2114.01</td><td>114.48</td><td>-92.85</td></tr><tr><td>I5N300 V3,2</td><td></td><td>2</td><td>15.78</td><td>19736.88</td><td>3600</td><td>99.3</td><td>16 194.41</td><td>47.3</td><td>-17.95</td><td>2285.31</td><td>126.86</td><td>-88.42</td></tr><tr><td>1 N300 V2.1</td><td>15</td><td>2</td><td>15.78</td><td>14 813.36</td><td>3600</td><td>99.19</td><td>11 631.82</td><td>52.47</td><td>-21.48</td><td>2187.91</td><td>108.48</td><td>-85.23</td></tr></table></body></html>\n\n",
+        "page_idx": 9
+    },
+    {
+        "type": "table",
+        "img_path": "images/4a120f06e09396d65aabf09ce0b241f8dc74195b57e07c93d18bce7e84b11b2b.jpg",
+        "table_caption": [
+            "Table 8 Comparison in multiple trips with flight ranges. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td colspan=\"2\">D</td><td rowspan=\"2\">AVG Flights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Smaller</td><td>Larger</td><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>I, N10 F0.5</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>3.72</td><td>0</td><td>2.77</td><td>0.87</td><td>3.36</td><td>2.69</td><td>3.36</td><td>0.37</td></tr><tr><td>IN10F0.8</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>13.85</td><td>0</td><td>2.69</td><td>1.59</td><td>0.37</td><td>2.79</td><td>1.67</td><td>4.10</td></tr><tr><td>IN10F1</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>9.24</td><td>0</td><td>2.75</td><td>1.16</td><td>2.61</td><td>2.76</td><td>1.09</td><td>2.99</td></tr><tr><td>IN10F1.2</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>10.55</td><td>0</td><td>2.87</td><td>0.47</td><td>7.09</td><td>2.75</td><td>1.94</td><td>2.61</td></tr><tr><td>I,N10F1.5</td><td>1</td><td>1</td><td>3.33</td><td>2.68</td><td>7.69</td><td>0</td><td>2.75</td><td>0.34</td><td>2.61</td><td>2.76</td><td>0.85</td><td>2.99</td></tr><tr><td>IN20 F0.5</td><td>2</td><td>1</td><td>5</td><td>5.65</td><td>3600</td><td>70.83</td><td>9.19</td><td>2.07</td><td>62.65</td><td>6.52</td><td>38.76</td><td>15.40</td></tr><tr><td>IN20 F0.8</td><td>2</td><td>1</td><td>5</td><td>5.8</td><td>3600</td><td>71.86</td><td>7.99</td><td>3.49</td><td>37.76</td><td>6.28</td><td>49.81</td><td>8.28</td></tr><tr><td>IN20 F1</td><td>2</td><td>1</td><td>5</td><td>5.59</td><td>3600</td><td>71.44</td><td>9.13</td><td>2.39</td><td>63.33</td><td>6.42</td><td>11.58</td><td>14.85</td></tr><tr><td>IN20F1.2</td><td>2</td><td>1</td><td>5</td><td>5.83</td><td>3600</td><td>70.7</td><td>8.64</td><td>0.93</td><td>48.20</td><td>6.5</td><td>31.55</td><td>11.49</td></tr><tr><td>IN20F1.5</td><td>2</td><td>1</td><td>5</td><td>5.83</td><td>3600</td><td>67.71</td><td>8.49</td><td>1.58</td><td>45.63</td><td>6.55</td><td>7.43</td><td>12.35</td></tr><tr><td>I3N100 F0.5</td><td>5</td><td>3</td><td>9.09</td><td>84.94</td><td>3600</td><td>99.46</td><td>40.04</td><td>13.62</td><td>-52.86</td><td>11</td><td>1134.65</td><td>-87.05</td></tr><tr><td>I3N100 F0.8</td><td>5</td><td>3</td><td>9.09</td><td>81.52</td><td>3600</td><td>99.44</td><td>38.88</td><td>16.72</td><td>-52.31</td><td>11.48</td><td>880.75</td><td>-85.92</td></tr><tr><td>I3N100 F1</td><td>5</td><td>3</td><td>9.09</td><td>83.99</td><td>3600</td><td>99.45</td><td>38.99</td><td>11.62</td><td>-53.58</td><td>10.94</td><td>855.78</td><td>-86.97</td></tr><tr><td>I3 N100 F1.2</td><td>5</td><td>3</td><td>9.09</td><td>80.65</td><td>3600</td><td>99.42</td><td>40.22</td><td>7.54</td><td>-50.13</td><td>11.1</td><td>822.44</td><td>-86.24</td></tr><tr><td>I3N100F1.5</td><td>5</td><td>3</td><td>9.09</td><td>81.33</td><td>3600</td><td>99.44</td><td>40.26</td><td>9.49</td><td>-50.50</td><td>10.77</td><td>760.71</td><td>-86.76</td></tr><tr><td>I4 N200 F0.5</td><td>8</td><td>1</td><td>20</td><td>226.69</td><td>3600</td><td>100</td><td>172.1</td><td>36.53</td><td>-24.08</td><td>24.94</td><td>243.43</td><td>-89.00</td></tr><tr><td>I4N200 F0.8</td><td>8</td><td>1</td><td>20</td><td>226.69</td><td>3600</td><td>100</td><td>169.2</td><td>39.13</td><td>-25.36</td><td>25.38</td><td>74.07</td><td>-88.80</td></tr><tr><td>I4 N200 F1</td><td>8</td><td>1</td><td>20</td><td>226.69</td><td>3600</td><td>100</td><td>166.64</td><td>35.74</td><td>26.49</td><td>26.82</td><td>64.18</td><td>-88.17</td></tr><tr><td>I4 N200 F1.2</td><td>8</td><td>1</td><td>20</td><td>226.69</td><td>3600</td><td>100</td><td>161.71</td><td>27.37</td><td>-28.66</td><td>25.7</td><td>41.62</td><td>-88.66</td></tr><tr><td>IN200 F1.5</td><td>8</td><td>1</td><td>20</td><td>226.69</td><td>3600</td><td>100</td><td>167.37</td><td>26.47</td><td>26.17</td><td>24.93</td><td>136.44</td><td>-89.00</td></tr><tr><td>I5 N300 F0.5</td><td>15</td><td>2</td><td>15.78</td><td>296.14</td><td>3600</td><td>99.69</td><td>252.65</td><td>84.66</td><td>-14.69</td><td>27.13</td><td>245.48</td><td>-90.84</td></tr><tr><td>Is N300 F0.8</td><td>15</td><td>2</td><td>15.78</td><td>291.42</td><td>3600</td><td>99.62</td><td>229.81</td><td>60.55</td><td>-21.14</td><td>27.86</td><td>256.73</td><td>-90.44</td></tr><tr><td>I5 N300 F1</td><td>15 15</td><td>2</td><td>15.78</td><td>290.89</td><td>3600</td><td>99.69</td><td>222.43</td><td>26.18</td><td>-23.53</td><td>29.23</td><td>263.54</td><td>-89.95</td></tr><tr><td>I5 N300 F1.2 I5N300 F1.5</td><td>15</td><td>2 2</td><td>15.78 15.78</td><td>292.11 289</td><td>3600 3600</td><td>99.69 99.69</td><td>228.88 223.87</td><td>49.75 53.01</td><td>-21.65 22.54</td><td>27.58 27.24</td><td>149.3 132.49</td><td>-90.56 -90.57</td></tr></table></body></html>\n\n",
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "In this subsection, we set the flight range and speed of all types of drones to be equal, in which all flight ranges are 20 miles and speeds are 4 mph. We assume the battery changing time is 0 in this case, so it was not considered in the model. The following experiments present the results of each algorithm with different parameters. Since when there are 10 customers, $S\\,=\\,10$ and $S\\,=\\,N$ are the same, and when there are 20 customers, $M\\,=\\,1/N$ equals $M\\,=\\,0.05$ . There are only three experiments in instance $I_{1}$ and $I_{2}$ . ",
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "From the above experimental results in Tables 10, 11, and 12, varying the parameters does not make a big difference, indicating the relative robustness of the algorithm. According to the above definition of RPD, we use $R P D(G A,S_{q}M_{m})$ to show the RDP value using this kind of GA when the population size is $q$ , and the mutation rate is $m$ . We select the worst-case results in each instance as a reference to compare the performance of GA with other parameters in the same instance. This performance is computed as $\\!\\!\\!\\frac{\\dot{m}a x(R P D(G A,\\!S_{q}M_{m})\\forall q,m)\\!-\\!R P D(G A,\\!S_{q}M_{m})}{\\left(\\frac{\\dot{a}}{\\Lambda}\\right)\\!+\\!\\frac{\\dot{b}}{\\Lambda}}$ $m a x(R P D(G A,S_{q}M_{m})\\forall q,m)$ The larger value means the algorithm performs better under these parameters. ",
+        "page_idx": 9
+    },
+    {
+        "type": "table",
+        "img_path": "images/a7d638108d42690c2ddc62c484a524a3a1105d5aa5daf34a4a96acbb6f31bc2a.jpg",
+        "table_caption": [
+            "Table 9 Parameter settings for the experiment. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Notation</td><td>Parameter</td><td>Value</td></tr><tr><td>N</td><td>Numberofcustomers</td><td>10,20,100,200,300</td></tr><tr><td>K</td><td>Numberofdronetypes</td><td>2,3,5</td></tr><tr><td>C</td><td>Capacityofeachdrone</td><td>5,10,15,20,50</td></tr><tr><td>D</td><td>Numberofalldrones</td><td>Vary</td></tr><tr><td>S</td><td>Numbersofchromosomes</td><td>N</td></tr><tr><td>M</td><td>Themutationrate</td><td>1/N, 0.05,0.2</td></tr><tr><td>IN,K,</td><td>Theinstanceawithicustomersand jtypes of drones.</td><td></td></tr></table></body></html>\n\n",
+        "page_idx": 9
+    },
+    {
+        "type": "table",
+        "img_path": "images/4f14db5334203b0cba201bb8dab0aa69ef9ba08584f4b8d61a36b723d586398d.jpg",
+        "table_caption": [
+            "Table 10 Comparison between two GAs with different parameters (2 types of drones). "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td rowspan=\"2\">S</td><td rowspan=\"2\">M</td><td rowspan=\"2\">AVGFlights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>IN10 K2</td><td>10</td><td>0.1</td><td>2</td><td>2.40</td><td>1.19</td><td>0</td><td>2.40</td><td>0.07</td><td>0.00</td><td>2.43</td><td>0.61</td><td>1.25</td></tr><tr><td>IN10K2</td><td>10</td><td>0.05</td><td>2</td><td>2.40</td><td>1.19</td><td>0</td><td>2.43</td><td>0.07</td><td>1.25</td><td>2.40</td><td>0.6</td><td>0.00</td></tr><tr><td>IN10K2</td><td>10</td><td>0.2</td><td>2</td><td>2.40</td><td>1.19</td><td>0</td><td>2.46</td><td>0.07</td><td>2.42</td><td>2.41</td><td>0.63</td><td>0.48</td></tr><tr><td>IN20 K2</td><td>10</td><td>0.05</td><td>2</td><td>5.38</td><td>1798.47</td><td>0</td><td>8.32</td><td>0.11</td><td>54.77</td><td>8.80</td><td>0.66</td><td>63.78</td></tr><tr><td>IN20 K2</td><td>10</td><td>0.2</td><td>2</td><td>5.38</td><td>1798.47</td><td>0</td><td>10.47</td><td>0.24</td><td>94.87</td><td>9.74</td><td>0.67</td><td>81.25</td></tr><tr><td>IN20K2</td><td>20</td><td>0.05</td><td>2</td><td>5.38</td><td>1798.47</td><td>0</td><td>8.60</td><td>0.24</td><td>60.06</td><td>8.54</td><td>1.16</td><td>58.82</td></tr><tr><td>I3N50K2</td><td>10</td><td>0.02</td><td>3</td><td>24.61</td><td>3600</td><td>74.9</td><td>79.14</td><td>0.38</td><td>221.53</td><td>37.17</td><td>3.2</td><td>51.01</td></tr><tr><td>I3N50 K2</td><td>10</td><td>0.05</td><td>3</td><td>24.61</td><td>3600</td><td>74.9</td><td>80.48</td><td>0.37</td><td>226.98</td><td>42.40</td><td>3.3</td><td>72.27</td></tr><tr><td>I3N50K2</td><td>10</td><td>0.2</td><td>3</td><td>24.61</td><td>3600</td><td>74.9</td><td>76.70</td><td>0.34</td><td>211.60</td><td>47.32</td><td>3.3</td><td>92.23</td></tr><tr><td>I3N50 K2</td><td>50</td><td>0.02</td><td>3</td><td>24.61</td><td>3600</td><td>74.9</td><td>82.16</td><td>1.78</td><td>233.79</td><td>37.21</td><td>15.73</td><td>51.18</td></tr><tr><td>I4N100 K2</td><td>10</td><td>0.01</td><td>4.92</td><td>89.30</td><td>3600</td><td>98.4</td><td>50.87</td><td>0.96</td><td>-43.04</td><td>9.72</td><td>13.53</td><td>89.11</td></tr><tr><td>I4N100K2</td><td>10</td><td>0.05</td><td>5.17</td><td>89.30</td><td>3600</td><td>98.4</td><td>53.27</td><td>1.02</td><td>-40.35</td><td>11.30</td><td>13.98</td><td>-87.34</td></tr><tr><td>I4N100 K2</td><td>10</td><td>0.2</td><td>5.17</td><td>89.30</td><td>3600</td><td>98.4</td><td>53.04</td><td>1.07</td><td>-40.60</td><td>9.94</td><td>14.62</td><td>-88.87</td></tr><tr><td>I4N100 K2</td><td>100</td><td>0.01</td><td>4.91</td><td>89.30</td><td>3600</td><td>98.4</td><td>52.07</td><td>9.88</td><td>-41.69</td><td>9.43</td><td>129.64</td><td>-89.44</td></tr><tr><td>I5 N200 K2</td><td>10</td><td>0.005</td><td>3.73</td><td>232.10</td><td>3600</td><td>99.9</td><td>90.14</td><td>2.41</td><td>-61.16</td><td>9.07</td><td>63.43</td><td>-96.09</td></tr><tr><td>I5 N200 K2</td><td>10</td><td>0.05</td><td>3.7</td><td>232.10</td><td>3600</td><td>99.9</td><td>87.44</td><td>2.49</td><td>-62.33</td><td>9.16</td><td>63.58</td><td>-96.06</td></tr><tr><td>I5 N200 K2</td><td>10</td><td>0.2</td><td>3.73</td><td>232.10</td><td>3600</td><td>99.9</td><td>90.96</td><td>2.57</td><td>-60.81</td><td>9.41</td><td>65.96</td><td>-95.95</td></tr><tr><td>I5 N200 K2</td><td>200</td><td>0.005</td><td>3.73</td><td>232.10</td><td>3600</td><td>99.9</td><td>87.28</td><td>46.04</td><td>-62.39</td><td>8.50</td><td>1164.13</td><td>-96.34</td></tr><tr><td>I6 N300 K2</td><td>10</td><td>0.003</td><td>4.95</td><td>230.57</td><td>3600</td><td>99.8</td><td>98.33</td><td>4.13</td><td>-57.36</td><td>13.74</td><td>49.71</td><td>94.04</td></tr><tr><td>I6N300K2</td><td>10</td><td>0.05</td><td>4.82</td><td>230.57</td><td>3600</td><td>99.8</td><td>102.91</td><td>4.34</td><td>-55.37</td><td>14.01</td><td>50.73</td><td>-93.93</td></tr><tr><td>I6N300K2</td><td>10</td><td>0.2</td><td>4.91</td><td>230.57</td><td>3600</td><td>99.8</td><td>104.68</td><td>4.49</td><td>-54.60</td><td>14.16</td><td>51.85</td><td>-93.86</td></tr><tr><td>I6 N300 K2</td><td>300</td><td>0.003</td><td>4.95</td><td>230.57</td><td>3600</td><td>99.8</td><td>95.84</td><td>118.9</td><td>-58.43</td><td>13.18</td><td>1365.13</td><td>-94.28</td></tr></table></body></html>\n\n",
+        "page_idx": 10
+    },
+    {
+        "type": "table",
+        "img_path": "images/21c1989907bd35ec6e9d38b8205be62ac8b95a037dfbc961298b79a784717bc5.jpg",
+        "table_caption": [
+            "Table 11 Comparison between two GAs with different parameters (3 types of drones) "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td rowspan=\"2\">S</td><td rowspan=\"2\">M</td><td rowspan=\"2\">AVGFlights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>I N10 K3</td><td>10</td><td>0.1</td><td>1.33</td><td>1.83</td><td>0.78</td><td>0</td><td>1.87</td><td>0.07</td><td>2.08</td><td>1.90</td><td>0.23</td><td>4.02</td></tr><tr><td>IN10K3</td><td>10</td><td>0.05</td><td>1</td><td>1.83</td><td>0.78</td><td>0</td><td>1.92</td><td>0.07</td><td>4.73</td><td>1.93</td><td>0.2</td><td>5.44</td></tr><tr><td>IN10K3</td><td>10</td><td>0.2</td><td>1</td><td>1.83</td><td>0.78</td><td>0</td><td>1.87</td><td>0.07</td><td>2.08</td><td>1.92</td><td>0.24</td><td>4.73</td></tr><tr><td>IN20 K3</td><td>10</td><td>0.05</td><td>1.67</td><td>3.31</td><td>3600</td><td>8.8</td><td>5.38</td><td>0.12</td><td>62.74</td><td>5.08</td><td>0.85</td><td>53.64</td></tr><tr><td>IN20 K3</td><td>10</td><td>0.2</td><td>1.67</td><td>3.31</td><td>3600</td><td>8.8</td><td>5.19</td><td>0.13</td><td>56.83</td><td>5.13</td><td>0.88</td><td>55.15</td></tr><tr><td>IN20 K3</td><td>20</td><td>0.05</td><td>1.67</td><td>3.31</td><td>3600</td><td>8.8</td><td>4.82</td><td>0.24</td><td>45.81</td><td>5.23</td><td>1.74</td><td>57.97</td></tr><tr><td>I3N50 K3</td><td>10</td><td>0.02</td><td>2.83</td><td>27.62</td><td>3600</td><td>81.9</td><td>57.12</td><td>0.34</td><td>106.83</td><td>38.66</td><td>2.76</td><td>39.98</td></tr><tr><td>I3N50 K3</td><td>10</td><td>0.05</td><td>2.83</td><td>27.62</td><td>3600</td><td>81.9</td><td>55.78</td><td>0.35</td><td>101.98</td><td>37.28</td><td>2.76</td><td>34.98</td></tr><tr><td>I3N50 K3</td><td>10</td><td>0.2</td><td>2.83</td><td>27.62</td><td>3600</td><td>81.9</td><td>59.07</td><td>0.37</td><td>113.88</td><td>39.97</td><td>2.81</td><td>44.74</td></tr><tr><td>I3N50 K3</td><td>50</td><td>0.02</td><td>2.83</td><td>27.62</td><td>3600</td><td>81.9</td><td>53.87</td><td>1.66</td><td>95.08</td><td>34.07</td><td>13.32</td><td>23.36</td></tr><tr><td>I4N100K3</td><td>10</td><td>0.01</td><td>4.75</td><td>127.74</td><td>3600</td><td>98.4</td><td>39.76</td><td>0.84</td><td>-68.87</td><td>20.88</td><td>7.18</td><td>-83.65</td></tr><tr><td>I4N100K3</td><td>10</td><td>0.05</td><td>4.75</td><td>127.74</td><td>3600</td><td>98.4</td><td>40.67</td><td>0.84</td><td>-68.16</td><td>21.17</td><td>6.94</td><td>-83.42</td></tr><tr><td>I4N100 K3</td><td>10</td><td>0.2</td><td>4.88</td><td>127.74</td><td>3600</td><td>98.4</td><td>39.73</td><td>0.88</td><td>-68.9</td><td>22.32</td><td>7.09</td><td>-82.53</td></tr><tr><td>I4N100 K3</td><td>100</td><td>0.01</td><td>4.88</td><td>127.74</td><td>3600</td><td>98.4</td><td>39.10</td><td>8.11</td><td>-69.39</td><td>21.31</td><td>66.14</td><td>-83.32</td></tr><tr><td>I5N200 K3</td><td>10</td><td>0.005</td><td>4.27</td><td>312.09</td><td>3600</td><td>99.7</td><td>92.74</td><td>2.23</td><td>70.29</td><td>22.23</td><td>43.22</td><td>-92.88</td></tr><tr><td>I5 N200 K3</td><td>10 10</td><td>0.05</td><td>4.18</td><td>312.09</td><td>3600</td><td>99.7</td><td>86.87</td><td>2.39</td><td>72.17</td><td>21.77</td><td>40.9</td><td>-93.02</td></tr><tr><td>I5 N200 K3</td><td>200</td><td>0.2 0.005</td><td>4.05</td><td>312.09</td><td>3600</td><td>99.7</td><td>95.17</td><td>2.47</td><td>-69.51</td><td>20.71</td><td>41.29</td><td>-93.36</td></tr><tr><td>Is N200 K3</td><td>10</td><td></td><td>4.09</td><td>312.09</td><td>3600</td><td>99.7</td><td>89.32</td><td>44.6</td><td>-71.38</td><td>20.77</td><td>764.02</td><td>-93.35</td></tr><tr><td>I6 N300 K3</td><td>10</td><td>0.003</td><td>3.6</td><td>370.70</td><td>3600</td><td>100</td><td>87.93</td><td>3.95</td><td>-76.28</td><td>17.47</td><td>67.31</td><td>-95.29</td></tr><tr><td>I6N300 K3</td><td>10</td><td>0.05 0.2</td><td>3.1</td><td>370.70</td><td>3600 3600</td><td>100 100</td><td>86.26</td><td>4.16</td><td>-76.73</td><td>16.43</td><td>62.58</td><td>-95.57</td></tr><tr><td>I6N300 K3</td><td>300</td><td></td><td>2.97</td><td>370.70</td><td></td><td></td><td>89.70</td><td>4.31</td><td>-75.8</td><td>17.59</td><td>63.64 1777.8</td><td>-95.26</td></tr><tr><td>I6 N300 K3</td><td></td><td>0.003</td><td>3.23</td><td>370.70</td><td>3600</td><td>100</td><td>84.65</td><td>115.23</td><td>77.16</td><td>16.32</td><td></td><td>-95.6</td></tr></table></body></html>\n\n",
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "According to Tables 13 and 14, increasing the mutation rate does not lead to a better solution while sometimes it negatively impacts the performance. In most scenarios, the $1/N$ mutation rate seems to be effective. Increasing the population size with the growth of customer numbers yields better results. However, such improvements are at the cost of longer computational time. Overall, in practice, it seems to be better to fix the population size and set the mutation rate as $1/N$ . ",
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "5. Conclusion ",
+        "text_level": 1,
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "This study extends the classical VRP by considering drone-assisted eliveries. Based on drones’ capacity and speed, we consider a single hub that contains multiple types of drones, and each drone can deliver goods for many sorties by changing batteries in the hub. An MIP model is formulated, and we first propose a FIFO-based GA to solve the model due to its NP-hardness. When multiple flights are allowed, an IP model is developed to determine which drones need to deliver packages again after it returns to the hub. The underlying problem becomes a combination of the knapsack problem, the shortest path problem, and the scheduling problem. We then develop a reschedulingbased GA to help it adapt to large-scale instances with multiple trips. Numerical experiments show that these two heuristic algorithms can find sub-optimal solutions for small instances when compared with commercial solvers. For large-scale instances, the proposed algorithms are able to solve problems with up to 100 customers within a reasonable computational time for potential practical applications. With the scale increasing, the FBGA is robust with a very minor increase in the solution time, while the RBGA yields better solutions than the FIFObased GA, at the cost of a longer solution time as it has to solve the embedded IP problem. ",
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 10
+    },
+    {
+        "type": "table",
+        "img_path": "images/ce9cee31e7c38d5784bfb664ca4ad0ced99f7ad4f79022c5d51b8b05d10b4be5.jpg",
+        "table_caption": [
+            "Table 12 Comparison between two GAs with different parameters (5 types of drones) "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td rowspan=\"2\">Instance</td><td rowspan=\"2\">S</td><td rowspan=\"2\">M</td><td rowspan=\"2\">AVG Flights</td><td colspan=\"3\">MIP</td><td colspan=\"3\">FBGA</td><td colspan=\"3\">RBGA</td></tr><tr><td>Obj</td><td>Time (s)</td><td>Gap (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td><td>Obj</td><td>Time (s)</td><td>RPD (%)</td></tr><tr><td>I, N10 K5</td><td>10</td><td>0.1</td><td>1.2</td><td>1.73</td><td>0.81</td><td>0</td><td>1.73</td><td>0.08</td><td>0</td><td>1.73</td><td>0.81</td><td>0</td></tr><tr><td>IN10 K5</td><td>10</td><td>0.05</td><td>1</td><td>1.73</td><td>0.81</td><td>0</td><td>1.73</td><td>0.08</td><td>0</td><td>1.73</td><td>0.48</td><td>0</td></tr><tr><td>IN10 K5</td><td>10</td><td>0.2</td><td>1</td><td>1.73</td><td>0.81</td><td>0</td><td>1.73</td><td>0.08</td><td>0</td><td>1.73</td><td>0.67</td><td>0</td></tr><tr><td>IN20 K5</td><td>10</td><td>0.05</td><td>1.6</td><td>4.36</td><td>16.83</td><td>0</td><td>5.50</td><td>0.13</td><td>25.99</td><td>5.16</td><td>1.42</td><td>18.13</td></tr><tr><td>IN20K5</td><td>10</td><td>0.2</td><td>1.2</td><td>4.36</td><td>16.83</td><td>0</td><td>5.52</td><td>0.14</td><td>26.56</td><td>5.76</td><td>1.39</td><td>32</td></tr><tr><td>IN20K5</td><td>20</td><td>0.05</td><td>1.6</td><td>4.36</td><td>16.83</td><td>0</td><td>5.73</td><td>0.26</td><td>31.33</td><td>4.99</td><td>2.67</td><td>14.34</td></tr><tr><td>I3 N50 K5</td><td>10</td><td>0.02</td><td>2</td><td>12.04</td><td>3600</td><td>63.8</td><td>24.41</td><td>0.31</td><td>102.77</td><td>26.42</td><td>2.17</td><td>119.48</td></tr><tr><td>I3 N50 K5</td><td>10</td><td>0.05</td><td>2</td><td>12.04</td><td>3600</td><td>63.8</td><td>26.06</td><td>0.32</td><td>116.47</td><td>26.74</td><td>2.14</td><td>122.16</td></tr><tr><td>I3N50 K5</td><td>10</td><td>0.2</td><td>2</td><td>12.04</td><td>3600</td><td>63.8</td><td>27.40</td><td>0.34</td><td>127.66</td><td>26.97</td><td>2.15</td><td>124.07</td></tr><tr><td>I3 N50 K5</td><td>50</td><td>0.02</td><td>2</td><td>12.04</td><td>3600</td><td>63.8</td><td>24.11</td><td>1.5</td><td>100.34</td><td>25.67</td><td>10.26</td><td>113.27</td></tr><tr><td>I4N100 K5</td><td>10</td><td>0.01</td><td>2.82</td><td>118.63</td><td>3600</td><td>98.9</td><td>21.12</td><td>0.77</td><td>-82.19</td><td>15.71</td><td>7.23</td><td>-86.75</td></tr><tr><td>I4N100 K5</td><td>10</td><td>0.05</td><td>2.91</td><td>118.63</td><td>3600</td><td>98.9</td><td>23.89</td><td>0.81</td><td>-79.86</td><td>17.55</td><td>7.22</td><td>-85.21</td></tr><tr><td>I4 N100 K5</td><td>10</td><td>0.2</td><td>2.82</td><td>118.63</td><td>3600</td><td>98.9</td><td>21.95</td><td>0.84</td><td>-81.5</td><td>16.78</td><td>7.25</td><td>-85.86</td></tr><tr><td>I4 N100 K5</td><td>100</td><td>0.01</td><td>2.82</td><td>118.63</td><td>3600</td><td>98.9</td><td>21.43</td><td>7.45</td><td>-81.93</td><td>16.34</td><td>66.75</td><td>-86.22</td></tr><tr><td>I5 N200 K5</td><td>10</td><td>0.005</td><td>3.29</td><td>342.44</td><td>3600</td><td>99.7</td><td>50.97</td><td>2.02</td><td>85.11</td><td>37.57</td><td>20.47</td><td>-89.03</td></tr><tr><td>I5 N200 K5</td><td>10</td><td>0.05</td><td>3.47</td><td>342.44</td><td>3600</td><td>99.7</td><td>48.96</td><td>2.13</td><td>-85.7</td><td>38.29</td><td>19.86</td><td>-88.82</td></tr><tr><td>I5 N200 K5</td><td>10</td><td>0.2</td><td>3.18</td><td>342.44</td><td>3600</td><td>99.7</td><td>52.35</td><td>2.21</td><td>-84.71</td><td>43.03</td><td>20.38</td><td>-87.43</td></tr><tr><td>I5 N200 K5</td><td>200</td><td>0.005</td><td>3.41</td><td>342.44</td><td>3600</td><td>99.7</td><td>49.13</td><td>40.74</td><td>-85.65</td><td>38.08</td><td>385.22</td><td>-88.88</td></tr><tr><td>I6 N300 K5</td><td>10</td><td>0.003</td><td>3.17</td><td>281.73</td><td>3600</td><td>99.8</td><td>49.28</td><td>3.85</td><td>-82.51</td><td>32.85</td><td>40.22</td><td>-88.34</td></tr><tr><td>I6 N300 K5</td><td>10</td><td>0.05</td><td>3.21</td><td>281.73</td><td>3600</td><td>99.8</td><td>48.41</td><td>4.05</td><td>-82.82</td><td>28.90</td><td>40.4</td><td>-89.74</td></tr><tr><td>I6N300K5</td><td>10</td><td>0.2</td><td>3.33</td><td>281.73</td><td>3600</td><td>99.8</td><td>48.86</td><td>4.11</td><td>-82.66</td><td>28.69</td><td>40.8</td><td>-89.82</td></tr><tr><td>I6 N300 K5</td><td>300</td><td>0.003</td><td>3.29</td><td>281.73</td><td>3600</td><td>99.8</td><td>45.87</td><td>113.64</td><td>-83.72</td><td>25.59</td><td>1143.68</td><td>-90.92</td></tr></table></body></html>\n\n",
+        "page_idx": 11
+    },
+    {
+        "type": "table",
+        "img_path": "images/c33447bd7669ef6e511982d001e100c58e7b8689f13b84347daf78b4e81fa7aa.jpg",
+        "table_caption": [
+            "Table 13 Performance of FBGA with different parameters. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Instance</td><td>S10M1/N</td><td>S10M0.05</td><td>S10Mo.2</td><td>SM1/N</td></tr><tr><td>1</td><td>2.42</td><td>1.17</td><td>0.00</td><td>2.42</td></tr><tr><td>2</td><td>40.09</td><td>40.09</td><td>0.00</td><td>34.81</td></tr><tr><td>3</td><td>12.26</td><td>6.80</td><td>22.19</td><td>0.00</td></tr><tr><td>4</td><td>2.69</td><td>0.00</td><td>0.26</td><td>1.35</td></tr><tr><td>5</td><td>0.35</td><td>1.52</td><td>0.00</td><td>1.58</td></tr><tr><td>6</td><td>2.76</td><td>0.77</td><td>0.00</td><td>3.83</td></tr><tr><td>7</td><td>2.65</td><td>0.00</td><td>2.65</td><td>2.65</td></tr><tr><td>8</td><td>0.00</td><td>0.00</td><td>5.91</td><td>16.93</td></tr><tr><td>9</td><td>7.04</td><td>11.89</td><td>0.00</td><td>18.80</td></tr><tr><td>10</td><td>0.71</td><td>0.00</td><td>0.74</td><td>1.23</td></tr><tr><td>11</td><td>0.78</td><td>2.66</td><td>0.00</td><td>1.87</td></tr><tr><td>12</td><td>0.48</td><td>0.93</td><td>0.00</td><td>1.36</td></tr><tr><td>13</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><td>14</td><td>5.34</td><td>5.34</td><td>4.78</td><td>0.00</td></tr><tr><td>15</td><td>24.89</td><td>11.19</td><td>0.00</td><td>27.33</td></tr><tr><td>16</td><td>2.33</td><td>0.00</td><td>1.64</td><td>2.07</td></tr><tr><td>17</td><td>0.40</td><td>0.99</td><td>0.00</td><td>0.94</td></tr><tr><td>18</td><td>0.00</td><td>0.31</td><td>0.15</td><td>1.21</td></tr><tr><td>Mean</td><td>5.84</td><td>4.65</td><td>2.13</td><td>6.58</td></tr></table></body></html>\n\n",
+        "page_idx": 11
+    },
+    {
+        "type": "table",
+        "img_path": "images/7ec0435abad8f49e31b5b9342fd00c09f7423f511fe86ab9623044520124ee95.jpg",
+        "table_caption": [
+            "Table 14 Performance of RBGA with different parameters. "
+        ],
+        "table_footnote": [],
+        "table_body": "\n\n<html><body><table><tr><td>Instance</td><td>S10M1/N</td><td>S10 M0.05</td><td>S10M0.2</td><td>SM1/N</td></tr><tr><td>1</td><td>0.00</td><td>1.25</td><td>0.77</td><td>0.00</td></tr><tr><td>2</td><td>17.47</td><td>17.47</td><td>0.00</td><td>22.43</td></tr><tr><td>3</td><td>41.22</td><td>19.97</td><td>0.00</td><td>41.05</td></tr><tr><td>4</td><td>1.77</td><td>0.00</td><td>1.53</td><td>2.10</td></tr><tr><td>5</td><td>0.15</td><td>0.11</td><td>0.00</td><td>0.39</td></tr><tr><td>6</td><td>0.18</td><td>0.07</td><td>0.00</td><td>0.42</td></tr><tr><td>7</td><td>1.42</td><td>0.00</td><td>0.71</td><td>1.42</td></tr><tr><td>8</td><td>4.32</td><td>4.32</td><td>2.81</td><td>0.00</td></tr><tr><td>9</td><td>4.77</td><td>9.76</td><td>0.00</td><td>21.39</td></tr><tr><td>10</td><td>1.13</td><td>0.90</td><td>0.00</td><td>0.79</td></tr><tr><td>11</td><td>0.00</td><td>0.15</td><td>0.49</td><td>0.47</td></tr><tr><td>12</td><td>0.03</td><td>0.31</td><td>0.00</td><td>0.34</td></tr><tr><td>13</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><td>14</td><td>13.86</td><td>13.86</td><td>0.00</td><td>17.65</td></tr><tr><td>15</td><td>4.59</td><td>1.90</td><td>0.00</td><td>10.80</td></tr><tr><td>16</td><td>1.55</td><td>0.00</td><td>0.65</td><td>1.02</td></tr><tr><td>17</td><td>1.60</td><td>1.38</td><td>0.00</td><td>1.45</td></tr><tr><td>18</td><td>0.00</td><td>1.40</td><td>1.48</td><td>2.58</td></tr><tr><td>Mean</td><td>5.22</td><td>4.05</td><td>0.47</td><td>6.91</td></tr></table></body></html>\n\n",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Future directions for this research include incorporating more realistic considerations into the drone vehicle routing problem, such as the cost of battery replacements, the rate of energy consumption, and battery replacement strategies. Additionally, the current study focuses on a fixed set of packages that do not change during delivery, but in reality, new packages may arrive after the delivery plan has been established. It is therefore of interest to explore how to dynamically update the delivery plan in such scenarios. Finally, incorporating package priorities and due dates into the model could provide even greater insight into real-world drone delivery operations. ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "CRediT authorship contribution statement ",
+        "text_level": 1,
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Xudong Wang: Methodology, Software, Writing – original draft. Zeyu Liu: Writing – revision, Supervision. Xueping Li: Conceptualization of this study, Supervision. ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Data availability ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Data will be made available on request ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Acknowledgment ",
+        "text_level": 1,
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "The research was supported in part by the Graduate Advancement, Training and Education (GATE) Program between the Oak Ridge National Laboratory and the University of Tennessee, Knoxville. ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "References ",
+        "text_level": 1,
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Amazon (2019). Amazon prime air. URL https://www.amazon.com/Amazon-PrimeAir/b?ie=UTF8&node=8037720011.   \nBouman, P., Agatz, N., & Schmidt, M. (2018). Dynamic programming approaches for the traveling salesman problem with drone. Networks, 72, 528–542.   \nCheng, C., Adulyasak, Y., & Rousseau, L. M. (2020). Drone routing with energy function: Formulation and exact algorithm. Transportation Research, Part B (Methodological), 139, 364–387.   \nCheskes, S., McLeod, S. L., Nolan, M., Snobelen, P., Vaillancourt, C., Brooks, S. C., et al. (2020). Improving access to automated external defibrillators in rural and remote settings: a drone delivery feasibility study. Journal of the American Heart Association, 9, Article e016687.   \nClaesson, A., Bäckman, A., Ringh, M., Svensson, L., Nordberg, P., Djärv, T., et al. (2017). Time to delivery of an automated external defibrillator using a drone for simulated out-of-hospital cardiac arrests vs emergency medical services. Jama, 317, 2332–2334.   \nClarke, G., & Wright, J. W. (1964). Scheduling of vehicles from a central depot to a number of delivery points. Operations Research, 12, 568–581.   \nDantzig, G. B., & Ramser, J. H. (1959). The truck dispatching problem. Management Science, 6, 80–91.   \nde Freitas, J. C., & Penna, P. H. V. (2020). A variable neighborhood search for flying sidekick traveling salesman problem. International Transactions in Operational Research, 27, 267–290.   \nDesrochers, M., & Laporte, G. (1991). Improvements and extensions to the millertucker-zemlin subtour elimination constraints. Operations Research Letters, 10, 27–36.   \nDorling, K., Heinrichs, J., Messier, G. G., & Magierowski, S. (2017). Vehicle routing problems for drone delivery. IEEE Transactions on Systems, Man, and Cybernetics: Systems, 47, 70–85. http://dx.doi.org/10.1109/TSMC.2016.2582745.   \nFalkenauer, E. (1996). A hybrid grouping genetic algorithm for bin packing. Journal of Heuristics, 2, 5–30.   \nFraser, A. S. (1957). Simulation of genetic systems by automatic digital computers i. introduction. Australian Journal of Biological Sciences, 10, 484–491.   \nGonzalez, R. P. L., Canca, D., Andrade-Pineda, J. L., Calle, M., & Leon-Blanco, J. M. (2020). Truck-drone team logistics: A heuristic approach to multi-drop route planning. Transportation Research Part C (Emerging Technologies), 114, 657–680.   \nHassanalian, M., & Abdelkefi, A. (2017). Classifications, applications, and design challenges of drones: A review. Progress in Aerospace Sciences, 91, 99–131.   \nHolland, J. H., et al. (1992). Adaptation in natural and artificial systems: an introductory analysis with applications to biology, control, and artificial intelligence. MIT Press.   \nKim, S. J., Lim, G. J., Cho, J., & Côté, M. J. (2017). Drone-aided healthcare services for patients with chronic diseases in rural areas. Journal of Intelligent and Robotic Systems, 88, 163–180.   \nKirschstein, T. (2020). Comparison of energy demands of drone-based and ground-based parcel delivery services. Transportation Research Part D: Transport and Environment, 78, Article 102209.   \nKitjacharoenchai, P., Ventresca, M., Moshref-Javadi, M., Lee, S., Tanchoco, J. M., & Brunese, P. A. (2019). Multiple traveling salesman problem with drones: Mathematical model and heuristic approach. Computers & Industrial Engineering, 129, 14–30.   \nLiu, C., Chen, H., Li, X., & Liu, Z. (2021). A scheduling decision support model for minimizing the number of drones with dynamic package arrivals and personalized deadlines. Expert Systems with Applications, 167, Article 114157.   \nMacrina, G., Pugliese, L. D. P., Guerriero, F., & Laporte, G. (2020). Drone-aided routing: A literature review. Transportation Research Part C (Emerging Technologies), 120, Article 102762.   \nMurray, C. C., & Chu, A. G. (2015). The flying sidekick traveling salesman problem: Optimization of drone-assisted parcel delivery. Transportation Research Part $\\mathrm{\\DeltaC}$ (Emerging Technologies), 54, 86–109.   \nMurray, C. C., & Raj, R. (2020). The multiple flying sidekicks traveling salesman problem: Parcel delivery with multiple drones. Transportation Research Part $\\mathrm{\\DeltaC}$ (Emerging Technologies), 110, 368–398.   \nPeng, K., Du, J., Lu, F., Sun, Q., Dong, Y., Zhou, P., et al. (2019). A hybrid genetic algorithm on routing and scheduling for vehicle-assisted multi-drone parcel delivery. IEEE Access, 7, 49191–49200.   \nPugliese, L. D. P., Guerriero, F., & Macrina, G. (2020). Using drones for parcels delivery process. Procedia Manufacturing, 42, 488–497.   \nRahmani, A., & MirHassani, S. (2014). A hybrid firefly-genetic algorithm for the capacitated facility location problem. Information Sciences, 283, 70–78.   \nRaj, R., & Murray, C. (2020). The multiple flying sidekicks traveling salesman problem with variable drone speeds. Transportation Research Part C (Emerging Technologies), 120, Article 102813.   \nRazali, N. M., Geraghty, J., et al. (2011). Genetic algorithm performance with different selection strategies in solving tsp. In Proceedings of the world congress on engineering (pp. 1–6). Hong Kong: International Association of Engineers.   \nRopke, S., & Pisinger, D. (2006). An adaptive large neighborhood search heuristic for the pickup and delivery problem with time windows. Transportation Science, 40, 455–472.   \nSong, B. D., Park, K., & Kim, J. (2018). Persistent uav delivery logistics: Milp formulation and efficient heuristic. Computers & Industrial Engineering, 120, 418–428.   \nSundar, K., & Rathinam, S. (2013). Algorithms for routing an unmanned aerial vehicle in the presence of refueling depots. IEEE Transactions on Automation Science and Engineering, 11, 287–294.   \nTamke, F., & Buscher, U. (2021). A branch-and-cut algorithm for the vehicle routing problem with drones. Transportation Research, Part B (Methodological), 144, 174–203.   \nTorabbeigi, M., Lim, G. J., & Kim, S. J. (2020). Drone delivery scheduling optimization considering payload-induced battery consumption rates. Journal of Intelligent and Robotic Systems, 97, 471–487.   \nToth, P., & Vigo, D. (2002). Models, relaxations and exact approaches for the capacitated vehicle routing problem. Discrete Applied Mathematics, 123, 487–512.   \nWalmart (2020). Walmart now piloting on-demand drone delivery with flytrex. https://corporate.walmart.com/newsroom/2020/09/09/walmart-now-piloting-ondem{and-drone-delivery-with-flytrex} Accessed Sep 9, 2020.   \nWang, X., Poikonen, S., & Golden, B. (2017). The vehicle routing problem with drones: several worst-case results. Optimization Letters, 11, 679–697. ",
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "",
+        "page_idx": 12
+    }
+]

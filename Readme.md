@@ -48,3 +48,5 @@ magic-pdf -p /workspace/input_images/'NCCN Breast Cancer Guidelines 6.2024 Nov.1
      > :tada:
      >
 
+## Pdf_Parse_MinerU
+    - allow batch process a folder
