@@ -1,184 +1,55 @@
-# Use the official Ubuntu base image
-FROM ubuntu:22.04
+# MinerU 3.x (latest) — GPU Docker Image
+#
+# Base image: vllm/vllm-openai — supports Volta / Turing / Ampere / Ada / Hopper / Blackwell
+# (Compute Capability 7.0 – 12.0)
+# Requires host NVIDIA driver ≥ CUDA 12.9.1  (check with: nvidia-smi)
+#
+# Build:
+#   docker build -t mineru:latest .
+#
+# Run (GPU, default hybrid-auto-engine backend):
+#   ./docker_run.sh
+#
+# Run (CPU / pipeline-only, any machine):
+#   BACKEND=pipeline ./docker_run.sh
 
-# Set environment variables to non-interactive to avoid prompts during installation
-ENV DEBIAN_FRONTEND=noninteractive
-ENV container docker
+FROM vllm/vllm-openai:v0.11.2
 
-# Install systemd and other necessary packages
+# ── NVIDIA GPU runtime (expose all GPUs, compute + utility caps) ──────────────
+ENV NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+# ── System dependencies: OpenCV + CJK/Unicode fonts ───────────────────────────
 RUN apt-get update && \
     apt-get install -y \
-        systemd \
-        curl \
-        software-properties-common \
-        pciutils \
-        lshw \
-        ssh \
-        python3.10 \
-        python3.10-venv \
-        python3.10-distutils \
-        python3-pip \
-        wget \
-        git \
-        libgl1 \
-        libglib2.0-0 && \
-    apt-get clean
-
-# VOLUME for systemd to work properly
-VOLUME ["/sys/fs/cgroup"]
-
-# Install additional dependencies and set up Python environment
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get install -y python3.10 && \
+        fonts-noto-core \
+        fonts-noto-cjk \
+        fontconfig \
+        libgl1 && \
+    fc-cache -fv && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Set Python 3.10 as the default python3
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+# ── Install latest MinerU (pipeline + VLM + Gradio backends) ──────────────────
+RUN python3 -m pip install -U 'mineru[core]' --break-system-packages && \
+    python3 -m pip cache purge
 
-# Create a virtual environment for MinerU
-RUN python3 -m venv /opt/mineru_venv
+# ── Download all models at build time (offline / air-gapped use) ──────────────
+RUN mineru-models-download -s huggingface -m all
 
-# Activate the virtual environment and install necessary Python packages
-RUN /bin/bash -c "source /opt/mineru_venv/bin/activate && \
-    pip3 install --upgrade pip && \
-    wget https://github.com/opendatalab/MinerU/raw/master/docker/global/requirements.txt -O requirements.txt && \
-    pip3 install -r requirements.txt --extra-index-url https://wheels.myhloli.com && \
-    pip3 install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/"
-
-# Copy the configuration file template and install magic-pdf latest
-RUN /bin/bash -c "wget https://github.com/opendatalab/MinerU/raw/master/magic-pdf.template.json && \
-    cp magic-pdf.template.json /root/magic-pdf.json && \
-    source /opt/mineru_venv/bin/activate && \
-    pip3 install -U magic-pdf"
-
-# Download models and update the configuration file
-RUN /bin/bash -c "pip3 install huggingface_hub && \
-    wget https://github.com/opendatalab/MinerU/raw/master/scripts/download_models_hf.py -O download_models.py && \
-    python3 download_models.py && \
-    sed -i 's|cpu|cuda|g' /root/magic-pdf.json"
-
-# Append virtual environment activation to .bashrc
-RUN echo "source /opt/mineru_venv/bin/activate" >> ~/.bashrc
-
-# Set the working directory
+# ── Workspace ─────────────────────────────────────────────────────────────────
 WORKDIR /workspace
-
-# Create directories for input and output images
 RUN mkdir -p /workspace/input_images /workspace/output_images && \
     chmod -R 777 /workspace
 
-# Create and set up the front_ui folder
-RUN mkdir -p /workspace/front_ui && \
-    chmod -R 777 /workspace/front_ui
+# ── Batch-processing helper script ────────────────────────────────────────────
+COPY process_all.sh /usr/local/bin/process_all.sh
+RUN chmod +x /usr/local/bin/process_all.sh
 
-# Install Ollama, LangChain, and other required Python packages
-RUN /bin/bash -c "pip install -qq ollama langchain langchain-core langchain-community beautifulsoup4 chromadb gradio"
+# ── Entry point: use locally downloaded models, GPU backend by default ─────────
+# Default backend: hybrid-auto-engine (GPU VLM acceleration).
+# Override with: docker run -e BACKEND=pipeline ... (CPU fallback)
+ENV BACKEND=hybrid-auto-engine
 
-# Set the entry point for persistent interactive shell
-ENTRYPOINT ["/bin/bash"]
-
-# Set default command to run systemd and Ollama services
-CMD ["/bin/bash", "-c", "ollama serve & ollama pull llama3 & ollama pull nomic-embed-text & /lib/systemd/systemd"]
-
-
-
-
-
-# # Use the official Ubuntu base image
-# FROM ubuntu:22.04
-
-# # Set environment variables to non-interactive to avoid prompts during installation
-# ENV DEBIAN_FRONTEND=noninteractive
-
-# ENV container docker
-
-# RUN apt-get update && \
-#     apt-get install -y systemd && \
-#     apt-get clean
-
-# VOLUME [ "/sys/fs/cgroup" ]
-
-# CMD ["/lib/systemd/systemd"]
-
-
-# # Update the package list and install necessary packages
-# RUN apt-get update && \
-#     apt-get install -y \
-#         software-properties-common && \
-#     add-apt-repository ppa:deadsnakes/ppa && \
-#     apt-get update && \
-#     apt-get install -y \
-#         python3.10 \
-#         python3.10-venv \
-#         python3.10-distutils \
-#         python3-pip \
-#         wget \
-#         git \
-#         libgl1 \
-#         libglib2.0-0 \
-#         && rm -rf /var/lib/apt/lists/*
-
-# # Set Python 3.10 as the default python3
-# RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
-
-# # Create a virtual environment for MinerU
-# RUN python3 -m venv /opt/mineru_venv
-
-# # Activate the virtual environment and install necessary Python packages
-# RUN /bin/bash -c "source /opt/mineru_venv/bin/activate && \
-#     pip3 install --upgrade pip && \
-#     wget https://github.com/opendatalab/MinerU/raw/master/docker/global/requirements.txt -O requirements.txt && \
-#     pip3 install -r requirements.txt --extra-index-url https://wheels.myhloli.com && \
-#     pip3 install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/"
-
-# # Copy the configuration file template and install magic-pdf latest
-# RUN /bin/bash -c "wget https://github.com/opendatalab/MinerU/raw/master/magic-pdf.template.json && \
-#     cp magic-pdf.template.json /root/magic-pdf.json && \
-#     source /opt/mineru_venv/bin/activate && \
-#     pip3 install -U magic-pdf"
-
-# # Download models and update the configuration file
-# RUN /bin/bash -c "pip3 install huggingface_hub && \
-#     wget https://github.com/opendatalab/MinerU/raw/master/scripts/download_models_hf.py -O download_models.py && \
-#     python3 download_models.py && \
-#     sed -i 's|cpu|cuda|g' /root/magic-pdf.json"
-
-# # Append virtual environment activation to .bashrc
-# RUN echo "source /opt/mineru_venv/bin/activate" >> ~/.bashrc
-
-# # Set the working directory
-# WORKDIR /workspace
-
-# # Create directories for input and output images
-# RUN mkdir -p /workspace/input_images /workspace/output_images && \
-#     chmod -R 777 /workspace
-
-# # Create and set up the front_ui folder
-# RUN mkdir -p /workspace/front_ui && \
-#     chmod -R 777 /workspace/front_ui
-
-
-
-# # FROM HERE
-
-
-# RUN apt-get update && apt-get install -y curl && \
-#     rm -rf /var/lib/apt/lists/*
-
-# RUN apt update && apt install -y systemd && apt clean
-
-# RUN apt-get update && apt-get install -y \
-#     pciutils \
-#     lshw \
-#     && apt-get clean
-
-# RUN apt update && apt install -y ssh systemd
-
-# RUN curl -fsSL https://ollama.com/install.sh | sh
-
-
-# # UNTIL HERE
-
-# # Set the entry point for persistent interactive shell
-# ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-c", "export MINERU_MODEL_SOURCE=local && exec \"$@\"", "--"]
+CMD ["/bin/bash"]
