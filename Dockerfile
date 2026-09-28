@@ -1,55 +1,64 @@
-# MinerU 3.x (latest) — GPU Docker Image
+# MinerU — CPU/GPU pipeline backend (slim build)
 #
-# Base image: vllm/vllm-openai — supports Volta / Turing / Ampere / Ada / Hopper / Blackwell
-# (Compute Capability 7.0 – 12.0)
-# Requires host NVIDIA driver ≥ CUDA 12.9.1  (check with: nvidia-smi)
+# Image size: ~3 GB  (vs ~30 GB with vllm base + bundled models)
+# GPU support: torch + PaddleOCR use GPUs automatically when available
+# Models:      downloaded once at first container start into /models (mounted volume)
+#              → subsequent starts are instant
 #
 # Build:
-#   docker build -t mineru:latest .
+#   docker compose build mineru
 #
-# Run (GPU, default hybrid-auto-engine backend):
-#   ./docker_run.sh
-#
-# Run (CPU / pipeline-only, any machine):
-#   BACKEND=pipeline ./docker_run.sh
+# Run (via compose):
+#   docker compose up -d mineru
+#   docker compose exec mineru process_all.sh
 
-FROM vllm/vllm-openai:v0.11.2
+FROM python:3.12-slim
 
-# ── NVIDIA GPU runtime (expose all GPUs, compute + utility caps) ──────────────
-ENV NVIDIA_VISIBLE_DEVICES=all \
-    NVIDIA_DRIVER_CAPABILITIES=compute,utility
-
-# ── System dependencies: OpenCV + CJK/Unicode fonts ───────────────────────────
+# ── System deps: OpenCV + PaddleOCR + CJK/Unicode fonts ──────────────────────
 RUN apt-get update && \
-    apt-get install -y \
-        fonts-noto-core \
-        fonts-noto-cjk \
-        fontconfig \
-        libgl1 && \
+    apt-get install -y --no-install-recommends \
+        libgl1 libglib2.0-0 libsm6 libxext6 libxrender-dev \
+        libgomp1 gosu \
+        fonts-noto-core fonts-noto-cjk fontconfig \
+        wget curl && \
     fc-cache -fv && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# ── Install latest MinerU (pipeline + VLM + Gradio backends) ──────────────────
-RUN python3 -m pip install -U 'mineru[core]' --break-system-packages && \
-    python3 -m pip cache purge
+# ── Install torch pinned to a build that still supports Volta (sm_70) ───────
+# The current default 'pip install torch' pulls a CUDA-13 build (torch>=2.12)
+# whose kernels are only compiled for sm_75+ — this breaks Tesla V100 GPUs
+# (compute capability 7.0) with "CUDA error: no kernel image is available for
+# execution on the device". torch/torchvision 2.4.1/0.19.1 (cu121) still
+# include sm_70 kernels and are new enough for mineru's 'torch<3' requirement.
+RUN pip install --no-cache-dir torch==2.4.1 torchvision==0.19.1 \
+        --index-url https://download.pytorch.org/whl/cu121
 
-# ── Download all models at build time (offline / air-gapped use) ──────────────
-RUN mineru-models-download -s huggingface -m all
+# ── Install MinerU (core + pipeline backend, no vllm) ────────────────────────
+# Installed after torch so pip sees the pinned torch already satisfies
+# mineru's 'torch<3' constraint and does not upgrade it.
+RUN pip install --no-cache-dir 'mineru[core]' && \
+    pip cache purge
 
 # ── Workspace ─────────────────────────────────────────────────────────────────
 WORKDIR /workspace
-RUN mkdir -p /workspace/input_images /workspace/output_images && \
-    chmod -R 777 /workspace
+RUN mkdir -p /workspace/input_images /workspace/output_images /models && \
+    chmod -R 777 /workspace /models
 
-# ── Batch-processing helper script ────────────────────────────────────────────
+# ── Batch-processing helper script ───────────────────────────────────────────
 COPY process_all.sh /usr/local/bin/process_all.sh
 RUN chmod +x /usr/local/bin/process_all.sh
 
-# ── Entry point: use locally downloaded models, GPU backend by default ─────────
-# Default backend: hybrid-auto-engine (GPU VLM acceleration).
-# Override with: docker run -e BACKEND=pipeline ... (CPU fallback)
-ENV BACKEND=hybrid-auto-engine
+# ── Environment ──────────────────────────────────────────────────────────────
+# BACKEND=pipeline: CPU/GPU layout+OCR pipeline (no VLM overhead)
+# Models are downloaded to /models (bind-mounted → persists on host)
+ENV BACKEND=pipeline \
+    MINERU_MODEL_SOURCE=local
 
-ENTRYPOINT ["/bin/bash", "-c", "export MINERU_MODEL_SOURCE=local && exec \"$@\"", "--"]
-CMD ["/bin/bash"]
+# ── Entrypoint: download pipeline models on first run, then idle ──────────────
+COPY mineru_entrypoint.sh /usr/local/bin/mineru_entrypoint.sh
+RUN chmod +x /usr/local/bin/mineru_entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/mineru_entrypoint.sh"]
+CMD ["tail", "-f", "/dev/null"]
+

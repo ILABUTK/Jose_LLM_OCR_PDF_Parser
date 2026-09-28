@@ -1,0 +1,32 @@
+# Zotero translation-server
+# ──────────────────────────
+# Headless Zotero with ~650 publisher-specific scrapers that know exactly
+# where the PDF link lives on each journal site (Elsevier, Wiley, IEEE,
+# Springer, ACS, RSC, T&F, IOP, Cambridge, …).
+#
+# Used by bib_enrich_download.py as a "smart" fallback before Playwright.
+#
+# Start:   docker compose -f zotero/docker-compose.yml up -d
+# Stop:    docker compose -f zotero/docker-compose.yml down
+# Logs:    docker compose -f zotero/docker-compose.yml logs -f
+# API:     http://localhost:1969/web   (POST {"url": "https://doi.org/..."})
+#
+# Quick test:
+#   curl -d '{"url":"https://doi.org/10.1038/s41467-023-36655-1"}' \
+#        -H "Content-Type: application/json" \
+#        http://localhost:1969/web | jq '.[0].attachments'
+
+services:
+  zotero-translation-server:
+    image: zotero/translation-server:2.0.4   # latest tag is arm64-only; 2.0.4 is the last amd64 build
+    container_name: zotero-translation-server
+    restart: unless-stopped
+    ports:
+      - "1969:1969"
+    environment:
+      - LOG_LEVEL=info
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

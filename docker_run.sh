@@ -8,8 +8,8 @@
 #   BACKEND=vlm-auto-engine ./docker_run.sh
 #
 # Volumes mounted automatically:
-#   ./mineru/input_images  → /workspace/input_images   (put PDFs/images here)
-#   ./mineru/output_images → /workspace/output_images  (results appear here)
+#   ./mineru/PDFs/files    → /workspace/input_images   (numbered subfolders, each with one PDF)
+#   ./mineru/output_images → /workspace/output_images  (results appear here, one folder per ref#)
 #
 # The script skips files already processed (--continue behaviour).
 # ─────────────────────────────────────────────────────────────────────────────
@@ -27,7 +27,7 @@ docker run --gpus all \
     --shm-size 16g \
     --rm \
     -e BACKEND="$BACKEND" \
-    -v "$SCRIPT_DIR/mineru/input_images:/workspace/input_images" \
+    -v "$SCRIPT_DIR/mineru/PDFs/files:/workspace/input_images" \
     -v "$SCRIPT_DIR/mineru/output_images:/workspace/output_images" \
     mineru:latest \
     process_all.sh

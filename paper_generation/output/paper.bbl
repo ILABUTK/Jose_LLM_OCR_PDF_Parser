@@ -1,0 +1,52 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{zhao_burnup_2013}
+J.~Zhao, Y.~W. Yang, S.~C. Xiao, Z.~W. Zhou, Burnup analysis of thorium-uranium based molten salt blanket in a fusion-fission hybrid reactor, Fusion Science and Technology (2013).
+\newblock \href {https://doi.org/10.13182/fst13-a19145} {\path{doi:10.13182/fst13-a19145}}.
+
+\bibitem{tan_scalable_2025}
+G.~F. Tan, Q.~L. Zhou, Y.~Oya, Y.~C. Zhang, C.~A. Wang, Y.~H. Dong, Scalable fabrication and deuterium release properties of li2tio3-li2zro3 ceramic pebbles via centrifugal granulation, Journal of Nuclear Materials (2025).
+\newblock \href {https://doi.org/10.1016/j.jnucmat.2025.155933} {\path{doi:10.1016/j.jnucmat.2025.155933}}.
+
+\bibitem{ruegsegger_scoping_2023}
+J.~Ruegsegger, C.~Moreno, M.~Nyberg, T.~Bohm, P.~P.~H. Wilson, B.~Lindley, Scoping studies for a lead-lithium-cooled, minor-actinide-burning, fission-fusion hybrid reactor design, Nuclear Science and Engineering (2023).
+\newblock \href {https://doi.org/10.1080/00295639.2022.2154118} {\path{doi:10.1080/00295639.2022.2154118}}.
+
+\bibitem{gu_effects_2021}
+S.~X. Gu, B.~L. Ji, Q.~Qi, J.~Wang, H.~S. Zhou, Y.~C. Zhang, G.~N. Luo, Effects of he irradiation on the microstructure and mechanical performance of li2tio3, Nuclear Fusion (2021).
+\newblock \href {https://doi.org/10.1088/1741-4326/ac18de} {\path{doi:10.1088/1741-4326/ac18de}}.
+
+\bibitem{kinjyo_tritium_2004}
+T.~Kinjyo, M.~Nishikawa, Tritium release behavior from li4sio4, Fusion Science and Technology (2004).
+\newblock \href {https://doi.org/10.13182/fst04-a591} {\path{doi:10.13182/fst04-a591}}.
+
+\bibitem{wu_experiment_2024}
+W.~H. Wu, H.~X. Wang, X.~W. Fu, J.~Q. Wang, Z.~K. Zeng, F.~Xu, D.~Xiao, Y.~Zhang, S.~W. Zhang, S.~Z. Chen, T.~S. Li, Y.~H. Park, Experiment study on tritium release behavior of li2tio3 ceramic breeder irradiated by 14 mev fusion neutron, International Journal of Hydrogen Energy (2024).
+\newblock \href {https://doi.org/10.1016/j.ijhydene.2024.04.256} {\path{doi:10.1016/j.ijhydene.2024.04.256}}.
+
+\bibitem{nishikawa_release_2004}
+M.~Nishikawa, T.~Kinjyo, T.~Ishizaka, S.~Beloglazov, T.~Takeishi, M.~Enoeda, T.~Tanifuji, Release behavior of bred tritium from lialo2, Journal of Nuclear Materials (2004).
+\newblock \href {https://doi.org/10.1016/j.jnucmat.2004.07.032} {\path{doi:10.1016/j.jnucmat.2004.07.032}}.
+
+\bibitem{tanaka_blanket_2000}
+S.~Tanaka, Y.~Ohara, H.~Kawamura, Blanket r\&d activities in japan towards fusion power reactors, Fusion Engineering and Design (2000).
+\newblock \href {https://doi.org/10.1016/S0920-3796(00)00295-7} {\path{doi:10.1016/S0920-3796(00)00295-7}}.
+
+\bibitem{ananyev_simulation_2020}
+S.~S. Ananyev, A.~Y. Dnestrovskij, A.~S. Kukushkin, A.~V. Spitsyn, B.~V. Kuteev, Simulation of fuel flows in injection systems of demo-fns hybrid facility involving coupled modeling of the core and divertor plasmas, Physics of Atomic Nuclei (2020).
+\newblock \href {https://doi.org/10.1134/s1063778820070017} {\path{doi:10.1134/s1063778820070017}}.
+
+\bibitem{kanazawa_study_2011}
+T.~Kanazawa, M.~Nishikawa, H.~Yamasaki, K.~Katayama, H.~Kashimura, T.~Hanada, S.~Fukada, Study on tritium release behavior from li2zro3, Fusion Science and Technology (2011).
+\newblock \href {https://doi.org/10.13182/fst11-a12623} {\path{doi:10.13182/fst11-a12623}}.
+
+\bibitem{konishi_functional_2017}
+S.~Konishi, M.~Enoeda, M.~Nakamichi, T.~Hoshino, A.~Ying, S.~Sharafat, S.~Smolentsev, Functional materials for breeding blankets-status and developments, Nuclear Fusion (2017).
+\newblock \href {https://doi.org/10.1088/1741-4326/aa7e4e} {\path{doi:10.1088/1741-4326/aa7e4e}}.
+
+\end{thebibliography}

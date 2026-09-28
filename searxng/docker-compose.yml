@@ -1,0 +1,33 @@
+# SearXNG — privacy-respecting meta-search engine
+# Used by bib_enrich_download.py as a fallback PDF finder
+#
+# Start:   docker compose -f searxng/docker-compose.yml up -d
+# Stop:    docker compose -f searxng/docker-compose.yml down
+# Logs:    docker compose -f searxng/docker-compose.yml logs -f
+# UI:      http://localhost:8080
+# API:     http://localhost:8080/search?q=...&format=json
+
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./settings.yml:/etc/searxng/settings.yml:ro
+    environment:
+      - SEARXNG_SECRET_KEY=948b8ff3c9d4aec7f10be48f510f02b352aca106f9ee93fb3bc1a1523fa319cc
+      - SEARXNG_BASE_URL=http://localhost:8080/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

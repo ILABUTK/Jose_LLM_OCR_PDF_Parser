@@ -1,0 +1,374 @@
+{
+  "source": "/home/jose/Jose_LLM_OCR_PDF_Parser/mineru/output_images/05082026-Article-BNT Review-draft 2 clean/auto/05082026-Article-BNT Review-draft 2 clean.md",
+  "section_count": 18,
+  "tree": [
+    {
+      "id": "sec_000",
+      "level": 0,
+      "title": "Highlights",
+      "word_count": 72,
+      "has_table": false,
+      "has_figure": false,
+      "citation_count": 0,
+      "role": "frontmatter",
+      "purpose": "Provides a concise bulleted summary of the review's scope, key material properties examined, and manufacturing insights.",
+      "expected_evidence": [
+        "literature_synthesis",
+        "recommendation"
+      ],
+      "research_questions_addressed": [
+        "What are the primary themes and key findings of this review on Li-ceramic solid breeders?"
+      ],
+      "preview": "1. Reviews literature of Li-ceramic solid breeders in contrast to liquid breeder materials to be used in fusion reactors.\n\n2. Examines the material preparation, physical, mechanical and thermal properties of Li-ceramics for solid breeding.\n\n3. Investigates the irradiation alteration of Li-ceramic pr",
+      "children": [
+        {
+          "id": "sec_001",
+          "level": 1,
+          "title": "1. Introduction",
+          "word_count": 735,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 11,
+          "role": "motivation",
+          "purpose": "Establishes the context of nuclear fusion energy and justifies the critical need for efficient tritium breeding systems.",
+          "expected_evidence": [
+            "literature_synthesis"
+          ],
+          "research_questions_addressed": [
+            "Why is nuclear fusion a priority for future energy?",
+            "What fundamental challenges necessitate a comprehensive review of tritium breeding materials?"
+          ],
+          "preview": "Nuclear energy is categorized into two areas: nuclear fission or nuclear fusion. Fission, the process of splitting a heavy atom, in most cases, uranium into smaller fragments via neutron bombardment to release energy was first discovered by O. Hahn and F. Strassmann and later expanded on by L. Meitn",
+          "children": []
+        },
+        {
+          "id": "sec_002",
+          "level": 1,
+          "title": "2. Candidates for T Breeding",
+          "word_count": 685,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 11,
+          "role": "background",
+          "purpose": "Evaluates the nuclear advantages of tritium fuel and explains the necessity of lithium-based materials to overcome natural scarcity.",
+          "expected_evidence": [
+            "literature_synthesis",
+            "theoretical_model"
+          ],
+          "research_questions_addressed": [
+            "Why is tritium the preferred fusion fuel?",
+            "Why are lithium-containing compounds the leading candidates for tritium breeding?"
+          ],
+          "preview": "T is the preferred fuel for a fusion reaction to maintain self-sufficiency and is utilized due to advantages like higher reactivity, access to ignition and high gain, and significant energy release per reaction compared to other fuels [19]. The glaring issue is that the natural abundance of T is nea",
+          "children": [
+            {
+              "id": "sec_003",
+              "level": 2,
+              "title": "2.1. Solid Breeder Ceramic Preparations",
+              "word_count": 589,
+              "has_table": false,
+              "has_figure": false,
+              "citation_count": 8,
+              "role": "methods",
+              "purpose": "Catalogs and compares established ceramic synthesis and processing techniques used to fabricate solid breeder materials.",
+              "expected_evidence": [
+                "literature_synthesis",
+                "comparison_table"
+              ],
+              "research_questions_addressed": [
+                "What are the standard methods for preparing solid breeder ceramics?",
+                "How do different synthesis routes compare in terms of process complexity and material quality?"
+              ],
+              "preview": "Ceramic materials are commonly prepared in four stages- synthesis, shaping, sintering, and characterization. The first stage is preparation of the ceramic powder which can be achieved via multiple different methods, such as solid-state reactions, sol-gel, solution combustion, hydrothermal synthesis,",
+              "children": []
+            },
+            {
+              "id": "sec_004",
+              "level": 2,
+              "title": "2.2. Mechanical Properties",
+              "word_count": 443,
+              "has_table": false,
+              "has_figure": false,
+              "citation_count": 7,
+              "role": "background",
+              "purpose": "Synthesizes existing data on the mechanical characteristics of ceramic breeders and their performance under extreme reactor environments.",
+              "expected_evidence": [
+                "literature_synthesis",
+                "experimental_data",
+                "comparison_table"
+              ],
+              "research_questions_addressed": [
+                "How do mechanical properties like strength and elasticity affect breeder reliability?",
+                "What are the key mechanical degradation mechanisms under neutron irradiation?"
+              ],
+              "preview": "Ceramic mechanical and physical properties, including phase, strength, elasticity (Young\u2019s modulus), hardness, density, and pore size, affect the T breeding reliability. Maintaining mechanical and physical properties under neutron irradiation and extreme heating environments is critical for reliable",
+              "children": []
+            },
+            {
+              "id": "sec_005",
+              "level": 2,
+              "title": "2.3. Thermal Properties",
+              "word_count": 556,
+              "has_table": false,
+              "has_figure": false,
+              "citation_count": 3,
+              "role": "background",
+              "purpose": "Reviews the thermal stability and heat resistance of candidate materials to assess their viability for long-term reactor operation.",
+              "expected_evidence": [
+                "literature_synthesis",
+                "experimental_data"
+              ],
+              "research_questions_addressed": [
+                "Can candidate materials withstand the high-temperature demands of fusion reactors?",
+                "How do thermal properties influence long-term structural integrity under irradiation?"
+              ],
+              "preview": "Thermal property analysis of materials is essential to understanding if a given materials can withstand the high temperatures of a nuclear reactor and whether or not the thermal effects will also induce mechanical effects. Candidate materials must withstand long durations under high temperature to b",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "sec_006",
+          "level": 1,
+          "title": "3. Irradiation Effects on Ceramic Materials",
+          "word_count": 0,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 0,
+          "role": "background",
+          "purpose": "Establishes the fundamental context and scope of how irradiation impacts ceramic materials in fusion reactor environments.",
+          "expected_evidence": [
+            "literature_synthesis",
+            "theoretical_model"
+          ],
+          "research_questions_addressed": [
+            "How does irradiation fundamentally affect ceramic materials?",
+            "What are the primary damage mechanisms in fusion environments?"
+          ],
+          "preview": "",
+          "children": [
+            {
+              "id": "sec_007",
+              "level": 2,
+              "title": "3.1. Property Alteration",
+              "word_count": 799,
+              "has_table": false,
+              "has_figure": false,
+              "citation_count": 11,
+              "role": "background",
+              "purpose": "Synthesizes experimental and theoretical findings on how irradiation alters the physical and chemical properties of structural and breeder ceramics.",
+              "expected_evidence": [
+                "literature_synthesis",
+                "experimental_data",
+                "comparison_table"
+              ],
+              "research_questions_addressed": [
+                "How do different irradiation sources compare in altering material properties?",
+                "What specific physical and chemical changes occur under neutron and surrogate irradiation?"
+              ],
+              "preview": "It is known that neutron irradiation damage of structural material and breeder ceramic is an important issue of consideration for fusion studies, however, neutron sources are difficult for some to access leading to other sources such as ion and electron irradiation to be used as surrogates [77-81]. ",
+              "children": []
+            },
+            {
+              "id": "sec_008",
+              "level": 2,
+              "title": "3.2. Tritium Recovery",
+              "word_count": 1008,
+              "has_table": false,
+              "has_figure": false,
+              "citation_count": 10,
+              "role": "background",
+              "purpose": "Explains the mechanisms, requirements, and challenges associated with tritium breeding and recovery in fusion reactor blankets.",
+              "expected_evidence": [
+                "literature_synthesis",
+                "theoretical_model",
+                "experimental_data"
+              ],
+              "research_questions_addressed": [
+                "What conditions are required for tritium self-sufficiency?",
+                "How does tritium migrate and release within solid breeder materials?"
+              ],
+              "preview": "T release rate, burn-up ratio, and chemical form of the tritiated species within the fusion core are integral to maintaining self-sufficiency of the reactor. Obtaining T burn-up ratio (TBR) greater than 1.0 ensures that the production-consumption ratio maintains or exceeds the initial input of T, al",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "sec_009",
+          "level": 1,
+          "title": "4. Advanced Ceramic Development for Fusion Reactors",
+          "word_count": 898,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 14,
+          "role": "background",
+          "purpose": "Reviews recent advancements in synthesizing and optimizing ceramic materials to enhance tritium diffusion and structural longevity.",
+          "expected_evidence": [
+            "literature_synthesis",
+            "experimental_data",
+            "theoretical_model"
+          ],
+          "research_questions_addressed": [
+            "How can ceramic properties and structures be optimized for fusion breeding blankets?",
+            "What novel synthesis methods improve tritium breeding performance?"
+          ],
+          "preview": "Advances in materials development is encouraged for T breeder ceramics in order to optimize T diffusion, mechanical and thermal properties, and blanket module longevity. Optimization is accomplished one of two ways: manipulation of the materials properties or manipulation of the structure. Zhong et ",
+          "children": []
+        },
+        {
+          "id": "sec_010",
+          "level": 1,
+          "title": "5. Gaps and Recommendations",
+          "word_count": 200,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 3,
+          "role": "gaps",
+          "purpose": "Identifies current research limitations and proposes future directions, emphasizing the integration of AI/ML and advanced manufacturing techniques.",
+          "expected_evidence": [
+            "recommendation",
+            "open_question",
+            "literature_synthesis"
+          ],
+          "research_questions_addressed": [
+            "What are the current limitations in fusion materials research?",
+            "How can AI/ML and advanced manufacturing accelerate materials development?"
+          ],
+          "preview": "Because of the advancement of 3D printing technology, machine learning (ML) and artificial intelligence (AL), and the need to have a sustainable energy source, fusion materials research and development is being heavily pursued. AI/ML is becoming core tool for materials research as it can be used to ",
+          "children": []
+        },
+        {
+          "id": "sec_011",
+          "level": 1,
+          "title": "6. Conclusions",
+          "word_count": 165,
+          "has_table": false,
+          "has_figure": false,
+          "citation_count": 0,
+          "role": "conclusion",
+          "purpose": "Summarizes the key findings regarding irradiation effects and material performance to identify the most promising ceramic candidates for fusion applications.",
+          "expected_evidence": [
+            "literature_synthesis",
+            "recommendation"
+          ],
+          "research_questions_addressed": [
+            "Which ceramic materials demonstrate the most promise for fusion reactor applications?",
+            "What is the overall state of knowledge regarding irradiation effects on breeding ceramics?"
+          ],
+          "preview": "Irradiation induced changes to chemical, physical, mechanical, and thermal properties play a critical role in the selection of solid breeding ceramics for fusion reactor applications. A review of the literature identifies $\\mathrm { L i } _ { 2 } \\mathrm { T i O } _ { 3 }$ and $\\mathrm { L i } _ { 4",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "sec_012",
+      "level": 0,
+      "title": "Funding",
+      "word_count": 48,
+      "has_table": false,
+      "has_figure": false,
+      "citation_count": 0,
+      "role": "backmatter",
+      "purpose": "Discloses the financial support and institutional affiliations that enabled the research.",
+      "expected_evidence": [
+        "funding_statement",
+        "administrative_documentation"
+      ],
+      "research_questions_addressed": [],
+      "preview": "This research was conducted at the Oak Ridge National Laboratory, managed by UT-Battelle, LLC for the U.S. Department of Energy (DOE) and is sponsored by the Office of Fusion Energy Sciences through the Fusion Innovation Research Engine (FIRE) Collaborative: Accelerating Fusion Blanket Development t",
+      "children": []
+    },
+    {
+      "id": "sec_013",
+      "level": 0,
+      "title": "Acknowledgements",
+      "word_count": 90,
+      "has_table": false,
+      "has_figure": false,
+      "citation_count": 0,
+      "role": "backmatter",
+      "purpose": "Recognizes contributors and states publishing rights and legal disclaimers.",
+      "expected_evidence": [
+        "acknowledgement_statement",
+        "legal_statement"
+      ],
+      "research_questions_addressed": [],
+      "preview": "This manuscript has been authored by UT-Battelle, LLC under Contract No.DE-AC05-00OR22725 with the U.S. Department of Energy. The United States Government retains and the publisher, by accepting the article for publication, acknowledges that the United States Government retains a non-exclusive, paid",
+      "children": []
+    },
+    {
+      "id": "sec_014",
+      "level": 0,
+      "title": "CRediT Authorship Contribution Statement",
+      "word_count": 38,
+      "has_table": false,
+      "has_figure": false,
+      "citation_count": 0,
+      "role": "backmatter",
+      "purpose": "Details the specific intellectual and technical contributions of each author to the work.",
+      "expected_evidence": [
+        "contribution_statement",
+        "administrative_documentation"
+      ],
+      "research_questions_addressed": [],
+      "preview": "Gabriel D. Parker: Conceptualization, Methodology, Validation, Formal Analysis, Investigation, Data Curation, Writing \u2013 Original Draft, Writing \u2013 Review & Editing, Visualization. Xiao-Ying Yu: Conceptualization, Software, Validation, Investigation, Resources, Writing \u2013 Review & Editing, Supervision,",
+      "children": []
+    },
+    {
+      "id": "sec_015",
+      "level": 0,
+      "title": "Declaration of Competing Interest",
+      "word_count": 27,
+      "has_table": false,
+      "has_figure": false,
+      "citation_count": 0,
+      "role": "backmatter",
+      "purpose": "Asserts the absence of commercial or financial relationships that could bias the research.",
+      "expected_evidence": [
+        "conflict_declaration",
+        "administrative_documentation"
+      ],
+      "research_questions_addressed": [],
+      "preview": "The authors declare that the research was conducted in the absence of any commercial or financial\n\nrelationship that could be construed as a potential conflict of interest.",
+      "children": []
+    },
+    {
+      "id": "sec_016",
+      "level": 0,
+      "title": "Data Availability",
+      "word_count": 4606,
+      "has_table": false,
+      "has_figure": true,
+      "citation_count": 149,
+      "role": "backmatter",
+      "purpose": "Provides references and access instructions for the literature and datasets underpinning the review.",
+      "expected_evidence": [
+        "literature_synthesis",
+        "data_reference",
+        "citation_list"
+      ],
+      "research_questions_addressed": [],
+      "preview": "Data provided here can be found in open literature.\n\n[1] O. Hahn, F. Strassmann, \u00dcber den Nachweis und das Verhalten der bei der Bestrahlung des Urans mittels Neutronen entstehenden Erdalkalimetalle, Naturwissenschaften, 27 (1939) 11-15.\n\n[2] L. Meitner, O.R. Frisch, Products of the Fission of the U",
+      "children": []
+    },
+    {
+      "id": "sec_017",
+      "level": 0,
+      "title": "Tables",
+      "word_count": 18,
+      "has_table": false,
+      "has_figure": true,
+      "citation_count": 0,
+      "role": "other",
+      "purpose": "Compiles comparative tabular data on the mechanical and thermal properties of solid breeder materials.",
+      "expected_evidence": [
+        "comparison_table",
+        "experimental_data",
+        "literature_synthesis"
+      ],
+      "research_questions_addressed": [],
+      "preview": "Table 1. Mechanical properties of solid breeder candidates.  \n![](images/aa5ef6885ad6b1bf39edb5e482287899212f841b40220aeeadd8f149464c3157.jpg)\n\nTable 2. Thermal properties of solid breeder candidates.  \n![](images/53330cc9e65f5ab0fc111c4656be8534fce3431ad4f17b77a7dbd3d4815e63ac.jpg)",
+      "children": []
+    }
+  ]
+}

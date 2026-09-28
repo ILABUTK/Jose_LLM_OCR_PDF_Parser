@@ -180,3 +180,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 **/use_cases/
+zotero/zotero-data/

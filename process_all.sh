@@ -33,13 +33,42 @@ echo ""
 
 mkdir -p "$OUTPUT_DIR"
 
-# ── Collect all supported files ───────────────────────────────────────────────
+# ── Collect files: support both flat and numbered-subdir structures ───────────
+#
+#   Flat   (old): INPUT_DIR/paper.pdf   → output key = "paper"
+#   Subdir (new): INPUT_DIR/1671/foo.pdf → output key = "1671"
+#
 shopt -s nullglob
-files=()
+declare -a files=()
+declare -a keys=()
+
+# 1) Flat files at the root of INPUT_DIR
 for ext in pdf PDF png PNG jpg JPG jpeg JPEG docx DOCX pptx PPTX xlsx XLSX; do
     for f in "$INPUT_DIR"/*."$ext"; do
-        [ -f "$f" ] && files+=("$f")
+        [ -f "$f" ] || continue
+        files+=("$f")
+        stem=$(basename "$f"); keys+=("${stem%.*}")
     done
+done
+
+# 2) Numbered subdirectory structure: INPUT_DIR/NNNN/paper.pdf
+#    Uses the directory name (e.g. "1671") as the output key.
+for subdir in "$INPUT_DIR"/*/; do
+    [ -d "$subdir" ] || continue
+    ref_key=$(basename "$subdir")
+    found=0
+    for ext in pdf PDF png PNG jpg JPG jpeg JPEG docx DOCX pptx PPTX xlsx XLSX; do
+        for f in "$subdir"*."$ext"; do
+            [ -f "$f" ] || continue
+            files+=("$f")
+            keys+=("$ref_key")
+            found=1
+            break 2
+        done
+    done
+    if [ "$found" -eq 0 ]; then
+        echo "WARN  no supported file in $subdir"
+    fi
 done
 
 total=${#files[@]}
@@ -57,26 +86,42 @@ skipped=0
 failed=0
 idx=0
 
-for file in "${files[@]}"; do
+for i in "${!files[@]}"; do
+    file="${files[$i]}"
+    key="${keys[$i]}"
     idx=$((idx + 1))
     filename=$(basename "$file")
-    stem="${filename%.*}"
 
     # ── --continue: skip if the output folder already exists with content ─────
-    if [ -d "$OUTPUT_DIR/$stem" ] && [ -n "$(ls -A "$OUTPUT_DIR/$stem" 2>/dev/null)" ]; then
-        echo "[$idx/$total] SKIP  (already done) → $filename"
+    if [ -d "$OUTPUT_DIR/$key" ] && [ -n "$(ls -A "$OUTPUT_DIR/$key" 2>/dev/null)" ]; then
+        echo "[$idx/$total] SKIP  (already done) → $key ($filename)"
         skipped=$((skipped + 1))
         continue
     fi
 
-    echo "[$idx/$total] RUN   $filename"
-    if mineru -p "$file" -o "$OUTPUT_DIR" -b "$BACKEND"; then
-        echo "[$idx/$total] OK    $filename"
+    # If the key differs from the file stem (subdir mode), use a temp copy so
+    # MinerU names the output folder after the key rather than the filename.
+    file_stem="${filename%.*}"
+    if [ "$key" != "$file_stem" ]; then
+        tmp_file="/tmp/${key}.${filename##*.}"
+        cp "$file" "$tmp_file"
+        process_file="$tmp_file"
+    else
+        process_file="$file"
+        tmp_file=""
+    fi
+
+    echo "[$idx/$total] RUN   $key  ($filename)"
+    if mineru -p "$process_file" -o "$OUTPUT_DIR" -b "$BACKEND" -t false; then
+        echo "[$idx/$total] OK    $key"
         processed=$((processed + 1))
     else
-        echo "[$idx/$total] FAIL  $filename"
+        echo "[$idx/$total] FAIL  $key"
         failed=$((failed + 1))
     fi
+
+    # Clean up temp copy
+    [ -n "$tmp_file" ] && rm -f "$tmp_file"
     echo ""
 done
 

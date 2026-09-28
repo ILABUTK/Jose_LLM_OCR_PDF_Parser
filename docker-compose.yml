@@ -1,0 +1,116 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Jose LLM-OCR PDF Parser — unified 4-service stack
+#
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │  Service          Port / URL              Role                          │
+# ├─────────────────────────────────────────────────────────────────────────┤
+# │  zotero-desktop   http://localhost:3010   Zotero GUI (KasmVNC)          │
+# │  mineru           (internal)              GPU OCR processor             │
+# │  pipeline         (internal)              Python + LaTeX paper engine   │
+# │  ui               http://localhost:7860   Gradio management UI          │
+# └─────────────────────────────────────────────────────────────────────────┘
+#
+# Workflow
+# ────────
+#  1. Open Zotero at :3010 → import .bib, "Find Available PDFs"
+#     PDFs land in  mineru/PDFs/files/<ref#>/<paper>.pdf
+#
+#  2. Open UI at :7860
+#     Tab "OCR"         → triggers MinerU to parse all PDFs
+#     Tab "Ontologies"  → runs stage 01, then edit structure + style JSON
+#     Tab "Generate"    → runs stages 02-07 via the pipeline container
+#
+# Quick start
+# ───────────
+#   GPU (default):
+#     docker compose up -d --build
+#
+#   CPU fallback (no GPU / skip model download):
+#     BACKEND=pipeline docker compose up -d --build
+#
+#   Stop:
+#     docker compose down
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── 1. Zotero Desktop (KasmVNC GUI) ──────────────────────────────────────────
+  zotero-desktop:
+    image: lscr.io/linuxserver/zotero:latest
+    container_name: zotero-desktop
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - SELKIES_MANUAL_WIDTH=1600
+      - SELKIES_MANUAL_HEIGHT=900
+      - SELKIES_ENABLE_RESIZE=false
+    shm_size: "1gb"
+    ports:
+      - "3010:3000"   # HTTP  → http://localhost:3010
+      - "3011:3001"   # HTTPS → https://localhost:3011
+    volumes:
+      - ./zotero/zotero-data:/config
+      - ./mineru/bk.initial_bib:/config/initial_bib:ro
+      - ./mineru/PDFs/files:/config/pdf_files
+      - ./zotero/chromium-policies/managed:/etc/chromium/policies/managed:ro
+      - ./zotero/custom-cont-init.d:/custom-cont-init.d:ro
+
+  # ── 2. MinerU OCR ────────────────────────────────────────────────────────────
+  mineru:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mineru:latest
+    container_name: mineru
+    restart: unless-stopped
+    environment:
+      - BACKEND=${BACKEND:-pipeline}
+      - MINERU_MODEL_SOURCE=local
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./mineru/PDFs/files:/workspace/input_images
+      - ./mineru/output_images:/workspace/output_images
+      # Pipeline models persist here — downloaded once on first start
+      - ./mineru/models:/models
+
+  # ── 3. Pipeline — paper generation (Python + LaTeX) ─────────────────────────
+  pipeline:
+    build:
+      context: .
+      dockerfile: pipeline/Dockerfile
+    image: jose-llm-ocr-pipeline:latest
+    container_name: llm-pipeline
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Whole repo mounted so pipeline scripts can read/write all artifacts
+      - .:/workspace
+    # Idles — UI triggers per-stage runs via docker exec
+    command: >
+      bash -c "echo 'Pipeline ready. Trigger via UI → Ontologies / Generate tabs.' && tail -f /dev/null"
+
+  # ── 4. UI (Gradio) ───────────────────────────────────────────────────────────
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    image: jose-llm-ocr-ui:latest
+    container_name: llm-ui
+    restart: unless-stopped
+    ports:
+      - "7860:7860"
+    environment:
+      - MINERU_CONTAINER=mineru
+      - PIPELINE_CONTAINER=llm-pipeline
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Whole repo mounted so UI can read PDFs, ontologies, and the final PDF
+      - .:/workspace
+      # Rootless Docker socket — container root maps to host jose who owns this socket
+      - /run/user/1002/docker.sock:/var/run/docker.sock
+    depends_on:
+      - mineru
+      - pipeline

@@ -1,0 +1,4 @@
+requests>=2.31
+numpy>=1.26
+langgraph>=0.2.50
+matplotlib>=3.7

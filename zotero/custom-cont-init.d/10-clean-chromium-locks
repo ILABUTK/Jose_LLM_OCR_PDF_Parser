@@ -1,0 +1,7 @@
+#!/bin/bash
+# Always clean stale Chromium singleton locks on container startup.
+# linuxserver/zotero's /usr/bin/chromium wrapper only cleans them if
+# `pgrep chromium` returns nothing, but pgrep matches the wrapper itself,
+# so the cleanup almost never runs and Chromium refuses to launch
+# after any container restart.
+rm -f /config/.config/chromium/Singleton* 2>/dev/null || true

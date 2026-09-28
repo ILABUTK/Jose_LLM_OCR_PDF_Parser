@@ -1,0 +1,435 @@
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+%% ── Load ORNL Metropolis theme ──────────────────────────────────
+\usetheme[progressbar=frametitle]{metropolis}
+
+%% ── Pdflatex-safe packages ──────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{appendixnumberbeamer}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=1.15}
+
+%% ── ORNL colors (from preamble.tex) ────────────────────────────
+\definecolor{ornlgreen}{RGB}{0,121,52}
+\definecolor{ornlblack}{RGB}{0,0,0}
+\definecolor{ornlgrey}{RGB}{88,88,88}
+\definecolor{backgroundgreen}{RGB}{68,126,89}
+\definecolor{backgroundgrey}{RGB}{191,191,191}
+\definecolor{cerulean}{RGB}{0,122,166}
+
+%% ── Beamer color overrides ──────────────────────────────────────
+\setbeamercolor{palette primary}{fg=backgroundgreen, bg=white}
+\setbeamercolor{progress bar}{fg=ornlgreen, bg=ornlgreen!30}
+\setbeamercolor{normal text}{fg=ornlblack, bg=white}
+\setbeamercolor{frametitle}{fg=ornlblack, bg=white}
+\setbeamercolor{structure}{fg=ornlgreen}
+\setbeamercolor{itemize item}{fg=ornlgreen}
+\setbeamercolor{itemize subitem}{fg=ornlgreen!70!black}
+\setbeamercolor{enumerate item}{fg=ornlgreen}
+\setbeamercolor{block title}{fg=white, bg=ornlgreen}
+\setbeamercolor{block body}{fg=ornlblack, bg=ornlgreen!8}
+\setbeamercolor{block title alerted}{fg=white, bg=backgroundgreen}
+\setbeamercolor{block body alerted}{fg=ornlblack, bg=backgroundgreen!12}
+\setbeamercolor{block title example}{fg=white, bg=ornlgreen!70!black}
+\setbeamercolor{block body example}{fg=ornlblack, bg=ornlgreen!10}
+
+%% ── Footer ──────────────────────────────────────────────────────
+\setbeamertemplate{frame footer}{\hspace*{2cm}\vspace*{-0.1cm}}
+
+%% ── Slide background ────────────────────────────────────────────
+\usebackgroundtemplate{%
+  \includegraphics[width=\paperwidth]{style/assets/slide_frame.png}}
+
+%% ── Title page ──────────────────────────────────────────────────
+\newcommand{\maketitlepage}{%
+  {\usebackgroundtemplate{%
+     \includegraphics[angle=0,width=\paperwidth]{style/assets/title_frame.png}}%
+   \begin{frame}
+     \titlepage
+   \end{frame}}}
+\defbeamertemplate*{title page}{customized}[1][]{%
+  \setbeamertemplate{footline}{}
+  \textcolor{white}{\Huge \inserttitle}\\[4pt]
+  \textcolor{white}{\large \insertsubtitle}\\[14pt]
+  \textcolor{white}{\Large \insertauthor}\\[4pt]
+  \textcolor{white}{\insertdate}}
+
+%% ── Hyperref ────────────────────────────────────────────────────
+\hypersetup{colorlinks=true,linkcolor=blue,filecolor=magenta,
+            urlcolor=cerulean,citecolor=blue}
+
+%% ── TikZ layers ─────────────────────────────────────────────────
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{edgelayer}
+\pgfsetlayers{background,nodelayer,edgelayer,main}
+
+%% ── Metadata ────────────────────────────────────────────────────
+\title{Automated Literature Review for Fusion Breeder Ceramics}
+\subtitle{Multi-Agent LLMs with End-to-End Traceability}
+\author{Jose Tupayachi}
+\date{May 2026 \quad|\quad UTK ISE / ORNL}
+
+\begin{document}
+
+%% ── SLIDE 1: TITLE ─────────────────────────────────────────────
+\maketitlepage
+
+
+%% ── SLIDE 2: THE GAP ───────────────────────────────────────────
+\begin{frame}{\Large The Gap}
+\begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \textbf{LLMs in materials science}\\[4pt]
+    \begin{itemize}
+      \item \textbf{Alloy design:} GPT-4\,+\,CALPHAD; HighEntropy-Copilot (2024)
+      \item \textbf{Battery / energy:} BatteryBERT; MatBERT property extraction
+      \item \textbf{Self-driving labs:} Coscientist (Boiko 2023); A-Lab (Szymanski 2023)
+      \item \textbf{Polymer / catalyst:} PolyGPT; CatBERT NLP extraction
+      \item \textbf{Knowledge graphs:} structured schema at corpus scale
+    \end{itemize}
+    \vspace{3pt}
+    {\scriptsize\textcolor{ornlgrey}{Merchant \textit{Nature} 2023; Boiko \textit{Nature} 2023; Yu \textit{Nat.\ Rev.\ Mater.} 2024}}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \textbf{Fusion materials: missing}\\[6pt]
+    \begin{itemize}
+      \item 50+ years breeder data -- no pipeline
+      \item Scattered: KIT, NIFS, INEST, ENEA, INL
+      \item Paywalled, not machine-readable
+      \item Manual reviews: 6 months, not reproducible
+    \end{itemize}
+    \vspace{8pt}
+    \textcolor{ornlgreen}{\textbf{$\Rightarrow$ First LLM pipeline for tritium breeder ceramics}}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+%% ── SLIDE 3: APPROACH ──────────────────────────────────────────
+\begin{frame}{\Large Approach}
+\begin{columns}[T]
+  \begin{column}{0.33\textwidth}
+    \textbf{Test-case materials}\\[6pt]
+    \begin{itemize}
+      \item Li$_2$TiO$_3$ -- LTO
+      \item Li$_4$SiO$_4$ -- LSO
+      \item Li$_2$ZrO$_3$ -- LZO
+    \end{itemize}
+    \vspace{10pt}
+    \textbf{Corpus}\\[6pt]
+    \begin{itemize}
+      \item 65 OCR-parsed papers
+      \item 454 bib records
+      \item $>$11,000 chunks
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.64\textwidth}
+    \textbf{LangGraph multi-agent pipeline}\\[4pt]
+    \begin{tikzpicture}[font=\scriptsize,
+      box/.style={draw=ornlgreen,fill=white,rounded corners=2pt,
+                  minimum height=1.2em,inner sep=3pt,align=center,
+                  text=ornlblack},
+      arr/.style={-Stealth,ornlgreen,thick}]
+      \node[box](a){BibTeX};
+      \node[box,right=0.35cm of a](b){DOI\\enrich};
+      \node[box,right=0.35cm of b](c){PDF\\harvest};
+      \node[box,right=0.35cm of c](d){OCR\\MinerU};
+      \node[box,right=0.35cm of d](e){Multi-Agent\\LangGraph};
+      \draw[arr](a)--(b);\draw[arr](b)--(c);
+      \draw[arr](c)--(d);\draw[arr](d)--(e);
+    \end{tikzpicture}\\[5pt]
+    \textbf{Inside LangGraph} -- one graph run per section:\\[3pt]
+    \begin{itemize}
+      \item \textbf{Planner} node: decomposes section $\to$ list of evidence claims
+      \item \textbf{Critic} node: verifies $\geq$2 independent sources per claim
+      \item \textbf{Retriever} node: FAISS\,+\,BM25 hybrid, $k{=}8$ chunks
+      \item \textbf{Writer} node: Qwen3-32B drafts with inline citations
+      \item \textbf{Referee} node: NLI\,+\,numeric gate; re-drafts on fail
+    \end{itemize}
+    \textcolor{ornlgreen}{\textbf{Every claim $\to$ PDF page $+$ bounding box}}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+%% ── SLIDE 4: PIPELINE ──────────────────────────────────────────
+\begin{frame}{\Large Pipeline: Six Stages}
+\centering
+\begin{tikzpicture}[font=\small,
+  stage/.style={draw=ornlgreen,fill=ornlgreen,text=white,rounded corners=3pt,
+                minimum height=1.4em,minimum width=1.7cm,inner sep=3pt,align=center},
+  sub/.style={draw=ornlgrey!40,fill=white,rounded corners=2pt,
+              inner sep=2pt,align=center,font=\scriptsize,text width=1.6cm,
+              text=ornlblack},
+  arr/.style={-Stealth,line width=1.2pt,ornlgreen}]
+  \node[stage](s1){1\\[-0.3ex]\scriptsize Acquire};
+  \node[stage,right=0.35cm of s1](s2){2\\[-0.3ex]\scriptsize Parse};
+  \node[stage,right=0.35cm of s2](s3){3\\[-0.3ex]\scriptsize Extract};
+  \node[stage,right=0.35cm of s3](s4){4\\[-0.3ex]\scriptsize Write};
+  \node[stage,right=0.35cm of s4](s5){5\\[-0.3ex]\scriptsize Render};
+  \node[stage,right=0.35cm of s5](s6){6\\[-0.3ex]\scriptsize Validate};
+  \draw[arr](s1)--(s2);\draw[arr](s2)--(s3);\draw[arr](s3)--(s4);
+  \draw[arr](s4)--(s5);\draw[arr](s5)--(s6);
+  \node[sub,below=0.4cm of s1]{Crossref\\OpenAlex\\EZProxy};
+  \node[sub,below=0.4cm of s2]{MinerU\\bbox + page\\Markdown};
+  \node[sub,below=0.4cm of s3]{FAISS+BM25\\11k chunks\\Ontology};
+  \node[sub,below=0.4cm of s4]{LangGraph\\Qwen3-32B\\Critic loop};
+  \node[sub,below=0.4cm of s5]{Elsarticle\\Color claims\\SVG$\to$PDF};
+  \node[sub,below=0.4cm of s6]{NLI gate\\Cite check\\pdflatex};
+  \draw[dashed,-Stealth,backgroundgreen,thick]
+    ([yshift=-2.2cm]s6.south)--
+    node[below,backgroundgreen,font=\scriptsize,text=backgroundgreen]{feedback loop}
+    ([yshift=-2.2cm]s4.south);
+\end{tikzpicture}
+\vspace{4pt}
+
+{\small\textcolor{ornlblack}{\textbf{In:} 454 records, 65 PDFs
+\quad\textbf{Time:} $\sim$6\,h (Viridian HPC)
+\quad\textbf{Out:} 30+ page Elsevier PDF}}
+\end{frame}
+
+
+%% ── SLIDE 5: ONTOLOGIES ────────────────────────────────────────
+\begin{frame}{\Large Ontology-Guided Retrieval}
+\begin{columns}[T]
+  \begin{column}{0.44\textwidth}
+  \centering
+  \begin{tikzpicture}[font=\scriptsize,
+    root/.style={draw=ornlgreen,fill=ornlgreen,text=white,
+                 circle,minimum size=1.1cm,align=center},
+    cat/.style={draw=ornlgreen,fill=white,rounded corners=2pt,
+                minimum width=1.4cm,inner sep=3pt,align=center,
+                line width=0.7pt,text=ornlblack},
+    leaf/.style={draw=ornlgrey!40,fill=white,rounded corners=2pt,
+                 inner sep=2pt,align=center,font=\tiny,text=ornlblack},
+    earr/.style={-Stealth,ornlgreen!70,thin},
+    larr/.style={-,ornlgrey!60,very thin}]
+    \node[root](C){Chunk};
+    \node[cat,above left=0.5cm and 0.8cm of C](M){Material};
+    \node[leaf,above left=0cm and 0.45cm of M](M1){LTO};
+    \node[leaf,above=0.38cm of M](M2){LSO};
+    \node[leaf,above right=0cm and 0.45cm of M](M3){LZO};
+    \node[cat,above right=0.5cm and 0.8cm of C](P){Property};
+    \node[leaf,above left=0cm and 0.4cm of P](P1){Thermal};
+    \node[leaf,above=0.38cm of P](P2){Mech.};
+    \node[leaf,above right=0cm and 0.4cm of P](P3){Tritium};
+    \node[cat,below right=0.5cm and 0.8cm of C](Cnd){Condition};
+    \node[leaf,right=0.4cm of Cnd](C1){Temp/K};
+    \node[leaf,below right=0cm and 0.4cm of Cnd](C2){Fluence};
+    \node[leaf,above right=0cm and 0.4cm of Cnd](C3){Atm.};
+    \node[cat,below left=0.5cm and 0.8cm of C](Pr){Process};
+    \node[leaf,left=0.4cm of Pr](Pr1){Sintering};
+    \node[leaf,below left=0cm and 0.4cm of Pr](Pr2){Irradiation};
+    \node[leaf,above left=0cm and 0.4cm of Pr](Pr3){Sol-gel};
+    \draw[earr](C)--(M);\draw[earr](C)--(P);
+    \draw[earr](C)--(Cnd);\draw[earr](C)--(Pr);
+    \draw[larr](M)--(M1);\draw[larr](M)--(M2);\draw[larr](M)--(M3);
+    \draw[larr](P)--(P1);\draw[larr](P)--(P2);\draw[larr](P)--(P3);
+    \draw[larr](Cnd)--(C1);\draw[larr](Cnd)--(C2);\draw[larr](Cnd)--(C3);
+    \draw[larr](Pr)--(Pr1);\draw[larr](Pr)--(Pr2);\draw[larr](Pr)--(Pr3);
+  \end{tikzpicture}
+  \end{column}
+  \begin{column}{0.53\textwidth}
+    \textbf{Enables filtered retrieval:}\\[6pt]
+    {\small\ttfamily\textcolor{ornlgreen}{
+    "Material:Li2TiO3"\\
+    "Property:tritium.T50"\\
+    "Condition:temp\_K=673"\\
+    "Condition:irrad=n\_14MeV"\\
+    "page": 3,\  "bbox": [72,310,540,442]
+    }}\\[10pt]
+    \begin{itemize}
+      \item 11,420 tagged chunks total
+      \item Conflict detection: same conditions $\neq$ same values
+      \item FAISS (dense) + BM25 (lexical) hybrid search
+    \end{itemize}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+%% ── SLIDE 6: VALIDATION ────────────────────────────────────────
+\begin{frame}{\Large Two Quality Gates: Critic \& Referee}
+\begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \textbf{\textcolor{ornlgreen}{Critic} -- before writing}\\[3pt]
+    {\small Hybrid evidence set per claim $c_i$:}\\
+    {\small $\mathcal{E}_i = \mathrm{FAISS}_k(c_i)\cup\mathrm{BM25}_k(c_i)$}\\[3pt]
+    \begin{itemize}
+      \item Pass: $|\mathcal{E}_i|\geq 2$,\; $\mathrm{src}(e_1)\neq\mathrm{src}(e_2)$
+      \item Fail $\Rightarrow$ drop claim, re-plan
+      \item Conflict $\Rightarrow$ conditional range
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \textbf{\textcolor{backgroundgreen}{Referee} -- after writing}\\[3pt]
+    {\small Per sentence $s_j$, pass iff both hold:}\\[2pt]
+    {\small $P_{\mathrm{ent}}(s_j \mid \mathcal{E}_i) \geq 0.55$}\\[2pt]
+    {\small $|\hat{y}-y|\,/\,|y| \leq 0.10$ \quad (numerics)}\\[3pt]
+    \begin{itemize}
+      \item Fail $\Rightarrow$ re-draft (max $3\times$)
+      \item Hard fail $\Rightarrow$ delete sentence
+    \end{itemize}
+  \end{column}
+\end{columns}
+\vspace{8pt}
+\centering
+\begin{tikzpicture}[font=\small,
+  box/.style={draw=ornlgreen,fill=white,rounded corners=2pt,
+              minimum height=1.3em,inner sep=4pt,align=center,text=ornlblack},
+  gate/.style={draw=backgroundgreen,fill=backgroundgreen!15,rounded corners=2pt,
+               minimum height=1.3em,inner sep=4pt,align=center,
+               font=\small\bfseries,text=ornlblack},
+  arr/.style={-Stealth,ornlgreen,thick}]
+  \node[box](plan){Planner};
+  \node[gate,right=0.5cm of plan](crit){Critic};
+  \node[box,right=0.5cm of crit](ret){Retriever};
+  \node[box,right=0.5cm of ret](write){Writer};
+  \node[gate,right=0.5cm of write](ref){Referee};
+  \node[box,right=0.5cm of ref](out){Output};
+  \draw[arr](plan)--(crit);\draw[arr](crit)--(ret);
+  \draw[arr](ret)--(write);\draw[arr](write)--(ref);\draw[arr](ref)--(out);
+  \draw[-Stealth,dashed,backgroundgreen]
+    (crit.north)--++(0,0.35)-|
+    node[above,font=\tiny,text=backgroundgreen]{reject}(plan.north);
+  \draw[-Stealth,dashed,backgroundgreen]
+    (ref.north)--++(0,0.35)-|
+    node[above,font=\tiny,text=backgroundgreen]{re-draft}(write.north);
+\end{tikzpicture}
+\end{frame}
+
+
+%% ── SLIDE 7: RESULTS ───────────────────────────────────────────
+\begin{frame}{\Large Results vs.\ Human Gold Standard}
+\begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \begin{center}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{lc}
+      \toprule
+      \textbf{Metric} & \textbf{Score}\\
+      \midrule
+      Claim Recall      & 0.78\\
+      Claim Precision   & 0.71\\
+      Faithfulness (NLI)& 0.94\\
+      Citation Grounding& 1.00\\
+      JSD coverage      & 0.12\\
+      NMAE numerics     & 0.09\\
+      \midrule
+      \textbf{Composite} $Q$ & \textbf{0.79}\\
+      \bottomrule
+    \end{tabular}
+    \end{center}
+    \vspace{3pt}
+    {\scriptsize $Q = 0.3\,S_g + 0.3\,V_{\mathrm{cite}} + 0.2\,S_f + 0.2\,S_{\mathrm{sty}}$}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \textbf{Time saved}\\[6pt]
+    \begin{center}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{lcc}
+      \toprule
+      \textbf{Task} & \textbf{Human} & \textbf{Pipeline}\\
+      \midrule
+      Download PDFs & 3--5 wk & \textbf{4\,h}\\
+      Extract data  & 2--3 mo & \textbf{2\,h}\\
+      Full draft    & 6 mo    & \textbf{$\sim$6\,h}\\
+      \bottomrule
+    \end{tabular}
+    \end{center}
+    \vspace{8pt}
+    \textcolor{ornlgreen}{\textbf{3 new papers (2025--26) found automatically}}\\
+    not in any existing human review
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+%% ── SLIDE 8: DOCKER ────────────────────────────────────────────
+\begin{frame}{\Large Implementation: Reproducible Docker Stack}
+\begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+  \centering
+  \begin{tikzpicture}[font=\small,
+    cont/.style={draw=ornlgreen,fill=white,rounded corners=3pt,
+                 minimum height=1.2em,inner sep=5pt,align=left,
+                 text width=4.2cm,text=ornlblack},
+    grp/.style={draw=backgroundgreen,dashed,rounded corners=4pt,inner sep=4pt},
+    arr/.style={-Stealth,ornlgrey,thin}]
+    \node[cont](zot){\textbf{Zotero} -- ref manager + PDF};
+    \node[cont,below=0.2cm of zot](sx){\textbf{SearXNG} -- self-hosted search};
+    \node[cont,below=0.2cm of sx](c4){\textbf{Crawl4AI / Playwright} -- paywall};
+    \begin{pgfonlayer}{background}
+      \node[grp,fit=(zot)(sx)(c4),
+            label=above:{\tiny\textcolor{backgroundgreen}{Acquisition layer}}]{};
+    \end{pgfonlayer}
+    \node[cont,below=0.4cm of c4](mu){\textbf{MinerU} -- GPU OCR};
+    \node[cont,below=0.2cm of mu](ol){\textbf{Ollama} (Viridian) -- Qwen3-32B};
+    \node[cont,below=0.2cm of ol](pg){\textbf{Pipeline} -- LangGraph 1--6};
+    \draw[arr](c4.south)--(mu.north);
+    \draw[arr](mu.south)--(ol.north);
+    \draw[arr](ol.south)--(pg.north);
+  \end{tikzpicture}
+  \end{column}
+  \begin{column}{0.46\textwidth}
+    \textbf{Reproduce in 3 commands:}\\[6pt]
+    {\small\ttfamily\textcolor{ornlblack}{
+    docker compose up -d\\
+    bash process\_all.sh\\
+    python 05\_render\_elsevier.py
+    }}\\[12pt]
+    \begin{itemize}
+      \item All services pinned to image tags
+      \item Runs on any Linux + GPU
+      \item No API rate limits (SearXNG offline)
+      \item Outputs: \texttt{.pdf}, \texttt{.bib}, \texttt{.jsonl}
+    \end{itemize}
+  \end{column}
+\end{columns}
+\end{frame}
+
+
+%% ── SLIDE 9: CONCLUSIONS ───────────────────────────────────────
+\begin{frame}{\Large Conclusions}
+\begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \textbf{Demonstrated}\\[6pt]
+    \begin{itemize}
+      \item First traceable LLM review for fusion breeders
+      \item $S{=}0.79$ vs.\ human gold ($F{=}0.94$, $G{=}1.00$)
+      \item 6 months $\to$ 6 hours
+      \item Zero hallucinated citations (page + bbox trace)
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \textbf{Next}\\[6pt]
+    \begin{itemize}
+      \item Close TBD cells with targeted queries
+      \item Multi-material tables (LTO/LSO/LZO)
+      \item Submit: \textit{J. Nuclear Materials}
+      \item Generalize: structural alloys, PFM
+      \item Live update via arXiv RSS
+    \end{itemize}
+  \end{column}
+\end{columns}
+\vspace{10pt}
+\begin{center}
+{\small\textcolor{ornlgrey}{%
+Oak Ridge National Laboratory is managed by UT-Battelle, LLC
+for the U.S.\ DOE under contract DE-AC05-00OR22725.}}
+\end{center}
+\end{frame}
+
+\end{document}

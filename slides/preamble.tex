@@ -1,0 +1,120 @@
+% Required packages
+\usepackage[absolute,overlay]{textpos}
+\usepackage[scale=2]{ccicons}
+\usepackage{appendixnumberbeamer}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage{fontspec}
+\usepackage{listings}
+
+% Tikz packages
+\usetikzlibrary{fit}
+
+% Fonts
+\renewcommand{\familydefault}{\rmdefault}
+\defaultfontfeatures{Ligatures = TeX}
+
+\newfontfamily{\sourcecodepro}{SourceCodePro} [
+    ExternalLocation = fonts/,
+    Extension = .ttf
+]
+
+\setmainfont{CenturyGothic} [
+    ExternalLocation = fonts/,
+    Extension = .ttf
+]
+
+% Plot settings
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=1.15}
+
+% Define the ORNL colors, taken from https://standards.ornl.gov/logos/ as well as https://www.olcf.ornl.gov/olcf-media/media-assets/
+\definecolor{ornlgreen}{RGB}{0,121,52}
+\definecolor{ornlblack}{RGB}{0,0,0}
+\definecolor{ornlgrey}{RGB}{88,88,88}
+\definecolor{backgroundgreen}{RGB}{68,126,89}
+\definecolor{backgroundgrey}{RGB}{191,191,191}
+% Other colors
+\definecolor{cerulean}{RGB}{0.0, 0.48, 0.65}
+
+% Set the frame title backgrounds to be text green, background white
+\setbeamercolor{palette primary}{fg = backgroundgreen, bg = white}
+% Set the bar underneath the title blocks to a color
+\setbeamercolor{progress bar}{fg = white, bg = white}
+% Set text color
+\setbeamercolor{normal text}{fg = ornlblack, bg = white}
+% Set slide title color
+\setbeamercolor{frametitle}{fg = ornlblack, bg = white}
+% Global footer to put speaker's name, if desired
+\setbeamertemplate{frame footer}{\hspace*{2cm}\vspace*{-0.1cm}}
+% Global background set, to use the default frame background
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{style/assets/slide_frame.png}}
+
+% URL setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cerulean,
+    citecolor=blue
+}
+
+% Tikz Layers
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{edgelayer}
+\pgfsetlayers{nodelayer, edgelayer}
+
+% Macros
+% Get the theme name.
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+% New command to generate URL links and footers.
+\newcommand{\fnurl}[2]{
+    \href{#2}{#1}\footnote{\fontsize{5pt}{5}\url{#2}}
+}
+% Fake item for lists in tables.
+\newcommand{\tabitem}{\textbullet \hspace{0.5em}}
+
+% New title page
+\newcommand{\maketitlepage}{
+    {
+        \usebackgroundtemplate{\includegraphics[angle=0,width=\paperwidth]{style/assets/title_frame.png}}
+        \begin{frame}
+            \titlepage
+        \end{frame}
+    }
+}
+\defbeamertemplate*{title page}{customized}[1][] {
+    \setbeamertemplate{footline}{}
+    \textcolor{white}{\Huge \inserttitle}
+
+    \textcolor{white}{\large \insertsubtitle}
+    \vspace*{0.7cm}
+
+    \textcolor{white}{\Large \insertauthor}
+
+    \textcolor{white}{ \insertdate }
+}
+
+% Code language setup
+\lstset{
+    language=C++,
+    frame=single,
+    basicstyle=\fontsize{5pt}{5}\sourcecodepro\color{black},
+    keywordstyle=\fontsize{5pt}{5}\sourcecodepro\color{blue}\bf,
+    commentstyle=\fontsize{5pt}{5}\sourcecodepro\color{gray},
+    numberstyle=\fontsize{5pt}{5}\sourcecodepro\color{gray}\bf,
+    stringstyle=\fontsize{5pt}{5}\sourcecodepro\color{purple}\bf,
+    breaklines=true,
+    tabsize=4,
+    numbers=left,
+    firstnumber=1,
+    xleftmargin=2em,
+    classoffset=1,
+    morekeywords={Constants, Settings},
+    keywordstyle=\color{teal}
+}
+

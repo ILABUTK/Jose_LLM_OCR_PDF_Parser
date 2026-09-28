@@ -1,0 +1,410 @@
+{
+  "topic": "Lithium orthosilicate, Li\u2082TiO\u2083, and Li\u2082ZrO\u2083 as solid tritium breeder ceramics for fusion reactors: a comparative review of preparation, mechanical and thermal properties, irradiation effects, and tritium recovery",
+  "outline": [
+    {
+      "id": "sec_000",
+      "title": "Highlights: Scope and Key Findings",
+      "level": 0,
+      "role": "frontmatter",
+      "directives": [
+        "Summarize the comparative performance metrics of Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 for tritium breeding applications.",
+        "Identify optimal synthesis parameters that maximize phase purity and controlled porosity.",
+        "Highlight critical thermal and mechanical thresholds required for fusion blanket integration.",
+        "Outline primary tritium release mechanisms and recovery efficiency benchmarks."
+      ],
+      "expected_evidence": [
+        "comparative_property_tables",
+        "synthesis_route_summaries",
+        "performance_benchmarks",
+        "tritium_release_efficiency_data"
+      ],
+      "research_questions": [
+        "What are the definitive performance benchmarks for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 in fusion breeding blankets?",
+        "Which synthesis methods yield the most favorable microstructural and thermal properties?",
+        "What are the primary bottlenecks in tritium recovery for these orthosilicate ceramics?"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_001",
+      "title": "1. Fusion Energy Context and Breeding Blanket Requirements",
+      "level": 1,
+      "role": "motivation",
+      "directives": [
+        "Define the engineering and nuclear criteria for tritium self-sufficiency in next-generation reactors.",
+        "Establish the functional role of solid breeder ceramics within the breeding blanket architecture.",
+        "Justify the comparative focus on Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 over liquid or polymeric alternatives.",
+        "Map the structural organization of the review to guide the reader through preparation, properties, and recovery analyses."
+      ],
+      "expected_evidence": [
+        "reactor_design_specifications",
+        "neutron_transport_models",
+        "tritium_breeding_ratio_targets",
+        "blanket_architecture_diagrams"
+      ],
+      "research_questions": [
+        "What engineering constraints dictate the selection of solid breeder ceramics for fusion blankets?",
+        "How do Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 align with current tritium breeding ratio targets?",
+        "What gaps in existing literature necessitate this comparative analysis?"
+      ],
+      "target_word_count": 400
+    },
+    {
+      "id": "sec_002",
+      "title": "2. Nuclear and Materials Rationale for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083",
+      "level": 1,
+      "role": "background",
+      "directives": [
+        "Detail the nuclear reaction pathways for tritium production in lithium-containing orthosilicates.",
+        "Compare the neutron multiplication factors and thermal neutron capture cross-sections of the Ti and Zr matrices.",
+        "Evaluate the thermodynamic stability and phase evolution of both ceramics under high-flux irradiation.",
+        "Assess material compatibility with structural cladding, coolants, and neutron multipliers."
+      ],
+      "expected_evidence": [
+        "nuclear_data_tables",
+        "phase_diagrams",
+        "cross_section_calculations",
+        "compatibility_assessments",
+        "irradiation_induced_phase_stability_data"
+      ],
+      "research_questions": [
+        "How do the neutron interaction profiles of Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 differ in a breeding blanket?",
+        "What thermodynamic constraints govern the phase stability of these orthosilicates under fusion conditions?",
+        "Which material properties most strongly influence long-term blanket viability?"
+      ],
+      "target_word_count": 500
+    },
+    {
+      "id": "sec_003",
+      "title": "2.1. Synthesis Routes and Microstructural Control",
+      "level": 2,
+      "role": "methods",
+      "directives": [
+        "Catalog solid-state, sol-gel, and co-precipitation methods for fabricating Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 powders.",
+        "Analyze the impact of calcination temperature, dwell time, and sintering atmosphere on phase purity and relative density.",
+        "Compare resulting grain size distributions, pore morphology, and grain boundary characteristics across synthesis techniques.",
+        "Identify processing variables that optimize grain boundary connectivity and tritium diffusion pathways."
+      ],
+      "expected_evidence": [
+        "XRD_patterns",
+        "SEM_micrographs",
+        "BET_surface_area_data",
+        "sintering_parameter_matrices",
+        "porosity_distribution_plots"
+      ],
+      "research_questions": [
+        "Which synthesis protocols yield the highest phase purity and controlled porosity for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083?",
+        "How do calcination and sintering conditions dictate the final ceramic microstructure?",
+        "What processing variables most directly enhance tritium release kinetics?"
+      ],
+      "target_word_count": 450
+    },
+    {
+      "id": "sec_004",
+      "title": "Mechanical Properties of Li\u2082TiO\u2083 and Li\u2082ZrO\u2083",
+      "level": 2,
+      "role": "background",
+      "directives": [
+        "Quantify compressive strength, Young's modulus, and fracture toughness for both ceramics across sintering densities.",
+        "Compare microstructural variations induced by different preparation routes and correlate them with mechanical performance.",
+        "Evaluate mechanical degradation thresholds under thermal cycling and neutron irradiation conditions.",
+        "Synthesize high-temperature mechanical testing data to establish reliability benchmarks for breeder applications."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "experimental_data",
+        "comparison_table"
+      ],
+      "research_questions": [
+        "How do mechanical properties like strength and elasticity affect breeder reliability?",
+        "What are the key mechanical degradation mechanisms under neutron irradiation?"
+      ],
+      "target_word_count": 450
+    },
+    {
+      "id": "sec_005",
+      "title": "Thermal Stability and Heat Transfer Characteristics",
+      "level": 2,
+      "role": "background",
+      "directives": [
+        "Report thermal conductivity, coefficient of thermal expansion, and specific heat capacities across operational temperature ranges.",
+        "Analyze phase transition temperatures and their implications for long-term breeder structural integrity.",
+        "Correlate thermal diffusivity measurements with microstructural porosity and grain boundary density.",
+        "Assess thermal shock resistance under simulated plasma-facing heat fluxes and cooling conditions."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "experimental_data"
+      ],
+      "research_questions": [
+        "Can candidate materials withstand the high-temperature demands of fusion reactors?",
+        "How do thermal properties influence long-term structural integrity under irradiation?"
+      ],
+      "target_word_count": 400
+    },
+    {
+      "id": "sec_006",
+      "title": "Irradiation-Induced Degradation Mechanisms",
+      "level": 1,
+      "role": "background",
+      "directives": [
+        "Define displacement per atom thresholds and neutron flux regimes relevant to fusion breeding blanket operations.",
+        "Outline primary damage cascades, including vacancy cluster formation and helium bubble evolution in silicate and zirconate lattices.",
+        "Distinguish between direct neutron irradiation effects and surrogate ion irradiation methodologies.",
+        "Establish baseline damage models for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 to contextualize subsequent property alterations."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "theoretical_model"
+      ],
+      "research_questions": [
+        "How does irradiation fundamentally affect ceramic materials?",
+        "What are the primary damage mechanisms in fusion environments?"
+      ],
+      "target_word_count": 120
+    },
+    {
+      "id": "sec_007",
+      "title": "Irradiation-Driven Property Alteration",
+      "level": 2,
+      "role": "background",
+      "directives": [
+        "Quantify dimensional changes, swelling ratios, and density variations under neutron and ion irradiation exposure.",
+        "Track phase stability and amorphization thresholds in Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 lattices as a function of fluence.",
+        "Compare property degradation rates between pure ceramics and doped or composite breeder variants.",
+        "Integrate experimental irradiation data with kinetic Monte Carlo or molecular dynamics predictions to validate degradation pathways."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "experimental_data",
+        "comparison_table"
+      ],
+      "research_questions": [
+        "How do different irradiation sources compare in altering material properties?",
+        "What specific physical and chemical changes occur under neutron and surrogate irradiation?"
+      ],
+      "target_word_count": 500
+    },
+    {
+      "id": "sec_008",
+      "title": "Tritium Release Mechanisms and Recovery Efficiency",
+      "level": 2,
+      "role": "background",
+      "directives": [
+        "Compare diffusion and desorption kinetics of tritium in Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 matrices.",
+        "Detail the operational parameters required for effective tritium extraction from solid breeders.",
+        "Evaluate the impact of microstructural defects and grain boundaries on tritium release rates.",
+        "Assess the engineering challenges associated with tritium permeation and retention in breeding blankets."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "theoretical_model",
+        "experimental_data"
+      ],
+      "research_questions": [
+        "What conditions are required for tritium self-sufficiency?",
+        "How does tritium migrate and release within solid breeder materials?"
+      ],
+      "target_word_count": 450
+    },
+    {
+      "id": "sec_009",
+      "title": "Advanced Synthesis and Microstructural Optimization of Breeder Ceramics",
+      "level": 1,
+      "role": "background",
+      "directives": [
+        "Review solid-state, sol-gel, and combustion synthesis routes for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 powders.",
+        "Analyze the influence of dopants, sintering temperatures, and porosity on tritium diffusion coefficients.",
+        "Compare the mechanical integrity and thermal shock resistance of optimized ceramic compacts.",
+        "Identify processing parameters that maximize breeding ratio while maintaining structural stability."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "experimental_data",
+        "theoretical_model"
+      ],
+      "research_questions": [
+        "How can ceramic properties and structures be optimized for fusion breeding blankets?",
+        "What novel synthesis methods improve tritium breeding performance?"
+      ],
+      "target_word_count": 500
+    },
+    {
+      "id": "sec_010",
+      "title": "Research Limitations and Future Directions",
+      "level": 1,
+      "role": "gaps",
+      "directives": [
+        "Catalog unresolved discrepancies in irradiation swelling and thermal conductivity degradation data.",
+        "Propose integrated computational materials engineering frameworks for rapid ceramic formulation.",
+        "Recommend advanced manufacturing techniques, such as additive manufacturing, for complex blanket geometries.",
+        "Define standardized testing protocols for long-term tritium breeding performance validation."
+      ],
+      "expected_evidence": [
+        "recommendation",
+        "open_question",
+        "literature_synthesis"
+      ],
+      "research_questions": [
+        "What are the current limitations in fusion materials research?",
+        "How can AI/ML and advanced manufacturing accelerate materials development?"
+      ],
+      "target_word_count": 400
+    },
+    {
+      "id": "sec_011",
+      "title": "Conclusions and Material Selection Criteria",
+      "level": 1,
+      "role": "conclusion",
+      "directives": [
+        "Synthesize comparative performance metrics for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 under fusion-relevant conditions.",
+        "Determine the optimal balance between tritium breeding efficiency and mechanical durability.",
+        "State the definitive recommendations for next-generation solid breeder ceramic selection.",
+        "Outline the critical path for transitioning laboratory-scale breeder materials to engineering-scale deployment."
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "recommendation"
+      ],
+      "research_questions": [
+        "Which ceramic materials demonstrate the most promise for fusion reactor applications?",
+        "What is the overall state of knowledge regarding irradiation effects on breeding ceramics?"
+      ],
+      "target_word_count": 350
+    },
+    {
+      "id": "sec_012",
+      "title": "Funding",
+      "level": 0,
+      "role": "backmatter",
+      "directives": [
+        "List all grant numbers and funding agencies supporting the synthesis and characterization of Li\u2082TiO\u2083 and Li\u2082ZrO\u2083.",
+        "Specify institutional affiliations and core facilities that enabled the comparative analysis of thermal and mechanical properties.",
+        "Clarify the allocation of financial resources across experimental irradiation campaigns and computational modeling phases.",
+        "State any in-kind contributions from national laboratories or fusion energy consortia."
+      ],
+      "expected_evidence": [
+        "funding_statement",
+        "administrative_documentation"
+      ],
+      "research_questions": [
+        "Which specific grants and agencies financed this comparative review of solid tritium breeder ceramics?",
+        "How were institutional resources distributed between material synthesis and tritium recovery analysis?",
+        "What external funding bodies supported the irradiation effect assessments?"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_013",
+      "title": "Acknowledgements",
+      "level": 0,
+      "role": "backmatter",
+      "directives": [
+        "Identify technical staff and laboratory personnel who assisted with ceramic powder preparation and microstructural analysis.",
+        "Recognize data providers and open-access repositories that supplied irradiation performance and tritium release datasets.",
+        "State the copyright terms and permissible reuse conditions for this Elsevier-style review.",
+        "Confirm that all cited data and comparative metrics adhere to standard fusion materials reporting guidelines."
+      ],
+      "expected_evidence": [
+        "acknowledgement_statement",
+        "legal_statement"
+      ],
+      "research_questions": [
+        "Which facilities provided critical access to high-flux neutron irradiation data for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083?",
+        "Who contributed to the compilation and validation of the tritium recovery performance metrics?",
+        "What are the official publishing rights and usage restrictions governing this manuscript?"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_014",
+      "title": "CRediT Authorship Contribution Statement",
+      "level": 0,
+      "role": "backmatter",
+      "directives": [
+        "Map each author to specific CRediT roles including conceptualization, literature synthesis, and data curation.",
+        "Detail the division of labor between experimental property evaluation and computational tritium transport modeling.",
+        "Assign responsibility for manuscript drafting, critical revision, and final approval to the corresponding authors.",
+        "Verify that all listed contributions directly support the comparative analysis of breeder ceramic performance."
+      ],
+      "expected_evidence": [
+        "contribution_statement",
+        "administrative_documentation"
+      ],
+      "research_questions": [
+        "Which author designed the methodological framework for comparing Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 properties?",
+        "Who performed the critical synthesis and analysis of irradiation-induced degradation mechanisms?",
+        "Which contributor finalized the manuscript and ensured alignment with fusion materials reporting standards?"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_015",
+      "title": "Declaration of Competing Interest",
+      "level": 0,
+      "role": "backmatter",
+      "directives": [
+        "Assert the absence of commercial, financial, or personal relationships that could bias the evaluation of breeder ceramic performance.",
+        "Disclose any advisory roles, patents, or equity holdings related to solid breeder blanket systems or tritium extraction technologies.",
+        "Confirm that all comparative data and property assessments were conducted without industry sponsorship or directional influence.",
+        "State that the manuscript adheres to strict academic integrity standards for fusion materials research."
+      ],
+      "expected_evidence": [
+        "conflict_declaration",
+        "administrative_documentation"
+      ],
+      "research_questions": [
+        "Do any authors hold financial interests in companies developing solid breeder blanket components?",
+        "Are there any commercial partnerships that could influence the reported tritium recovery efficiencies?",
+        "Is the comparative analysis of Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 free from industry-sponsored bias?"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_016",
+      "title": "Data Availability and Reference Compilation",
+      "level": 0,
+      "role": "backmatter",
+      "directives": [
+        "List all primary literature sources and experimental datasets used for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 property comparisons",
+        "Provide direct repository links or accession codes for irradiation performance and tritium release data",
+        "Clarify data processing methodologies and any normalization applied to cross-study mechanical and thermal measurements",
+        "State limitations regarding proprietary or classified fusion material datasets"
+      ],
+      "expected_evidence": [
+        "literature_synthesis",
+        "data_reference",
+        "citation_list"
+      ],
+      "research_questions": [
+        "Where can readers access the raw experimental datasets for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 mechanical and thermal properties",
+        "How are cross-laboratory irradiation and tritium recovery datasets standardized for comparative analysis",
+        "What repositories host the supplementary computational and experimental data supporting this review"
+      ],
+      "target_word_count": 100
+    },
+    {
+      "id": "sec_017",
+      "title": "Tabulated Mechanical, Thermal, and Tritium Release Data",
+      "level": 0,
+      "role": "other",
+      "directives": [
+        "Compile side-by-side mechanical strength and fracture toughness values for Li\u2082TiO\u2083 and Li\u2082ZrO\u2083 across sintering temperatures",
+        "Summarize thermal conductivity and expansion coefficients under fusion-relevant neutron irradiation conditions",
+        "Organize tritium diffusion and release kinetics data by ceramic composition and porosity levels",
+        "Cross-reference tabulated values with corresponding irradiation damage and microstructural evolution studies"
+      ],
+      "expected_evidence": [
+        "comparison_table",
+        "experimental_data",
+        "literature_synthesis"
+      ],
+      "research_questions": [
+        "How do the mechanical and thermal properties of Li\u2082TiO\u2083 compare quantitatively to Li\u2082ZrO\u2083 under identical processing conditions",
+        "What is the measured impact of neutron irradiation on the thermal conductivity of each ceramic breeder",
+        "How does ceramic porosity correlate with tritium recovery efficiency across the compiled datasets"
+      ],
+      "target_word_count": 450
+    }
+  ]
+}

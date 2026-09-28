@@ -1,0 +1,45 @@
+# Zotero Desktop — browser-accessible GUI (linuxserver/zotero + KasmVNC)
+# ────────────────────────────────────────────────────────────────────────
+# Opens Zotero as a full desktop app you control in a browser tab.
+# Use it to:
+#   1. File → Import  your .bib / .txt files from initial_bib/
+#   2. Select All → right-click → "Find Available PDFs"
+#      (uses your institution VPN / logged-in browser session inside the VM)
+#   3. After it finishes, run:
+#        python mineru/zotero_harvest_pdfs.py
+#      to copy the downloaded PDFs into mineru/input_images/<citekey>.pdf
+#
+# Start:   docker compose -f zotero/docker-compose-desktop.yml up -d
+# Stop:    docker compose -f zotero/docker-compose-desktop.yml down
+# Open:    http://localhost:3010   (or https://localhost:3011)
+#
+# The Zotero data directory is bind-mounted at  zotero/zotero-data/
+# so PDFs persist on your host and can be read by harvest script.
+
+services:
+  zotero-desktop:
+    image: lscr.io/linuxserver/zotero:latest
+    container_name: zotero-desktop
+    restart: unless-stopped
+    environment:
+      - PUID=1002
+      - PGID=1002
+      - TZ=America/New_York
+      - SELKIES_MANUAL_WIDTH=1600
+      - SELKIES_MANUAL_HEIGHT=900
+      - SELKIES_ENABLE_RESIZE=false
+    shm_size: "1gb"
+    ports:
+      - "3010:3000"   # KasmVNC web UI (HTTP)  → http://localhost:3010
+      - "3011:3001"   # KasmVNC web UI (HTTPS) → https://localhost:3011
+    volumes:
+      # Persistent Zotero profile + downloaded PDFs
+      - ./zotero-data:/config
+      # Shortcut inside the desktop so you can drag-drop bib files easily
+      - ../mineru/initial_bib:/config/initial_bib:ro
+      # Output folder: harvest script writes PDFs here
+      - ../mineru/input_images:/config/input_images
+      # Auto-install Zotero Connector extension in Chromium on every launch
+      - ./chromium-policies/managed:/etc/chromium/policies/managed:ro
+      # linuxserver custom init scripts (runs on container start, before services)
+      - ./custom-cont-init.d:/custom-cont-init.d:ro

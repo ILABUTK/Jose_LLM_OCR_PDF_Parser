@@ -1,0 +1,71 @@
+{
+  "voice": "third_person",
+  "tense_dominant": "present",
+  "hedging_frequency": "medium",
+  "hedging_markers": [
+    "can be achieved",
+    "is known that",
+    "whether or not",
+    "play a critical role",
+    "is essential to understanding",
+    "are integral to",
+    "difficult for some to access",
+    "may require",
+    "appears to be"
+  ],
+  "evidence_frames": [
+    "It is known that...",
+    "Ceramic mechanical and physical properties... affect...",
+    "Because of the advancement of...",
+    "A review of the...",
+    "T release rate... are integral to...",
+    "Advances in materials development is encouraged...",
+    "Neutron irradiation damage... is an important issue..."
+  ],
+  "research_question_patterns": [
+    "whether or not the thermal effects will also induce",
+    "difficult for some to access",
+    "need to have a sustainable energy source",
+    "play a critical role in the selection of",
+    "is essential to understanding if a given materials can withstand",
+    "are integral to maintaining self-sufficiency"
+  ],
+  "rhetorical_moves": {
+    "introduction": [
+      "Establish field importance",
+      "Categorize nuclear energy types",
+      "Identify fusion fuel requirements"
+    ],
+    "results": [
+      "Summarize material preparation stages",
+      "Detail mechanical property impacts",
+      "Analyze thermal property requirements"
+    ],
+    "gaps": [
+      "Note neutron source accessibility limitations",
+      "Highlight need for sustainable energy",
+      "Identify optimization challenges for T diffusion"
+    ],
+    "conclusion": [
+      "Emphasize irradiation effects on material selection",
+      "Synthesize review findings",
+      "Recommend future research directions"
+    ]
+  },
+  "citation_style": "numeric_brackets",
+  "average_sentence_length": 28,
+  "transition_markers": [
+    "in contrast to",
+    "via",
+    "including",
+    "however",
+    "in order to",
+    "Because of",
+    "is essential to",
+    "are integral to",
+    "play a critical role",
+    "maintain self-sufficiency"
+  ],
+  "domain_terminology_density": "high",
+  "source": "/home/jose/Jose_LLM_OCR_PDF_Parser/mineru/output_images/05082026-Article-BNT Review-draft 2 clean/auto/05082026-Article-BNT Review-draft 2 clean.md"
+}

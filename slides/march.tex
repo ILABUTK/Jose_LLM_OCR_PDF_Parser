@@ -1,0 +1,212 @@
+%% Monthly Update Slides -- March 2026
+%% Metropolis theme (style/), green accent; content drawn from the paper
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usetheme{metropolis}
+
+%% Green accent for Metropolis
+\definecolor{ornlgreen}{HTML}{2E7D32}
+\setbeamercolor{normal text}{fg=black!90, bg=white}
+\setbeamercolor{alerted text}{fg=ornlgreen}
+\setbeamercolor{frametitle}{bg=ornlgreen, fg=white}
+\setbeamercolor{title separator}{fg=ornlgreen}
+\setbeamercolor{progress bar}{fg=ornlgreen}
+\setbeamercolor{progress bar in head/foot}{fg=ornlgreen}
+\setbeamercolor{progress bar in section page}{fg=ornlgreen}
+\setbeamercolor{itemize item}{fg=ornlgreen}
+\setbeamercolor{itemize subitem}{fg=ornlgreen!80!black}
+\setbeamercolor{block title}{bg=ornlgreen!20, fg=ornlgreen!60!black}
+\setbeamercolor{block body}{bg=ornlgreen!5}
+
+%% Reduce body text to ~0.7 of nominal
+\setbeamerfont{normal text}{size*={7pt}{8.4pt}}
+\setbeamerfont{itemize/enumerate body}{size*={7pt}{8.4pt}}
+\setbeamerfont{itemize/enumerate subbody}{size*={6.5pt}{8pt}}
+\setbeamerfont{itemize/enumerate subsubbody}{size*={6pt}{7.5pt}}
+\setbeamerfont{block title}{size*={8pt}{9.5pt},series=\bfseries}
+\setbeamerfont{block body}{size*={7pt}{8.4pt}}
+\setbeamerfont{frametitle}{size*={11pt}{13pt},series=\bfseries}
+\setbeamerfont{title}{size*={14pt}{16pt},series=\bfseries}
+\setbeamerfont{subtitle}{size*={10pt}{12pt}}
+\setbeamerfont{author}{size*={9pt}{11pt}}
+\setbeamerfont{institute}{size*={8pt}{10pt}}
+\setbeamerfont{date}{size*={8pt}{10pt}}
+\setbeamerfont{footnote}{size*={6pt}{7.2pt}}
+
+\title{Explainable Machine Learning for Extreme\\Weather Event Prediction}
+\subtitle{Long-Term Environmental Measurements at Oak Ridge}
+\author{Jose Tupayachi \and Ziwei Liu \and Kevin Birdwell \and Xueping Li \and Xiao-Ying Yu}
+\institute{Oak Ridge National Laboratory \and University of Tennessee, Knoxville}
+\date{March 2026}
+
+\begin{document}
+
+%%--- Slide 1: Cover ---
+\maketitle
+
+%%--- Slide 2: Motivation & Contributions ---
+\begin{frame}{Motivation \& Contributions}
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Problem}
+      \begin{itemize}
+        \item Extreme weather events (high winds, heavy precipitation,
+              temperature excursions) threaten DOE infrastructure and
+              operations at the Oak Ridge Reservation (ORR).
+        \item Sub-hourly forecasts at $\le$\,1\,h horizon are needed
+              to trigger protective actions.
+        \item Standard ML models lack physical interpretability and
+              are rarely benchmarked on long-term, in-situ tower data.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Contributions}
+      \begin{itemize}
+        \item Curated \textbf{ORR-HiResMet}: $\sim$25 years of
+              meteorological data from \textbf{6 towers}.
+        \item End-to-end pipeline: extreme-event labelling,
+              temporal/spatial/terrain features, ablation.
+        \item Benchmark of \textbf{ML, DL, and CNN/TCN} models with
+              Optuna-tuned hyper-parameters.
+        \item \textbf{Explainability} via SHAP, permutation importance,
+              and saliency linked to physical drivers.
+        \item Cross-tower generalization \& computational efficiency.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+%%--- Slide 3: Data & Methods ---
+\begin{frame}{Data \& Methodology}
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \begin{block}{ORR-HiResMet Dataset}
+      \begin{itemize}
+        \item 6 meteorological towers across the ORR (TN, USA).
+        \item Variables: wind speed/direction, T, RH, pressure,
+              precipitation, solar radiation.
+        \item Auxiliary: NSRDB irradiance, HRRR re-analysis,
+              high-resolution terrain elevation.
+        \item Quality control: duplicate detection, gap-filling,
+              resampling to a uniform 1\,h grid.
+      \end{itemize}
+    \end{block}
+    \begin{block}{Feature Engineering}
+      \begin{itemize}
+        \item \textbf{Temporal:} lags, rolling stats, gradients.
+        \item \textbf{Spatial:} cross-tower deltas \& gradients.
+        \item \textbf{Terrain:} elevation, slope, aspect.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Models Benchmarked}
+      \begin{itemize}
+        \item \textbf{ML:} XGBoost, LightGBM, Random Forest.
+        \item \textbf{DL:} LSTM, GRU.
+        \item \textbf{CNN-based:} 1D-CNN, Temporal Convolutional Net.
+        \item Hyper-parameters tuned with \textbf{Optuna}
+              (TPE sampler, $>$100 trials per model).
+      \end{itemize}
+    \end{block}
+    \begin{block}{Class Imbalance}
+      \begin{itemize}
+        \item Extreme events $<$1\% of samples.
+        \item Focal loss + class-weighted sampling
+              + threshold calibration.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+%%--- Slide 4: Results ---
+\begin{frame}{Key Results}
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \begin{block}{Event-Specific Performance}
+      \begin{itemize}
+        \item CNN/TCN best on high-wind events (highest F1, recall).
+        \item LightGBM best on precipitation extremes (lowest FPR).
+        \item GRU competitive on temperature excursions.
+      \end{itemize}
+    \end{block}
+    \begin{block}{Ablation Study}
+      \begin{itemize}
+        \item Removing \textbf{spatial gradients} $\rightarrow$
+              largest F1 drop ($-$8\,\%): cross-tower context matters.
+        \item Removing \textbf{terrain features} $\rightarrow$
+              consistent drop on wind events.
+        \item Temporal-only baseline underperforms on rare events.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.42\textwidth}
+    \begin{block}{Explainability \& Physics Linkage}
+      \begin{itemize}
+        \item SHAP highlights pressure tendency \& wind shear
+              ahead of high-wind events.
+        \item Saliency maps localize precipitation predictors
+              to upwind towers (consistent with synoptic flow).
+      \end{itemize}
+    \end{block}
+    \begin{block}{Cross-Tower \& Compute}
+      \begin{itemize}
+        \item Models trained on 5 towers transfer to the 6th
+              with $\le$5\,\% F1 degradation.
+        \item ML inference $<$1\,ms; DL/CNN $<$10\,ms per sample
+              on a single GPU.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+%%--- Slide 5: Conclusion & Next Steps ---
+\begin{frame}{Implications \& Next Steps}
+\begin{columns}[T]
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Implications}
+      \begin{itemize}
+        \item First \textbf{explainable, multi-tower} extreme-event
+              benchmark on long-term ORR meteorological data.
+        \item Spatial \& terrain features are not optional ---
+              they are decisive for rare-event recall.
+        \item Hybrid pipeline (ML for tabular extremes,
+              CNN/TCN for sequence-driven events) gives
+              the best operational trade-off.
+      \end{itemize}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.5\textwidth}
+    \begin{block}{Conclusion}
+      \begin{itemize}
+        \item Open data \& code release supports reproducibility
+              and DOE site-resilience studies.
+        \item Framework extensible to other DOE sites via
+              transfer learning.
+      \end{itemize}
+    \end{block}
+    \begin{block}{Next Steps}
+      \begin{itemize}
+        \item Continual-learning updates as new tower data arrive.
+        \item Fusion with HRRR/NSRDB for longer-horizon forecasts.
+        \item Submitted to \emph{Journal of Big Data} --- March 2026.
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+\end{document}

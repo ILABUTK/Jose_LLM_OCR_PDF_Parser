@@ -1,0 +1,37 @@
+# Crawl4AI — self-hosted LLM-friendly web crawler with JS rendering
+# ─────────────────────────────────────────────────────────────────
+# Pre-built public images on Docker Hub (amd64 + arm64).
+# Used by bib_enrich_download.py as a JS-rendering fallback for publisher pages.
+#
+# Reference: https://github.com/unclecode/crawl4ai  (apache-2.0)
+#
+# Start:   docker compose -f crawl4ai/docker-compose.yml up -d
+# Stop:    docker compose -f crawl4ai/docker-compose.yml down
+# Logs:    docker compose -f crawl4ai/docker-compose.yml logs -f crawl4ai
+# API:     http://localhost:11235
+# UI:      http://localhost:11235/playground
+#
+# Quick test:
+#   curl -s -X POST http://localhost:11235/crawl \
+#        -H "Content-Type: application/json" \
+#        -d '{"urls":["https://doi.org/10.1038/s41467-023-36655-1"],
+#             "browser_config":{"type":"BrowserConfig","params":{"headless":true}},
+#             "crawler_config":{"type":"CrawlerRunConfig","params":{"cache_mode":"bypass"}}}' \
+#     | python3 -m json.tool | grep -i pdf | head
+
+services:
+  crawl4ai:
+    image: unclecode/crawl4ai:latest   # amd64 + arm64; 1M+ Docker Hub pulls
+    container_name: crawl4ai
+    restart: unless-stopped
+    ports:
+      - "11235:11235"
+    shm_size: "1g"           # needed for Chromium inside the container
+    environment:
+      # No LLM key needed — we only use the JS crawler, not AI extraction
+      MAX_CONCURRENT_PAGES: "5"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
