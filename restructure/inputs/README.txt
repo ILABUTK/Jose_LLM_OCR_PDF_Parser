@@ -3,11 +3,17 @@ Place your corpus and the author's previous paper here, then run the stack.
 Expected layout:
 
   inputs/
-    hypothesis.json     # research hypothesis (provided example included)
-    keywords.json       # keyword list (provided example included)
-    style.(tex|md|pdf|txt)   # a previous paper by the author (style reference)
-    pdfs/               # the corpus PDFs
-    references.bib      # BibTeX   (OR *.enw / *.ris EndNote/RIS)
+    hypothesis.json     # research hypothesis + research questions + title/journal
+    keywords.json       # keyword list
+    style/              # the author's previous paper, MinerU-parsed (a <name>/hybrid_auto/<name>.md tree)
+    pdfs/               # the corpus, MinerU-parsed (one <name>/hybrid_auto/<name>.md per paper)
 
-Only hypothesis.json, keywords.json, pdfs/ and one reference file are required.
-If no style.* file is present a generic formal review voice is used.
+No .bib / EndNote file is needed — references are built automatically from the
+MinerU-parsed papers (the folder name is used as the citation key and the
+document's first heading as its title).
+
+Only hypothesis.json, keywords.json and pdfs/ are required. If style/ is absent
+a generic formal review voice is used.
+
+Output (in ../outputs/): paper.tex + elsarticle.cls (Elsevier manuscript),
+paper.pdf (if LaTeX is available), plus paper.md and the reasoning graph.

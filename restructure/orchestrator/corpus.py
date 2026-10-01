@@ -1,17 +1,19 @@
 """Corpus loader for the restructured pipeline.
 
 Starting point is a *single mounted folder* containing:
-  - pdfs/            the source papers (PDF)
-  - *.bib            BibTeX references, OR
-  - *.enw / *.ris    EndNote / RIS references
+  - pdfs/            the source papers, as MinerU-parsed Markdown (one *.md per
+                     paper under ``<name>/hybrid_auto/<name>.md``)
+  - *.bib            optional BibTeX references, OR
+  - *.enw / *.ris    optional EndNote / RIS references
 
 This module:
-  1. parses the reference file(s) into {citekey: metadata}
-  2. extracts full text + embedded images from every PDF
+  1. parses any reference file(s) into {citekey: metadata}
+  2. loads full text (+ referenced images) from every MinerU .md
   3. chunks the text into paragraph-sized evidence units
   4. provides a lightweight TF-IDF retriever (no external services)
 
-It deliberately has NO dependency on mineru / zotero / crawl4ai / searxng.
+MinerU emits one folder per paper, e.g. ``<name>/auto/<name>.md`` with an
+``images/`` sub-folder; both the nested and flat layouts are handled.
 """
 from __future__ import annotations
 
@@ -22,11 +24,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import config
-
-try:
-    from pypdf import PdfReader
-except Exception:  # pragma: no cover - pypdf is a hard dep, guard for import order
-    PdfReader = None  # type: ignore
 
 
 # ── Reference parsing ────────────────────────────────────────────────────────
@@ -109,37 +106,65 @@ def load_bib_index() -> dict[str, dict]:
     return index
 
 
-# ── PDF extraction ───────────────────────────────────────────────────────────
+# ── MinerU paper identifiers ──────────────────────────────────────────────────
 def _slug(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
 
 
-def _extract_pdf(path: Path, image_out: Path) -> tuple[str, list[str]]:
-    """Return (full_text, [saved_image_paths]) for one PDF."""
-    if PdfReader is None:
-        return "", []
-    text_parts: list[str] = []
-    images: list[str] = []
+# ── MinerU Markdown extraction ───────────────────────────────────────────────
+_MD_IMAGE = re.compile(r"!\[(?P<alt>[^\]]*)\]\((?P<src>[^)]+)\)")
+
+
+def _extract_markdown(path: Path) -> tuple[str, list[dict]]:
+    """Return (clean_text, [{path, caption}]) for one MinerU .md file.
+
+    Image references are resolved relative to the .md file. Remote URLs are
+    ignored; only on-disk images (MinerU's ``images/`` folder) are registered.
+    """
     try:
-        reader = PdfReader(str(path))
-    except Exception as e:  # corrupt / encrypted
+        raw = path.read_text(encoding="utf-8", errors="ignore")
+    except Exception as e:
         print(f"  [corpus] cannot read {path.name}: {e}")
         return "", []
-    for pno, page in enumerate(reader.pages):
-        try:
-            text_parts.append(page.extract_text() or "")
-        except Exception:
-            pass
-        # Pull embedded raster images so graph nodes can reference a paper's
-        # OWN figures when prompting ComfyUI.
-        try:
-            for ino, img in enumerate(getattr(page, "images", [])):
-                dst = image_out / f"{_slug(path.stem)}_p{pno}_{ino}{Path(img.name).suffix or '.png'}"
-                dst.write_bytes(img.data)
-                images.append(str(dst))
-        except Exception:
-            pass
-    return "\n".join(text_parts), images
+    images: list[dict] = []
+    for m in _MD_IMAGE.finditer(raw):
+        src = m.group("src").strip().split()[0]
+        if src.startswith(("http://", "https://", "data:")):
+            continue
+        img_path = (path.parent / src).resolve()
+        if img_path.exists():
+            images.append({"path": str(img_path), "caption": m.group("alt").strip()})
+    # Drop the image markup from the prose fed to the retriever/LLM.
+    text = _MD_IMAGE.sub(" ", raw)
+    return text, images
+
+
+def _mineru_md_files(root: Path) -> list[Path]:
+    """All MinerU markdown files under ``root`` (nested auto/hybrid_auto or flat)."""
+    return sorted(p for p in root.rglob("*.md")
+                  if p.name.lower() != "readme.md")
+
+
+# MinerU output sub-folder names that wrap a paper's artifacts.
+_MINERU_SUBDIRS = {"auto", "hybrid_auto", "vlm_auto", "txt"}
+
+
+def _mineru_stem(path: Path) -> str:
+    """Paper identifier for a MinerU .md: the paper folder, not the auto/ dir."""
+    if path.parent.name.lower() in _MINERU_SUBDIRS:
+        return path.parent.parent.name
+    return path.stem
+
+
+def _md_title(text: str) -> str:
+    """First Markdown H1/H2 heading, used as a human title when no bib is given."""
+    for line in text.splitlines():
+        s = line.strip()
+        if s.startswith("#"):
+            t = s.lstrip("#").strip()
+            if t:
+                return t[:200]
+    return ""
 
 
 def _chunk(text: str, size: int = 700) -> list[str]:
@@ -212,7 +237,10 @@ class Corpus:
     def short_ref(self, citekey: str) -> str:
         m = self.bib.get(citekey, {})
         author = m.get("author", "").split(",")[0].split(" and ")[0].strip()
-        return f"[{citekey}] {author} ({m.get('year','')}). {m.get('title','')[:120]}"
+        title = m.get("title", "")[:160]
+        year = m.get("year", "")
+        parts = [p for p in (author, f"({year})" if year else "", title) if p]
+        return f"[{citekey}] " + ". ".join(parts) if parts else f"[{citekey}]"
 
 
 def _match_citekey(pdf_stem: str, bib: dict[str, dict]) -> str:
@@ -229,14 +257,23 @@ def _match_citekey(pdf_stem: str, bib: dict[str, dict]) -> str:
 def load_corpus() -> Corpus:
     bib = load_bib_index()
     corpus = Corpus(bib=bib)
-    img_dir = config.OUTPUT_DIR / "corpus_images"
-    img_dir.mkdir(parents=True, exist_ok=True)
     if not config.PDF_DIR.exists():
         print(f"  [corpus] no pdfs/ folder at {config.PDF_DIR}")
         return corpus
-    for pdf in sorted(config.PDF_DIR.rglob("*.pdf")):
-        citekey = _match_citekey(pdf.stem, bib) if bib else _slug(pdf.stem)
-        text, images = _extract_pdf(pdf, img_dir)
+
+    def _stem(path: Path) -> str:
+        return _mineru_stem(path)
+
+    # MinerU-parsed Markdown is the only corpus source (one .md per paper).
+    for md in _mineru_md_files(config.PDF_DIR):
+        stem = _stem(md)
+        citekey = _match_citekey(stem, bib) if bib else _slug(stem)
+        text, images = _extract_markdown(md)
+        # Synthesize a bib entry from the markdown title when no reference file
+        # was supplied, so References / \cite still render meaningfully.
+        if citekey not in corpus.bib:
+            corpus.bib[citekey] = {"title": _md_title(text) or stem, "author": "",
+                                   "year": "", "doi": "", "journal": "", "abstract": ""}
         for i, ch in enumerate(_chunk(text)):
             corpus.chunks.append({
                 "citekey": citekey,
@@ -244,7 +281,9 @@ def load_corpus() -> Corpus:
                 "text": ch,
             })
         for img in images:
-            corpus.figures.append({"citekey": citekey, "path": img})
+            corpus.figures.append({"citekey": citekey, "path": img["path"],
+                                   "caption": img.get("caption", "")})
+
     corpus._build_index()
     print(f"  [corpus] {len(corpus.chunks)} chunks / {len(corpus.figures)} figures "
           f"from {len(set(c['citekey'] for c in corpus.chunks))} papers")

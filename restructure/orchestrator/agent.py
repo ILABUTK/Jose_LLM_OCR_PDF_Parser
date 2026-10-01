@@ -26,13 +26,13 @@ from llm_client import chat
 SERVERS = {
     "corpus": ["python", "-m", "mcp_servers.corpus_server"],
     "reasoning": ["python", "-m", "mcp_servers.reasoning_server"],
-    "image": ["python", "-m", "mcp_servers.image_server"],
+    "figure": ["python", "-m", "mcp_servers.svg_server"],
     "writing": ["python", "-m", "mcp_servers.writing_server"],
 }
 
 SYSTEM = f"""You are the orchestrator of an automated scientific-review pipeline.
 You have MCP tools from four agents: corpus (evidence), reasoning (graph of
-thought), image (ComfyUI figures), writing (grounded prose).
+thought), figure (LLM-drawn SVG figures), writing (grounded prose).
 
 Goal: build a grounded review paper from the mounted corpus.
 Procedure:

@@ -15,8 +15,8 @@ At every node we:
   3. VALIDATE — score how well the idea is supported [0,1]; prune weak nodes.
   4. COMPARE  — contrast the idea against sibling ideas / counter-evidence.
   5. ILLUSTRATE (optional) — when a node is well-developed, generate
-     PAPER_IMAGE_COUNT figures via ComfyUI, using the cited paper's OWN images
-     as img2img references.
+     PAPER_IMAGE_COUNT vector SVG figures via the LLM, grounded in the node's
+     retrieved corpus evidence.
 
 Recursion stops at GRAPH_DEPTH. The resulting graph is serialised and later
 flattened into paper sections.
@@ -32,9 +32,9 @@ from corpus import Corpus
 from llm_client import complete, complete_json
 
 try:
-    import comfy_client
-except Exception:  # comfy optional at import time
-    comfy_client = None  # type: ignore
+    import svg_client
+except Exception:  # figure generation optional at import time
+    svg_client = None  # type: ignore
 
 _ids = itertools.count(1)
 
@@ -88,9 +88,9 @@ class ReasoningGraph:
         self.corpus = corpus
         self.hypothesis = hypothesis
         self.keywords = keywords
-        self.image_enabled = bool(comfy_client) and comfy_client.health() if comfy_client else False
-        if comfy_client and not self.image_enabled:
-            print("  [graph] ComfyUI not reachable — figures disabled this run")
+        self.image_enabled = bool(svg_client) and svg_client.health() if svg_client else False
+        if svg_client and not self.image_enabled:
+            print("  [graph] SVG generator unavailable — figures disabled this run")
 
     # ---------------------------------------------------------------- helpers
     def _evidence_block(self, hits: list[dict]) -> str:
@@ -134,16 +134,13 @@ class ReasoningGraph:
     def _illustrate(self, node: Node) -> None:
         if not self.image_enabled:
             return
-        # Reference the OWN figures of the papers this node relies on.
-        refs: list[str] = []
-        for ck in node.citekeys:
-            refs.extend(f["path"] for f in self.corpus.figures_for(ck))
         prompt = (
             f"Scientific figure illustrating: {node.title}. {node.claim}. "
             f"Clean schematic, labelled axes, publication quality, keywords: "
             f"{', '.join(self.keywords[:5])}."
         )
-        node.figures = comfy_client.generate_for_node(node.id, prompt, refs or None)
+        node.figures = svg_client.generate_for_node(
+            node.id, prompt, self._evidence_block(node.evidence))
 
     def _expand(self, node: Node) -> list[dict]:
         ctx = (

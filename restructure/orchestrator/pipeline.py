@@ -2,8 +2,9 @@
 
 Linear stages 01→07 are replaced by a single graph-of-thought traversal:
 
-    load inputs → build reasoning graph (GRAPH_DEPTH) → illustrate (ComfyUI)
+    load inputs → build reasoning graph (GRAPH_DEPTH) → illustrate (LLM SVG)
                 → draft grounded sections → assemble paper.md
+                → render Elsevier LaTeX (paper.tex / paper.pdf)
 
 Run:
     python pipeline.py                 # full run
@@ -129,10 +130,18 @@ def main() -> None:
 
     print("--- drafting + assembling paper ---")
     _assemble(root, corpus, style)
+
+    print("--- rendering Elsevier LaTeX ---")
+    from render_elsevier import render
+    render()
+
     print("=== done ===")
     print(f"  graph : {config.GRAPH_JSON}")
     print(f"  draft : {config.DRAFT_JSON}")
     print(f"  paper : {config.PAPER_MD}")
+    print(f"  tex   : {config.PAPER_TEX}")
+    if config.PAPER_PDF.exists():
+        print(f"  pdf   : {config.PAPER_PDF}")
 
 
 if __name__ == "__main__":

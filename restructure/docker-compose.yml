@@ -4,13 +4,13 @@
 #   ┌───────────────┬───────────────────────┬──────────────────────────────┐
 #   │ Service       │ Port / URL            │ Role                         │
 #   ├───────────────┼───────────────────────┼──────────────────────────────┤
-#   │ comfyui       │ http://localhost:8188 │ Image generation (GPU)       │
 #   │ orchestrator  │ (internal)            │ MCP agents + graph reasoning │
 #   └───────────────┴───────────────────────┴──────────────────────────────┘
 #
-# The vLLM LLM engine is NOT in this stack — it is a pre-provisioned instance we
-# only connect to (LLM_BASE_URL). searxng, crawl4ai, zotero and mineru have been
-# removed entirely.
+# Figures are drawn as vector SVG by the LLM (see mcp_servers/svg_server.py) —
+# no GPU/ComfyUI service is needed. The vLLM LLM engine is NOT in this stack —
+# it is a pre-provisioned instance we only connect to (LLM_BASE_URL). searxng,
+# crawl4ai, zotero and mineru have been removed entirely.
 #
 # Quick start:
 #   cp .env.example .env            # set LLM_BASE_URL / LLM_API_KEY
@@ -20,27 +20,6 @@
 
 services:
 
-  # ── ComfyUI — figure generation ───────────────────────────────────────────
-  comfyui:
-    image: yanwk/comfyui-boot:latest
-    container_name: paper-comfyui
-    restart: unless-stopped
-    ports:
-      - "8188:8188"
-    environment:
-      - CLI_ARGS=--listen 0.0.0.0 --port 8188
-    volumes:
-      - ./comfyui/models:/root/ComfyUI/models
-      - ./comfyui/output:/root/ComfyUI/output
-      - ./comfyui/input:/root/ComfyUI/input
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-
   # ── Orchestrator — MCP agents + graph-of-thought ─────────────────────────
   orchestrator:
     build:
@@ -49,8 +28,12 @@ services:
     image: paper-orchestrator:latest
     container_name: paper-orchestrator
     restart: "no"
-    depends_on:
-      - comfyui
+    # The LLM gateway (LiteLLM/vLLM) listens on the host's loopback
+    # (127.0.0.1:4000). Host networking lets the container reach it directly as
+    # localhost:4000. The orchestrator publishes no ports, so this is safe.
+    # If your gateway instead listens on 0.0.0.0 or a remote host, delete this
+    # line and set LLM_BASE_URL to that address (e.g. host.docker.internal).
+    network_mode: host
     environment:
       # LLM engine (external vLLM, OpenAI-compatible)
       - LLM_BASE_URL=${LLM_BASE_URL:-https://75e4-160-36-103-252.ngrok-free.app/v1}
@@ -59,10 +42,9 @@ services:
       # Graph-of-thought depth + figure budget
       - GRAPH_DEPTH=${GRAPH_DEPTH:-3}
       - GRAPH_BRANCHING=${GRAPH_BRANCHING:-3}
+      # LLM-drawn SVG figures per developed node
       - PAPER_IMAGE_COUNT=${PAPER_IMAGE_COUNT:-2}
-      # ComfyUI (in-stack)
-      - COMFYUI_URL=http://comfyui:8188
-      - COMFY_CHECKPOINT=${COMFY_CHECKPOINT:-sd_xl_base_1.0.safetensors}
+      - SVG_MAX_TOKENS=${SVG_MAX_TOKENS:-6000}
       # pipeline | agent | idle
       - PIPELINE_MODE=${PIPELINE_MODE:-pipeline}
       - INPUT_DIR=/inputs

@@ -1,10 +1,11 @@
 {
-  "title": "Solid Tritium Breeder Ceramics for Fusion Reactors",
-  "hypothesis": "Among candidate solid breeder ceramics, lithium orthosilicate (Li4SiO4) offers the most favourable balance of tritium release kinetics, mechanical robustness, and irradiation stability compared with Li2TiO3 and Li2ZrO3 for use in fusion breeding blankets.",
+  "title": "Cross-Modal Collaboration with Side Temporal Adaptation for Open-Vocabulary Temporal Action Localization",
+  "hypothesis": "A cross-modal collaboration framework that combines a frozen vision-language model with Side Temporal Adaptation and classification ensemble can improve temporal action localization across both seen and unseen action categories while preserving the VLM's zero-shot generalization capability.",
   "research_questions": [
-    "How do tritium release temperatures and diffusion coefficients compare across Li4SiO4, Li2TiO3, and Li2ZrO3?",
-    "Which fabrication routes yield pebbles with the best crush-load and thermal-cycling performance?",
-    "How does neutron irradiation affect the microstructure and tritium inventory of each ceramic?"
+    "How effectively does Side Temporal Adaptation improve temporal modeling and localization of human actions when using a frozen image-pretrained vision-language model?",
+    "How does the proposed classification ensemble strategy affect performance on seen and unseen action categories?",
+    "How does the proposed framework perform under different open-vocabulary settings on THUMOS'14 and ActivityNet-1.3?",
+    "How do different knowledge transfer approaches and VLM backbones affect open-vocabulary temporal action localization performance?"
   ],
-  "journal": "Journal of Nuclear Materials"
+  "journal": "Image and Vision Computing"
 }

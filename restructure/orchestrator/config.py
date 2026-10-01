@@ -57,14 +57,11 @@ GRAPH_BRANCHING = _env_int("GRAPH_BRANCHING", 3)
 # Minimum evidence-grounding score [0,1] for a node to be kept.
 GRAPH_MIN_SCORE = _env_float("GRAPH_MIN_SCORE", 0.45)
 
-# ── Image generation (ComfyUI, part of the compose stack) ────────────────────
-COMFYUI_URL = _env("COMFYUI_URL", "http://comfyui:8188")
-# Number of images generated per developed idea / graph node.
+# ── Figure generation (LLM-drawn SVG — no external service) ────────────────
+# Number of SVG figures generated per developed idea / graph node.
 PAPER_IMAGE_COUNT = _env_int("PAPER_IMAGE_COUNT", 2)
-COMFY_WIDTH = _env_int("COMFY_WIDTH", 1024)
-COMFY_HEIGHT = _env_int("COMFY_HEIGHT", 768)
-COMFY_STEPS = _env_int("COMFY_STEPS", 25)
-COMFY_CHECKPOINT = _env("COMFY_CHECKPOINT", "sd_xl_base_1.0.safetensors")
+# Token budget for a single SVG generation call.
+SVG_MAX_TOKENS = _env_int("SVG_MAX_TOKENS", 6000)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 INPUT_DIR = Path(_env("INPUT_DIR", "/inputs"))
@@ -76,6 +73,8 @@ PDF_DIR = INPUT_DIR / "pdfs"
 
 # style reference is auto-detected (first match wins)
 STYLE_CANDIDATES = ["style.tex", "style.md", "style.txt", "style.pdf"]
+# ...or a whole MinerU-parsed paper dropped under inputs/style/
+STYLE_DIR = INPUT_DIR / "style"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 FIGURES_DIR = OUTPUT_DIR / "figures"
@@ -84,11 +83,20 @@ FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 GRAPH_JSON = OUTPUT_DIR / "reasoning_graph.json"
 DRAFT_JSON = OUTPUT_DIR / "draft_sections.json"
 PAPER_MD = OUTPUT_DIR / "paper.md"
+PAPER_TEX = OUTPUT_DIR / "paper.tex"
+PAPER_PDF = OUTPUT_DIR / "paper.pdf"
 
 
 def style_reference_path() -> Path | None:
+    # 1) an explicit style.* file at the input root
     for name in STYLE_CANDIDATES:
         p = INPUT_DIR / name
         if p.exists():
             return p
+    # 2) a MinerU-parsed paper folder under inputs/style/ — take its .md
+    if STYLE_DIR.is_dir():
+        mds = sorted(p for p in STYLE_DIR.rglob("*.md")
+                     if p.name.lower() != "readme.md")
+        if mds:
+            return mds[0]
     return None

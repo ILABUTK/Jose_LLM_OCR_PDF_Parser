@@ -1,3 +1,4 @@
 requests>=2.31
 pypdf>=4.2
 mcp>=1.2.0
+cairosvg>=2.7
