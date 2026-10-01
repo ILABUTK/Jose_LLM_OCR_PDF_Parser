@@ -1,0 +1,6 @@
+outputs/
+comfyui/
+inputs/pdfs/
+.env
+__pycache__/
+*.pyc

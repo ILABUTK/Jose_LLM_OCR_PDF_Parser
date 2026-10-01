@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# Restructured paper-generation stack — single docker-compose
+#
+#   ┌───────────────┬───────────────────────┬──────────────────────────────┐
+#   │ Service       │ Port / URL            │ Role                         │
+#   ├───────────────┼───────────────────────┼──────────────────────────────┤
+#   │ comfyui       │ http://localhost:8188 │ Image generation (GPU)       │
+#   │ orchestrator  │ (internal)            │ MCP agents + graph reasoning │
+#   └───────────────┴───────────────────────┴──────────────────────────────┘
+#
+# The vLLM LLM engine is NOT in this stack — it is a pre-provisioned instance we
+# only connect to (LLM_BASE_URL). searxng, crawl4ai, zotero and mineru have been
+# removed entirely.
+#
+# Quick start:
+#   cp .env.example .env            # set LLM_BASE_URL / LLM_API_KEY
+#   docker compose up -d --build
+#   docker compose logs -f orchestrator
+# ═══════════════════════════════════════════════════════════════════════════
+
+services:
+
+  # ── ComfyUI — figure generation ───────────────────────────────────────────
+  comfyui:
+    image: yanwk/comfyui-boot:latest
+    container_name: paper-comfyui
+    restart: unless-stopped
+    ports:
+      - "8188:8188"
+    environment:
+      - CLI_ARGS=--listen 0.0.0.0 --port 8188
+    volumes:
+      - ./comfyui/models:/root/ComfyUI/models
+      - ./comfyui/output:/root/ComfyUI/output
+      - ./comfyui/input:/root/ComfyUI/input
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ── Orchestrator — MCP agents + graph-of-thought ─────────────────────────
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: paper-orchestrator:latest
+    container_name: paper-orchestrator
+    restart: "no"
+    depends_on:
+      - comfyui
+    environment:
+      # LLM engine (external vLLM, OpenAI-compatible)
+      - LLM_BASE_URL=${LLM_BASE_URL:-https://75e4-160-36-103-252.ngrok-free.app/v1}
+      - LLM_MODEL=${LLM_MODEL:-ornl-qwen3-8-27b}
+      - LLM_API_KEY=${LLM_API_KEY:-not-needed}
+      # Graph-of-thought depth + figure budget
+      - GRAPH_DEPTH=${GRAPH_DEPTH:-3}
+      - GRAPH_BRANCHING=${GRAPH_BRANCHING:-3}
+      - PAPER_IMAGE_COUNT=${PAPER_IMAGE_COUNT:-2}
+      # ComfyUI (in-stack)
+      - COMFYUI_URL=http://comfyui:8188
+      - COMFY_CHECKPOINT=${COMFY_CHECKPOINT:-sd_xl_base_1.0.safetensors}
+      # pipeline | agent | idle
+      - PIPELINE_MODE=${PIPELINE_MODE:-pipeline}
+      - INPUT_DIR=/inputs
+      - OUTPUT_DIR=/outputs
+    volumes:
+      # Mounted folder with the PDFs + bib/endnote + hypothesis/keywords/style
+      - ./inputs:/inputs:ro
+      - ./outputs:/outputs

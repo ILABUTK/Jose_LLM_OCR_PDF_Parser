@@ -1,0 +1,10 @@
+{
+  "title": "Solid Tritium Breeder Ceramics for Fusion Reactors",
+  "hypothesis": "Among candidate solid breeder ceramics, lithium orthosilicate (Li4SiO4) offers the most favourable balance of tritium release kinetics, mechanical robustness, and irradiation stability compared with Li2TiO3 and Li2ZrO3 for use in fusion breeding blankets.",
+  "research_questions": [
+    "How do tritium release temperatures and diffusion coefficients compare across Li4SiO4, Li2TiO3, and Li2ZrO3?",
+    "Which fabrication routes yield pebbles with the best crush-load and thermal-cycling performance?",
+    "How does neutron irradiation affect the microstructure and tritium inventory of each ceramic?"
+  ],
+  "journal": "Journal of Nuclear Materials"
+}
