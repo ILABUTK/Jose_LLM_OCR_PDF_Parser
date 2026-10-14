@@ -26,7 +26,7 @@ def svg_health() -> bool:
 @mcp.tool()
 def generate_figure(node_id: str, prompt: str,
                     reference_citekeys: list[str] | None = None) -> list[str]:
-    """Generate PAPER_IMAGE_COUNT SVG figures for a node.
+    """Generate one SVG figure for a node.
 
     If `reference_citekeys` is given, the cited papers' figure captions are
     passed as grounding evidence so the drawing reflects real reported values.
@@ -38,15 +38,14 @@ def generate_figure(node_id: str, prompt: str,
         caps: list[str] = []
         for ck in reference_citekeys:
             for f in c.figures_for(ck):
-                cap = f.get("caption") or f.get("path", "")
-                caps.append(f"[{ck}] {cap}")
+                caps.append(f"[{ck}] {f['caption'] or f['path']}")
         evidence = "\n".join(caps) or None
-    return svg_client.generate_for_node(node_id, prompt, evidence)
+    return svg_client.generate_for_node(node_id, prompt, evidence, count=1)
 
 
 @mcp.tool()
 def image_count() -> int:
-    """The configured number of figures generated per node (PAPER_IMAGE_COUNT)."""
+    """Total figure budget for the paper (PAPER_IMAGE_COUNT)."""
     return config.PAPER_IMAGE_COUNT
 
 

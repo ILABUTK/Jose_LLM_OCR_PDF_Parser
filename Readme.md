@@ -2,6 +2,43 @@
 
 PDF parser
 
+## Web interfaces
+
+Screenshots captured at 100% browser zoom (1600×1000).
+
+### Management UI (Streamlit, `ui/`, port 7860)
+
+`docker compose up -d --build ui` → http://localhost:7860. Set `WORKSPACE_DIR` to run it outside Docker (default `/workspace`).
+
+| Status | Import |
+|---|---|
+| ![Status](docs/screenshots/ui_01_status.png) | ![Import](docs/screenshots/ui_02_import.png) |
+
+| Library | OCR |
+|---|---|
+| ![Library](docs/screenshots/ui_03_library.png) | ![OCR](docs/screenshots/ui_04_ocr.png) |
+
+| Ontologies | Generate |
+|---|---|
+| ![Ontologies](docs/screenshots/ui_05_ontologies.png) | ![Generate](docs/screenshots/ui_06_generate.png) |
+
+### Live pipeline view (`restructure/orchestrator/templates/live.html`)
+
+Served from `restructure/outputs/` at http://localhost:8080/live.html while the pipeline runs.
+The graph tab auto-fits to the pane; scrolling or dragging disables the auto-fit.
+
+**Inputs** — hypothesis, research questions, keywords, extracted author style guide.
+
+![Live inputs](docs/screenshots/live_01_inputs.png)
+
+**Graph** — reasoning tree coloured by status; click a node for claim, validation, comparison and evidence.
+
+![Live graph](docs/screenshots/live_02_graph.png)
+
+**LLM Log** — every request/response, expandable.
+
+![Live LLM log](docs/screenshots/live_03_llm_log.png)
+
 - Testing Code Location on the RECOIL GPU Server
     - https://recoil.ise.utk.edu:8000/user/xli27/lab/tree/projects/shared_space/parserBibliographyJT/
 

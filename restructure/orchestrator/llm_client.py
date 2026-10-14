@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import re
 import time
+from datetime import datetime, timezone
 from typing import Any
 
 import requests
@@ -20,11 +21,28 @@ from config import (
     LLM_MAX_OUTPUT_TOKENS,
     LLM_MODEL,
     LLM_TEMPERATURE,
+    OUTPUT_DIR,
 )
 
 _CONNECT_TIMEOUT = 60
 _READ_TIMEOUT = 300
 _RETRYABLE = {408, 429, 500, 502, 503, 504}
+
+# Every prompt + reply is appended here so runs are fully auditable and the
+# live viewer can tail the conversation in real time.
+_CALL_LOG = OUTPUT_DIR / "llm_calls.jsonl"
+
+
+def _log_call(payload: dict, message: dict, elapsed: float) -> None:
+    rec = {
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "model": payload["model"],
+        "elapsed_s": round(elapsed, 2),
+        "request": payload["messages"],
+        "response": message,
+    }
+    with _CALL_LOG.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
 
 def _headers() -> dict[str, str]:
@@ -64,6 +82,7 @@ def chat(
     last_exc: Exception | None = None
     for attempt in range(max_retries):
         try:
+            started = time.monotonic()
             r = requests.post(
                 f"{LLM_BASE_URL.rstrip('/')}/chat/completions",
                 headers=_headers(),
@@ -77,7 +96,9 @@ def chat(
                 time.sleep(wait)
                 continue
             r.raise_for_status()
-            return r.json()["choices"][0]["message"]
+            message = r.json()["choices"][0]["message"]
+            _log_call(payload, message, time.monotonic() - started)
+            return message
         except (requests.Timeout, requests.ConnectionError) as e:
             last_exc = e
             wait = 10 * (attempt + 1)

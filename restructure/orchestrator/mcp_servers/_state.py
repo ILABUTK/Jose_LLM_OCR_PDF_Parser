@@ -22,13 +22,13 @@ def corpus() -> Corpus:
 
 
 def hypothesis() -> dict:
-    if config.HYPOTHESIS_JSON.exists():
-        return json.loads(config.HYPOTHESIS_JSON.read_text(encoding="utf-8"))
-    return {}
+    if not config.HYPOTHESIS_JSON.exists():
+        raise SystemExit(f"Missing {config.HYPOTHESIS_JSON} — provide a research hypothesis.")
+    return json.loads(config.HYPOTHESIS_JSON.read_text(encoding="utf-8"))
 
 
 def keywords() -> list[str]:
-    if config.KEYWORDS_JSON.exists():
-        data = json.loads(config.KEYWORDS_JSON.read_text(encoding="utf-8"))
-        return data.get("keywords", data) if isinstance(data, dict) else data
-    return []
+    if not config.KEYWORDS_JSON.exists():
+        raise SystemExit(f"Missing {config.KEYWORDS_JSON} — provide keywords.")
+    data = json.loads(config.KEYWORDS_JSON.read_text(encoding="utf-8"))
+    return data["keywords"] if isinstance(data, dict) else data

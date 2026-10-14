@@ -20,6 +20,7 @@ import subprocess
 from pathlib import Path
 
 import config
+from llm_client import complete
 
 TEMPLATES = Path(__file__).resolve().parent / "templates"
 
@@ -97,27 +98,20 @@ def _md_body_to_latex(body: str, cite_keys: set[str]) -> str:
 
 
 # ── Figures ──────────────────────────────────────────────────────────────────
-def _svg_to_pdf(svg_path: Path) -> Path | None:
+def _svg_to_pdf(svg_path: Path) -> Path:
     """Convert an SVG to PDF next to it so pdflatex can embed it."""
     pdf_path = svg_path.with_suffix(".pdf")
     if pdf_path.exists():
         return pdf_path
-    try:
-        import cairosvg
-        cairosvg.svg2pdf(url=str(svg_path), write_to=str(pdf_path))
-        return pdf_path
-    except Exception as e:
-        print(f"  [render] SVG→PDF failed for {svg_path.name}: {e}")
-        return None
+    import cairosvg
+    cairosvg.svg2pdf(url=str(svg_path), write_to=str(pdf_path))
+    return pdf_path
 
 
-def _figure_block(fig_path: str, caption: str, label: str) -> str | None:
+def _figure_block(fig_path: str, caption: str, label: str) -> str:
     p = Path(fig_path)
     if p.suffix.lower() == ".svg":
-        conv = _svg_to_pdf(p)
-        if conv is None:
-            return None
-        p = conv
+        p = _svg_to_pdf(p)
     rel = f"{config.FIGURES_DIR.name}/{p.name}"
     return (
         "\\begin{figure}[htbp]\n  \\centering\n"
@@ -151,38 +145,48 @@ def _preamble(title: str, keywords: list[str], abstract: str, journal: str) -> s
     )
 
 
+_ABSTRACT_SYS = (
+    "You are a scientific writer. Write a single-paragraph abstract (120-200 "
+    "words) for a review article, imitating the author's STYLE GUIDE. Summarise "
+    "the contribution, approach, and principal findings drawn from the SECTION "
+    "DRAFTS. Do NOT include headings, citations, bullet points, or a list of "
+    "research questions. Output only the abstract prose."
+)
+
+
 def _abstract_from(hypothesis: dict, sections: list[dict]) -> str:
-    base = hypothesis.get("abstract") or hypothesis.get("hypothesis") or ""
-    rqs = hypothesis.get("research_questions") or []
-    if rqs:
-        base = base + " This review addresses: " + "; ".join(rqs)
-    return base.strip()
+    from style import style_summary
+    body = "\n\n".join(f"## {s['title']}\n{s['body']}" for s in sections)
+    user = (
+        f"STYLE GUIDE:\n{style_summary()}\n\n"
+        f"TITLE: {hypothesis['title']}\n"
+        f"CENTRAL HYPOTHESIS: {hypothesis['hypothesis']}\n\n"
+        f"SECTION DRAFTS:\n{body[:12000]}\n\n"
+        "Write the abstract now."
+    )
+    return complete(_ABSTRACT_SYS, user, temperature=0.3, max_tokens=600).strip()
 
 
 def render() -> Path:
     sections = json.loads(config.DRAFT_JSON.read_text(encoding="utf-8"))
-    hypothesis = json.loads(config.HYPOTHESIS_JSON.read_text(encoding="utf-8")) \
-        if config.HYPOTHESIS_JSON.exists() else {}
-    keywords = []
-    if config.KEYWORDS_JSON.exists():
-        kd = json.loads(config.KEYWORDS_JSON.read_text(encoding="utf-8"))
-        keywords = kd.get("keywords", kd) if isinstance(kd, dict) else kd
+    hypothesis = json.loads(config.HYPOTHESIS_JSON.read_text(encoding="utf-8"))
+    kd = json.loads(config.KEYWORDS_JSON.read_text(encoding="utf-8"))
+    keywords = kd["keywords"] if isinstance(kd, dict) else kd
 
-    title = hypothesis.get("title") or "Automated Scientific Review"
-    journal = hypothesis.get("journal") or "Preprint"
-    cite_keys = {ck for s in sections for ck in s.get("citekeys", [])}
+    title = hypothesis["title"]
+    journal = hypothesis["journal"]
+    cite_keys = {ck for s in sections for ck in s["citekeys"]}
 
     parts: list[str] = [_preamble(title, keywords,
                                   _abstract_from(hypothesis, sections), journal)]
 
     for s in sections:
-        lvl = _LEVEL_CMD.get(min(int(s.get("depth", 1)) - 1, 3), "subsection")
+        lvl = _LEVEL_CMD.get(min(int(s["depth"]) - 1, 3), "subsection")
         parts.append(f"\n\\{lvl}{{{_escape(s['title'])}}}")
-        parts.append(_md_body_to_latex(s.get("body", ""), cite_keys))
-        for j, fig in enumerate(s.get("figures", [])):
+        parts.append(_md_body_to_latex(s["body"], cite_keys))
+        for j, fig in enumerate(s["figures"]):
             block = _figure_block(fig, s["title"], f"{s['id']}_{j}")
-            if block:
-                parts.append(block)
+            parts.append(block)
 
     # References — manual thebibliography (no .bib needed)
     used = sorted(cite_keys)
@@ -208,23 +212,19 @@ def render() -> Path:
 
 
 def _compile() -> None:
-    """Compile paper.tex → paper.pdf if a LaTeX toolchain is available."""
+    """Compile paper.tex → paper.pdf with the LaTeX toolchain."""
     tool = shutil.which("latexmk") or shutil.which("pdflatex")
     if not tool:
-        print("  [render] no LaTeX toolchain found — wrote paper.tex only "
-              "(install texlive or compile on the host).")
-        return
+        raise RuntimeError("no LaTeX toolchain found (install latexmk or pdflatex)")
     cmd = ([tool, "-pdf", "-interaction=nonstopmode", config.PAPER_TEX.name]
            if tool.endswith("latexmk")
            else [tool, "-interaction=nonstopmode", config.PAPER_TEX.name])
-    try:
-        for _ in range(2 if tool.endswith("pdflatex") else 1):
-            subprocess.run(cmd, cwd=config.OUTPUT_DIR, check=False,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        if config.PAPER_PDF.exists():
-            print(f"  [render] compiled {config.PAPER_PDF}")
-    except Exception as e:
-        print(f"  [render] LaTeX compile failed: {e}")
+    for _ in range(2 if tool.endswith("pdflatex") else 1):
+        subprocess.run(cmd, cwd=config.OUTPUT_DIR, check=False,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if not config.PAPER_PDF.exists():
+        raise RuntimeError("LaTeX compile produced no PDF — inspect paper.log")
+    print(f"  [render] compiled {config.PAPER_PDF}")
 
 
 if __name__ == "__main__":

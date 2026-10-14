@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paper Pipeline — Live</title>
+<script src="d3.v7.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --line: #2a2f3a; --text: #e6e9ef;
+    --muted: #9aa4b2; --accent: #4f9dff;
+    --pending: #5b6472; --grounding: #b07d2b; --validating: #c7a008;
+    --comparing: #8a6dd1; --expanding: #2f8f6b; --illustrating: #c25ea0; --done: #2f9e52;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; display: flex; flex-direction: column; background: var(--bg); color: var(--text);
+    font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  header { display: flex; align-items: center; gap: 14px; padding: 9px 16px;
+    border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 20px; margin: 0; font-weight: 600; }
+  header .stat { color: var(--muted); font-size: 15px; }
+  header .stat b { color: var(--text); }
+  .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  .tabs button { background: transparent; color: var(--muted); border: 1px solid var(--line);
+    padding: 7px 18px; border-radius: 7px; cursor: pointer; font-weight: 600; letter-spacing: .3px; font-size: 16px; }
+  .tabs button.active { color: var(--text); border-color: var(--accent); background: #10233f; }
+  .tabs .right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .btn { background: #10233f; color: var(--text); border: 1px solid var(--accent); border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; text-decoration: none; font-size: 15px; }
+  main { flex: 1; min-height: 0; }
+  .tab { display: none; height: 100%; } .tab.active { display: block; }
+  .scroll { height: 100%; overflow: auto; padding: 14px 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 11px 13px; margin-bottom: 11px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .k { color: var(--muted); text-transform: uppercase; font-size: 12.5px; letter-spacing: .6px; margin-bottom: 3px; }
+  .sec-title { color: var(--accent); font-weight: 600; }
+  .score { font-weight: 700; }
+  .evidence { font-size: 15px; color: #c4ccd8; border-left: 2px solid var(--line); padding-left: 9px; margin: 7px 0; }
+  pre { white-space: pre-wrap; word-break: break-word; margin: 4px 0; font: 14.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .chips span { display:inline-block; background:#10233f; border:1px solid var(--line); border-radius: 12px; padding: 3px 11px; margin: 2px; font-size: 15px; }
+  .pill { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12.5px; color:#0b0d11; font-weight:700; }
+  #tab-graph { display: none; } #tab-graph.active { display: grid; grid-template-columns: 1fr 520px; }
+  #graph { overflow: hidden; border-right: 1px solid var(--line); }
+  #nodeDetail { overflow: auto; padding: 12px 14px; }
+  .link { fill: none; stroke: var(--line); stroke-width: 1.4px; }
+  .nodeLabel { fill: var(--text); font-size: 14px; paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+  .muted { color: var(--muted); }
+  .call { border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px; }
+  .call summary { cursor: pointer; padding: 6px 8px; color: var(--muted); }
+  .call .body { padding: 8px; border-top: 1px solid var(--line); }
+  .role { color: var(--accent); font-weight: 600; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; }
+  .col { overflow: auto; }
+  .col h2 { font-size: 14.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin: 2px 0 10px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Paper Pipeline <span class="muted">· live</span></h1>
+  <span class="stat">phase <b id="phase">—</b></span>
+  <span class="stat">nodes <b id="nNodes">0</b></span>
+  <span class="stat">done <b id="nDone">0</b></span>
+  <span class="stat">sections <b id="nSecs">0</b></span>
+  <span class="stat">llm calls <b id="nCalls">0</b></span>
+  <span class="stat">updated <b id="updated">—</b></span>
+</header>
+<div class="tabs">
+  <button data-tab="inputs" class="active">Inputs</button>
+  <button data-tab="graph">Graph</button>
+  <button data-tab="writing">Writing</button>
+  <button data-tab="log">LLM Log</button>
+  <div class="right">
+    <div class="legend" id="legend"></div>
+    <a class="btn" id="dlLog" href="llm_calls.jsonl" download="llm_calls.jsonl">⭳ LLM log</a>
+    <button class="btn" id="clearLog" type="button">⌫ Clear log</button>
+  </div>
+</div>
+<main>
+  <div id="tab-inputs" class="tab active"><div class="scroll" id="inputsBody"></div></div>
+  <div id="tab-graph" class="tab">
+    <div id="graph"></div>
+    <div id="nodeDetail"><div class="muted">Click a node to inspect its claim, validation, comparison and full evidence.</div></div>
+  </div>
+  <div id="tab-writing" class="tab">
+    <div class="scroll"><div class="two">
+      <div class="col"><h2>Sections (as drafted)</h2><div id="draftBody"></div></div>
+      <div class="col"><h2>Assembled paper.md</h2><pre id="paperBody" class="muted">waiting…</pre></div>
+    </div></div>
+  </div>
+  <div id="tab-log" class="tab"><div class="scroll" id="logBody"></div></div>
+</main>
+
+<script>
+const STATUS = ["pending","grounding","validating","comparing","expanding","illustrating","done"];
+const COLOR = s => getComputedStyle(document.documentElement).getPropertyValue("--"+(s||"pending")).trim() || "#5b6472";
+document.getElementById("legend").innerHTML = STATUS.map(s => `<span><span class="dot" style="background:${COLOR(s)}"></span>${s}</span>`).join("");
+
+let activeTab = "inputs";
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+  activeTab = b.dataset.tab;
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  document.getElementById("tab-" + activeTab).classList.add("active");
+  if (activeTab === "graph" && state.graph) renderTree(state.graph);
+});
+
+const state = { graph: null, selectedId: null, openCalls: new Set(), lastLog: "",
+                clearBefore: localStorage.getItem("llmClearBefore") || "" };
+
+document.getElementById("clearLog").onclick = () => {
+  state.clearBefore = new Date().toISOString();
+  localStorage.setItem("llmClearBefore", state.clearBefore);
+  state.lastLog = "";  // force re-render with the new cutoff
+  tick();
+};
+
+const svg = d3.select("#graph").append("svg").attr("width", "100%").attr("height", "100%");
+const g = svg.append("g");
+let userZoomed = false, fittedCount = -1;
+const zoomer = d3.zoom().scaleExtent([0.2, 2.5]).on("zoom", e => {
+  if (e.sourceEvent) userZoomed = true;
+  g.attr("transform", e.transform);
+});
+svg.call(zoomer);
+
+function esc(s){ return (s ?? "").toString().replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+async function getJSON(p){ const r = await fetch(p+"?t="+Date.now(),{cache:"no-store"}); if(!r.ok) throw 0; return r.json(); }
+async function getText(p){ const r = await fetch(p+"?t="+Date.now(),{cache:"no-store"}); if(!r.ok) throw 0; return r.text(); }
+
+/* ── INPUTS ─────────────────────────────────────────────── */
+function renderInputs(inputs, styleGuide){
+  const h = (inputs && inputs.hypothesis) || {};
+  const kws = (inputs && inputs.keywords) || [];
+  const rqs = h.research_questions || [];
+  document.getElementById("inputsBody").innerHTML = `
+    <div class="card">
+      <div class="k">title</div><h3 class="sec-title">${esc(h.title)}</h3>
+      <div class="k">journal</div><div>${esc(h.journal)}</div>
+      <div class="k" style="margin-top:8px">hypothesis</div><p>${esc(h.hypothesis)}</p>
+      <div class="k">research questions</div><ol>${rqs.map(q=>`<li>${esc(q)}</li>`).join("")}</ol>
+    </div>
+    <div class="card"><div class="k">keywords</div><div class="chips">${kws.map(k=>`<span>${esc(k)}</span>`).join("")}</div></div>
+    <div class="card"><div class="k">author style guide (extracted from the reference paper)</div>
+      <pre>${esc(styleGuide) || '<span class="muted">not extracted yet…</span>'}</pre></div>`;
+}
+
+/* ── GRAPH ──────────────────────────────────────────────── */
+function sizes(){ const el = document.getElementById("graph"); return { w: el.clientWidth||900, h: el.clientHeight||600 }; }
+function countNodes(n, a={total:0,done:0}){ a.total++; if(n.status==="done") a.done++; (n.children||[]).forEach(c=>countNodes(c,a)); return a; }
+function findNode(n,id){ if(n.id===id) return n; for(const c of (n.children||[])){ const f=findNode(c,id); if(f) return f; } return null; }
+
+function renderTree(root){
+  const {w,h} = sizes();
+  const hier = d3.hierarchy(root, d => d.children);
+  d3.tree().nodeSize([30, 310])(hier);
+  const all = hier.descendants();
+  if (!userZoomed && fittedCount !== all.length) {
+    fittedCount = all.length;
+    const x0 = d3.min(all, d=>d.x), x1 = d3.max(all, d=>d.x), y1 = d3.max(all, d=>d.y);
+    const cw = y1 + 400, ch = x1 - x0 + 60;          // room for the leaf labels
+    const k = Math.max(0.5, Math.min(1, (w - 30) / cw, h / ch));
+    svg.call(zoomer.transform, d3.zoomIdentity.translate(30, 30 - x0 * k + Math.max(0, (h - ch * k) / 2)).scale(k));
+  }
+  g.selectAll(".link").data(hier.links(), d=>d.target.data.id)
+    .join(e=>e.append("path").attr("class","link"), u=>u, x=>x.remove())
+    .attr("d", d3.linkHorizontal().x(d=>d.y).y(d=>d.x));
+  const node = g.selectAll(".node").data(hier.descendants(), d=>d.data.id);
+  const en = node.enter().append("g").attr("class","node").style("cursor","pointer")
+    .on("click",(e,d)=>{ state.selectedId=d.data.id; renderNode(d.data); });
+  en.append("circle"); en.append("text").attr("class","nodeLabel").attr("dy","0.32em");
+  const m = en.merge(node);
+  m.attr("transform", d=>`translate(${d.y},${d.x})`);
+  m.select("circle").attr("r", d=>5+7*(d.data.score||0)).attr("fill", d=>COLOR(d.data.status))
+    .attr("stroke", d=>d.data.id===state.selectedId?"#fff":"none").attr("stroke-width",2);
+  m.select("text").attr("x", 12).attr("dy", d=>d.children?"-0.8em":"0.32em")
+    .text(d=>{ const t=d.data.title||""; return t.length>40 ? t.slice(0,39)+"…" : t; });
+  node.exit().remove();
+}
+
+function renderNode(d){
+  const evid = (d.evidence||[]).map(hh =>
+    `<div class="evidence">[${esc(hh.citekey)}] <span class="muted">(sim ${hh.score ?? "—"})</span><br>${esc(hh.text||"")}</div>`).join("");
+  document.getElementById("nodeDetail").innerHTML = `
+    <div class="card">
+      <div class="k">${esc(d.id)} · depth ${d.depth} · <span class="pill" style="background:${COLOR(d.status)}">${esc(d.status)}</span></div>
+      <h3 class="sec-title">${esc(d.title)}</h3>
+      <div class="score">score ${Number(d.score||0).toFixed(2)}</div>
+      <p>${esc(d.claim)}</p>
+    </div>
+    ${d.validation?`<div class="card"><div class="k">validation</div><pre>${esc(d.validation)}</pre></div>`:""}
+    ${d.comparison?`<div class="card"><div class="k">comparison</div><pre>${esc(d.comparison)}</pre></div>`:""}
+    ${(d.figures&&d.figures.length)?`<div class="card"><div class="k">figures</div>${d.figures.map(f=>`<img src="figures/${esc(f.split("/").pop())}?t=${Date.now()}" style="max-width:100%;background:#fff;border-radius:6px;margin-top:6px"/>`).join("")}</div>`:""}
+    <div class="card"><div class="k">evidence (${(d.evidence||[]).length})</div>${evid||'<span class="muted">none</span>'}</div>`;
+}
+
+/* ── WRITING ────────────────────────────────────────────── */
+function renderDraft(sections){
+  document.getElementById("nSecs").textContent = sections.length;
+  document.getElementById("draftBody").innerHTML = sections.length ? sections.map(s=>`
+    <div class="card"><div class="k">${esc(s.id)} · depth ${s.depth} · score ${Number(s.score||0).toFixed(2)}</div>
+      <h3 class="sec-title">${esc(s.title)}</h3><pre>${esc(s.body)}</pre></div>`).join("")
+    : '<div class="muted">Writing starts after the full graph is built, then streams in section by section.</div>';
+}
+function renderPaper(md){ const el=document.getElementById("paperBody"); el.textContent = md || "waiting…"; el.classList.remove("muted"); }
+
+/* ── LLM LOG (preserve open dropdowns across refresh) ────── */
+function renderLog(text){
+  const all = text.trim().split("\n").filter(Boolean);
+  const lines = state.clearBefore
+    ? all.filter(l => { try { return JSON.parse(l).ts > state.clearBefore; } catch { return true; } })
+    : all;
+  document.getElementById("nCalls").textContent = lines.length;
+  if (text === state.lastLog) return;
+  state.lastLog = text;
+  const last = lines.slice(-60).reverse();
+  document.getElementById("logBody").innerHTML = last.map(line=>{
+    let rec; try{ rec=JSON.parse(line); }catch{ return ""; }
+    const id = esc(rec.ts||"");
+    const req = (rec.request||[]).map(m=>`<div><span class="role">${esc(m.role)}:</span> ${esc(m.content||"")}</div>`).join("");
+    const resp = esc((rec.response&&rec.response.content)||"");
+    const open = state.openCalls.has(id) ? "open" : "";
+    return `<details class="call" data-id="${id}" ${open}>
+      <summary>${id} · ${esc(rec.model||"")} · ${rec.elapsed_s ?? "?"}s</summary>
+      <div class="body"><div class="k">request</div>${req}<div class="k" style="margin-top:6px">response</div><pre>${resp}</pre></div>
+    </details>`;
+  }).join("");
+  document.querySelectorAll("#logBody details").forEach(d=>{
+    d.ontoggle = () => { const id=d.dataset.id; d.open?state.openCalls.add(id):state.openCalls.delete(id); };
+  });
+}
+
+/* ── POLL ───────────────────────────────────────────────── */
+async function tick(){
+  let graphDone = false;
+  try {
+    const root = await getJSON("reasoning_graph.json");
+    state.graph = root;
+    const c = countNodes(root);
+    document.getElementById("nNodes").textContent = c.total;
+    document.getElementById("nDone").textContent = c.done;
+    graphDone = c.total>1 && c.done===c.total;
+    if (activeTab === "graph") renderTree(root);
+    if (state.selectedId){ const s=findNode(root,state.selectedId); if(s) renderNode(s); }
+  } catch(e){}
+  let inputs=null, styleGuide="";
+  try { inputs = await getJSON("inputs.json"); } catch(e){}
+  try { styleGuide = await getText("style_guide.txt"); } catch(e){}
+  if (inputs) renderInputs(inputs, styleGuide);
+  let secs=[];
+  try { secs = await getJSON("draft_sections.json"); } catch(e){}
+  renderDraft(secs);
+  try { renderPaper(await getText("paper.md")); } catch(e){}
+  try { renderLog(await getText("llm_calls.jsonl")); } catch(e){}
+  document.getElementById("phase").textContent = secs.length ? "writing" : (graphDone ? "graph done" : "reasoning");
+  document.getElementById("updated").textContent = new Date().toLocaleTimeString();
+}
+tick();
+setInterval(tick, 1500);
+window.addEventListener("resize", ()=>{ if(activeTab==="graph" && state.graph) renderTree(state.graph); });
+</script>
+</body>
+</html>

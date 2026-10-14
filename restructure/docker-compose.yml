@@ -5,6 +5,7 @@
 #   │ Service       │ Port / URL            │ Role                         │
 #   ├───────────────┼───────────────────────┼──────────────────────────────┤
 #   │ orchestrator  │ (internal)            │ MCP agents + graph reasoning │
+#   │ viewer        │ localhost:8080        │ live graph/draft/LLM viewer  │
 #   └───────────────┴───────────────────────┴──────────────────────────────┘
 #
 # Figures are drawn as vector SVG by the LLM (see mcp_servers/svg_server.py) —
@@ -16,6 +17,7 @@
 #   cp .env.example .env            # set LLM_BASE_URL / LLM_API_KEY
 #   docker compose up -d --build
 #   docker compose logs -f orchestrator
+#   open http://localhost:8080/live.html   # watch the graph build in real time
 # ═══════════════════════════════════════════════════════════════════════════
 
 services:
@@ -53,3 +55,17 @@ services:
       # Mounted folder with the PDFs + bib/endnote + hypothesis/keywords/style
       - ./inputs:/inputs:ro
       - ./outputs:/outputs
+
+  # ── Live viewer — serves outputs/ so the reasoning graph, drafts and LLM ──
+  # calls can be watched in real time at http://localhost:8080/live.html
+  viewer:
+    image: python:3.11-slim
+    container_name: paper-viewer
+    restart: unless-stopped
+    working_dir: /outputs
+    command: python -m http.server 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./outputs:/outputs:ro
+

@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
+from pathlib import Path
 
 import config
 from corpus import load_corpus
@@ -31,9 +33,9 @@ def _load_hypothesis() -> dict:
 
 def _load_keywords() -> list[str]:
     if not config.KEYWORDS_JSON.exists():
-        return []
+        raise SystemExit(f"Missing {config.KEYWORDS_JSON} — provide keywords.")
     data = json.loads(config.KEYWORDS_JSON.read_text(encoding="utf-8"))
-    return data.get("keywords", data) if isinstance(data, dict) else data
+    return data["keywords"] if isinstance(data, dict) else data
 
 
 _WRITER_SYS = (
@@ -59,10 +61,7 @@ def _draft_node(node: Node, corpus, style: str) -> str:
         f"EVIDENCE BANK:\n{evidence}\n\n"
         "Write the section now (2-4 paragraphs)."
     )
-    try:
-        return complete(_WRITER_SYS, user, temperature=0.4, max_tokens=3000)
-    except Exception as e:
-        return f"_(draft error: {e})_"
+    return complete(_WRITER_SYS, user, temperature=0.4, max_tokens=3000)
 
 
 def _assemble(root: Node, corpus, style: str) -> None:
@@ -71,7 +70,7 @@ def _assemble(root: Node, corpus, style: str) -> None:
     lines: list[str] = [f"# {root.title}\n", f"*{root.claim}*\n"]
 
     def walk(node: Node, level: int) -> None:
-        if node.id != "root" and node.score >= config.GRAPH_MIN_SCORE:
+        if node.id != "root":
             heading = "#" * min(level + 1, 5)
             lines.append(f"\n{heading} {node.title}\n")
             body = _draft_node(node, corpus, style)
@@ -84,6 +83,9 @@ def _assemble(root: Node, corpus, style: str) -> None:
                 "score": node.score, "citekeys": node.citekeys,
                 "figures": node.figures, "body": body,
             })
+            # Flush after every section so the live viewer shows drafts as they land.
+            config.DRAFT_JSON.write_text(json.dumps(sections, indent=2), encoding="utf-8")
+            config.PAPER_MD.write_text("\n".join(lines), encoding="utf-8")
             print(f"  [draft] {node.id} {node.title[:60]}")
         for child in node.children:
             walk(child, level + 1)
@@ -114,10 +116,32 @@ def main() -> None:
     print(f"  LLM: {config.LLM_MODEL} @ {config.LLM_BASE_URL}")
     print(f"  GRAPH_DEPTH={config.GRAPH_DEPTH}  PAPER_IMAGE_COUNT={config.PAPER_IMAGE_COUNT}")
 
+    # Publish the live viewer immediately so the graph can be watched while it builds.
+    tdir = Path(__file__).resolve().parent / "templates"
+    for asset in ("live.html", "d3.v7.min.js"):
+        src = tdir / asset
+        if src.exists():
+            shutil.copy(src, config.OUTPUT_DIR / asset)
+    print(f"  live view: {config.OUTPUT_DIR / 'live.html'} (serve outputs/ over HTTP)")
+
+    # Start each run with a clean LLM call log.
+    (config.OUTPUT_DIR / "llm_calls.jsonl").write_text("", encoding="utf-8")
+
+    # Extract the author's style as the very first step — it only needs the
+    # reference paper, so the style guide is ready before anything else.
+    print("--- extracting author style ---")
+    style = style_summary()
+
     hypothesis = _load_hypothesis()
     keywords = _load_keywords()
+    # Snapshot the inputs into OUTPUT_DIR so the viewer (which only serves
+    # /outputs) can show them, and seed an empty draft so the Writing tab renders.
+    (config.OUTPUT_DIR / "inputs.json").write_text(
+        json.dumps({"hypothesis": hypothesis, "keywords": keywords}, indent=2),
+        encoding="utf-8")
+    config.DRAFT_JSON.write_text("[]", encoding="utf-8")
+
     corpus = load_corpus()
-    style = style_summary()
 
     print("--- building reasoning graph ---")
     graph = ReasoningGraph(corpus, hypothesis, keywords)

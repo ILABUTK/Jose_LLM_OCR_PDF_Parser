@@ -121,11 +121,7 @@ def _extract_markdown(path: Path) -> tuple[str, list[dict]]:
     Image references are resolved relative to the .md file. Remote URLs are
     ignored; only on-disk images (MinerU's ``images/`` folder) are registered.
     """
-    try:
-        raw = path.read_text(encoding="utf-8", errors="ignore")
-    except Exception as e:
-        print(f"  [corpus] cannot read {path.name}: {e}")
-        return "", []
+    raw = path.read_text(encoding="utf-8", errors="ignore")
     images: list[dict] = []
     for m in _MD_IMAGE.finditer(raw):
         src = m.group("src").strip().split()[0]

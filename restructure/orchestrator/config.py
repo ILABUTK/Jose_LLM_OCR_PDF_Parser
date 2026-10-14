@@ -24,17 +24,13 @@ def _env(key: str, default: str) -> str:
 
 
 def _env_int(key: str, default: int) -> int:
-    try:
-        return int(os.environ.get(key, "").strip() or default)
-    except ValueError:
-        return default
+    raw = os.environ.get(key, "").strip()
+    return int(raw) if raw else default
 
 
 def _env_float(key: str, default: float) -> float:
-    try:
-        return float(os.environ.get(key, "").strip() or default)
-    except ValueError:
-        return default
+    raw = os.environ.get(key, "").strip()
+    return float(raw) if raw else default
 
 
 # ── LLM engine (external vLLM, OpenAI-compatible) ────────────────────────────
@@ -54,8 +50,6 @@ LLM_TEMPERATURE = _env_float("LLM_TEMPERATURE", 0.3)
 GRAPH_DEPTH = _env_int("GRAPH_DEPTH", 3)
 # How many child ideas each node spawns while delving.
 GRAPH_BRANCHING = _env_int("GRAPH_BRANCHING", 3)
-# Minimum evidence-grounding score [0,1] for a node to be kept.
-GRAPH_MIN_SCORE = _env_float("GRAPH_MIN_SCORE", 0.45)
 
 # ── Figure generation (LLM-drawn SVG — no external service) ────────────────
 # Number of SVG figures generated per developed idea / graph node.

@@ -136,7 +136,7 @@ button[kind="secondary"] {
 """, unsafe_allow_html=True)
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-WORKSPACE   = Path("/workspace")
+WORKSPACE   = Path(os.environ.get("WORKSPACE_DIR", "/workspace"))
 PDF_DIR     = WORKSPACE / "mineru" / "PDFs" / "files"
 OCR_OUT     = WORKSPACE / "mineru" / "output_images"
 PIPELINE    = WORKSPACE / "paper_generation"

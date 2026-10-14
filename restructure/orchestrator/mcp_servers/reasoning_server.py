@@ -33,7 +33,7 @@ def expand_idea(title: str, claim: str, branching: int | None = None) -> list[di
     """Spawn deeper sub-ideas from a parent idea (one level of the graph)."""
     b = branching or config.GRAPH_BRANCHING
     ctx = f"PARENT IDEA: {title}\n{claim}\n\nPropose exactly {b} deeper sub-ideas."
-    return complete_json(_EXPAND_SYS, ctx, temperature=0.5).get("ideas", [])[:b]
+    return complete_json(_EXPAND_SYS, ctx, temperature=0.5)["ideas"][:b]
 
 
 @mcp.tool()

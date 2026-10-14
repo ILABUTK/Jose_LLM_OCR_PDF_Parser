@@ -49,25 +49,21 @@ def generate_for_node(
     node_id: str,
     prompt: str,
     evidence: str | None = None,
+    count: int = 1,
 ) -> list[str]:
-    """Generate PAPER_IMAGE_COUNT SVG figures for one node. Returns saved paths."""
+    """Generate `count` SVG figures for one node. Returns saved paths."""
     saved: list[str] = []
-    for i in range(config.PAPER_IMAGE_COUNT):
+    for i in range(count):
         user = (
             f"FIGURE BRIEF:\n{prompt}\n\n"
             f"EVIDENCE (ground all values in this):\n{evidence or '(none provided)'}\n\n"
             f"Draw variation #{i + 1}. Return ONLY the SVG."
         )
-        try:
-            raw = complete(_SVG_SYS, user, temperature=0.3,
-                           max_tokens=config.SVG_MAX_TOKENS)
-        except Exception as e:
-            print(f"  [svg] generation failed for {node_id} #{i}: {e}")
-            continue
+        raw = complete(_SVG_SYS, user, temperature=0.3,
+                       max_tokens=config.SVG_MAX_TOKENS)
         svg = _extract_svg(raw)
         if not svg:
-            print(f"  [svg] no valid <svg> returned for {node_id} #{i}")
-            continue
+            raise RuntimeError(f"no valid <svg> returned for {node_id} #{i}")
         dst = config.FIGURES_DIR / f"{node_id}_fig{i}.svg"
         dst.write_text(svg, encoding="utf-8")
         saved.append(str(dst))
