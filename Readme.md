@@ -1,26 +1,5 @@
-# Jose_LLM_OCR_PDF_Parser
 
-PDF parser
 
-## Web interfaces
-
-Screenshots captured at 100% browser zoom (1600×1000).
-
-### Management UI (Streamlit, `ui/`, port 7860)
-
-`docker compose up -d --build ui` → http://localhost:7860. Set `WORKSPACE_DIR` to run it outside Docker (default `/workspace`).
-
-| Status | Import |
-|---|---|
-| ![Status](docs/screenshots/ui_01_status.png) | ![Import](docs/screenshots/ui_02_import.png) |
-
-| Library | OCR |
-|---|---|
-| ![Library](docs/screenshots/ui_03_library.png) | ![OCR](docs/screenshots/ui_04_ocr.png) |
-
-| Ontologies | Generate |
-|---|---|
-| ![Ontologies](docs/screenshots/ui_05_ontologies.png) | ![Generate](docs/screenshots/ui_06_generate.png) |
 
 ### Live pipeline view (`restructure/orchestrator/templates/live.html`)
 
@@ -41,7 +20,7 @@ The graph tab auto-fits to the pane; scrolling or dragging disables the auto-fit
 
 - Testing Code Location on the RECOIL GPU Server
     - https://recoil.ise.utk.edu:8000/user/xli27/lab/tree/projects/shared_space/parserBibliographyJT/
-
+<!-- 
 # scripts
 
 ## flow by Jose
@@ -243,58 +222,3 @@ We need to:
 
 WE CAN USE THESE MODELS!
 
-
-
-
-# New instruction:
-
-
-```
-
-<!-- DOCKER IMAGE -->
-cd /home/jose/Jose_LLM_OCR_PDF_Parser
-chmod +x docker_run.sh
-./docker_run.sh
-
-
-
-<!-- RUNNING WHAT IS ON PDFs -->
-
-
-
-
-chmod -R 777 mineru
-
-docker run -it --rm --gpus=all \
-  -v "$PWD/mineru/PDFs/files:/workspace/input_images" \
-  -v "$PWD/mineru/output_images:/workspace/output_images" \
-  -v "$PWD/mineru/models:/models" \
-  -e BACKEND=pipeline \
-  -e MINERU_MODEL_SOURCE=local \
-  mineru:latest \
-  process_all.sh
-
-
-<!-- RUNNING WHAT IS ON PDFs  NEW-->
-
-
-
-tail -f /tmp/mineru_build.log
-
-docker compose up -d mineru
-docker exec mineru process_all.sh
-
-
-
-
-
-<!-- GENERATION PIPELINE -->
-
-source /home/jose/Jose_LLM_OCR_PDF_Parser/venv/bin/activate
-cd /home/jose/Jose_LLM_OCR_PDF_Parser/paper_generation
-python 01_extract_ontologies.py
-python 02_plan_paper.py --topic "Lithium orthosilicate as tritium breeder: a comparative review with Li2TiO3 and Li2ZrO3"
-python 03_agents_write.py
-python 04_validate.py
-python 05_render_elsevier.py
-```
